@@ -1,0 +1,1290 @@
+{
+    "name": "My workflow 2",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "adaptive-instructor",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "id": "2848c081-5dce-411d-b0cf-390c89705604",
+        "name": "Main Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1.1,
+        "position": [
+          -2520,
+          300
+        ],
+        "webhookId": "9ef00e80-0d3e-4fcb-b8ff-e621ee6fc02e"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "webhookData",
+                "name": "webhookData",
+                "value": "={{ $json.body }}",
+                "type": "object"
+              },
+              {
+                "id": "courseTopic",
+                "name": "courseTopic",
+                "value": "How to Become an AI Native Product Manager",
+                "type": "string"
+              },
+              {
+                "id": "learnerProfile",
+                "name": "learnerProfile",
+                "value": "={{ {\"role\": \"Product Manager\", \"company\": \"TechCorp\", \"skills\": [\"Agile\", \"User Research\", \"Basic Python\"]} }}",
+                "type": "object"
+              },
+              {
+                "id": "coreConcepts",
+                "name": "coreConcepts",
+                "value": "={{ [{\"id\": 1, \"title\": \"Understanding AI Capabilities\", \"summary\": \"Learn what AI can and cannot do in product management\", \"expertTips\": [\"Focus on problem-solving, not just technology\", \"Start with user needs\"], \"assessmentQuestion\": \"What is the primary consideration when integrating AI into a product?\", \"correctAnswer\": \"User value and problem-solution fit\", \"promptTask\": \"Write a prompt to help identify user pain points for a fitness app\", \"isCore\": true}, {\"id\": 2, \"title\": \"AI-First Product Strategy\", \"summary\": \"Develop strategies that leverage AI as a core differentiator\", \"expertTips\": [\"Think beyond automation\", \"Consider AI as a team member\"], \"assessmentQuestion\": \"How does AI-first differ from AI-enabled products?\", \"correctAnswer\": \"AI-first products have AI at their core value proposition, not just as an enhancement\", \"promptTask\": \"Create a prompt to brainstorm AI-first features for an e-commerce platform\", \"isCore\": true}, {\"id\": 3, \"title\": \"Prompt Engineering for PMs\", \"summary\": \"Master the art of writing effective prompts for product tasks\", \"expertTips\": [\"Be specific and contextual\", \"Iterate based on outputs\"], \"assessmentQuestion\": \"What makes a product management prompt effective?\", \"correctAnswer\": \"Clear context, specific goals, and measurable outcomes\", \"promptTask\": \"Write a prompt to generate user stories for a new feature\", \"isCore\": true}, {\"id\": 4, \"title\": \"AI Ethics in Product Design\", \"summary\": \"Navigate ethical considerations when building AI products\", \"expertTips\": [\"Consider bias in data and algorithms\", \"Prioritize transparency\"], \"assessmentQuestion\": \"What is the most important ethical consideration for AI products?\", \"correctAnswer\": \"Ensuring fairness and preventing harm to users\", \"promptTask\": \"Draft a prompt to identify potential ethical issues in a healthcare AI product\", \"isCore\": true}, {\"id\": 5, \"title\": \"Measuring AI Product Success\", \"summary\": \"Define and track metrics for AI-powered features\", \"expertTips\": [\"Balance accuracy with user satisfaction\", \"Track both technical and business metrics\"], \"assessmentQuestion\": \"Beyond accuracy, what metric is crucial for AI products?\", \"correctAnswer\": \"User trust and adoption rate\", \"promptTask\": \"Create a prompt to generate a metrics dashboard for an AI feature\", \"isCore\": true}, {\"id\": 6, \"title\": \"Cross-functional AI Collaboration\", \"summary\": \"Work effectively with data scientists and ML engineers\", \"expertTips\": [\"Learn the language of AI teams\", \"Focus on outcomes, not algorithms\"], \"assessmentQuestion\": \"What's the PM's primary role in AI development?\", \"correctAnswer\": \"Translating user needs into technical requirements and ensuring alignment\", \"promptTask\": \"Write a prompt to create a collaboration plan between PM and AI teams\", \"isCore\": true}, {\"id\": 7, \"title\": \"AI Product Roadmapping\", \"summary\": \"Plan and prioritize AI features in your roadmap\", \"expertTips\": [\"Account for uncertainty in AI development\", \"Build in experimentation time\"], \"assessmentQuestion\": \"How does AI impact traditional roadmapping?\", \"correctAnswer\": \"Requires more flexibility and iterative approaches due to uncertainty\", \"promptTask\": \"Generate a prompt for creating an AI feature prioritization matrix\", \"isCore\": true}, {\"id\": 8, \"title\": \"User Research for AI Products\", \"summary\": \"Conduct research to understand AI product needs\", \"expertTips\": [\"Test AI interactions early\", \"Understand user mental models of AI\"], \"assessmentQuestion\": \"What's unique about user research for AI products?\", \"correctAnswer\": \"Need to understand user expectations and trust in AI systems\", \"promptTask\": \"Create a prompt for designing an AI product user interview guide\", \"isCore\": true}, {\"id\": 9, \"title\": \"AI Product Launch Strategies\", \"summary\": \"Successfully launch and iterate on AI features\", \"expertTips\": [\"Start with beta users\", \"Communicate limitations clearly\"], \"assessmentQuestion\": \"What's critical for AI product launches?\", \"correctAnswer\": \"Setting proper expectations and having a feedback loop for improvements\", \"promptTask\": \"Write a prompt to create an AI feature launch checklist\", \"isCore\": true}, {\"id\": 10, \"title\": \"Future of AI in Product Management\", \"summary\": \"Prepare for emerging AI trends and technologies\", \"expertTips\": [\"Stay curious about new AI capabilities\", \"Think about AI as augmentation\"], \"assessmentQuestion\": \"How will AI change the PM role itself?\", \"correctAnswer\": \"AI will augment PM capabilities, enabling data-driven decisions at scale\", \"promptTask\": \"Generate a prompt to explore future AI use cases in your industry\", \"isCore\": true}] }}",
+                "type": "object"
+              },
+              {
+                "id": "sessionId",
+                "name": "sessionId",
+                "value": "={{ $json.body.sessionId }}",
+                "type": "string"
+              },
+              {
+                "id": "action",
+                "name": "action",
+                "value": "={{ $json.body.action }}",
+                "type": "string"
+              },
+              {
+                "id": "learnerInput",
+                "name": "learnerInput",
+                "value": "={{ $json.body.learnerInput }}",
+                "type": "object"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "6cb6a796-3c0e-430a-b1f4-a3b905f50e23",
+        "name": "Initialize Course Data",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -2360,
+          80
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "// Session State Manager - Handles all session state logic\nconst sessionId = $json.sessionId || 'default-session';\nconst action = $json.action || 'start';\nconst learnerInput = $json.learnerInput || {};\n\n// Initialize or retrieve session state\nlet sessionState = $getWorkflowStaticData('global');\nif (!sessionState.sessions) {\n  sessionState.sessions = {};\n}\n\nif (!sessionState.sessions[sessionId] || action === 'start') {\n  // Initialize new session\n  sessionState.sessions[sessionId] = {\n    currentConceptIndex: 0,\n    completedConcepts: [],\n    remainingCoreConcepts: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],\n    insertedConcepts: [],\n    interactionHistory: [],\n    currentConcept: null,\n    lastToolUsed: null,\n    currentConceptTools: [],\n    lastAssessmentScore: null,\n    knowledgeGaps: [],\n    recentQuestions: []\n  };\n}\n\nconst session = sessionState.sessions[sessionId];\n\n// Process learner input based on last tool used\nif (learnerInput && session.lastToolUsed) {\n  session.interactionHistory.push({\n    concept: session.currentConcept?.title,\n    tool: session.lastToolUsed,\n    input: learnerInput,\n    timestamp: new Date().toISOString()\n  });\n  \n  // Track recent questions\n  if (learnerInput.note) {\n    session.recentQuestions.push(learnerInput.note);\n    if (session.recentQuestions.length > 5) {\n      session.recentQuestions.shift();\n    }\n  }\n}\n\n// Get course data\nconst courseTopic = $json.courseTopic;\nconst learnerProfile = $json.learnerProfile;\nconst coreConcepts = $json.coreConcepts;\n\n// Determine current concept\nif (!session.currentConcept || action === 'next_concept') {\n  let nextConcept;\n  \n  if (session.insertedConcepts.length > 0) {\n    // Process inserted concepts first\n    nextConcept = session.insertedConcepts.shift();\n  } else if (session.remainingCoreConcepts.length > 0) {\n    // Get next core concept\n    const nextId = session.remainingCoreConcepts[0];\n    nextConcept = coreConcepts.find(c => c.id === nextId);\n  } else {\n    // Course complete\n    nextConcept = null;\n  }\n  \n  if (nextConcept) {\n    session.currentConcept = nextConcept;\n    session.currentConceptTools = [];\n  }\n}\n\n// Save session state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\nreturn {\n  sessionId,\n  action,\n  learnerInput,\n  sessionState: session,\n  courseTopic,\n  learnerProfile,\n  coreConcepts,\n  currentConcept: session.currentConcept,\n  courseComplete: !session.currentConcept && \n                  session.remainingCoreConcepts.length === 0 && \n                  session.insertedConcepts.length === 0\n};"
+        },
+        "id": "3dceeac3-914b-4e55-bbf0-cc3a1b9ce9fb",
+        "name": "Session State Manager",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1980,
+          200
+        ]
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.courseComplete }}",
+                      "rightValue": "={{ true }}",
+                      "operator": {
+                        "type": "boolean",
+                        "operation": "true"
+                      },
+                      "id": "cond1"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "courseComplete"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.action }}",
+                      "rightValue": "start",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "cond2"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "startCourse"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.currentConcept }}",
+                      "rightValue": "",
+                      "operator": {
+                        "type": "object",
+                        "operation": "notEmpty"
+                      },
+                      "id": "cond3"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "continueLesson"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "17779de5-17ba-4e1d-a450-52888745af7f",
+        "name": "Route by State",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          -1760,
+          200
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "// Course Completion Handler\nconst sessionId = $json.sessionId;\nconst session = $json.sessionState;\n\n// Calculate final statistics\nconst totalConcepts = session.completedConcepts.length;\nconst coreConceptsCompleted = session.completedConcepts.filter(id => \n  typeof id === 'number'\n).length;\nconst dynamicConceptsCompleted = totalConcepts - coreConceptsCompleted;\n\n// Prepare completion response\nconst responseData = {\n  sessionId,\n  toolType: 'course_complete',\n  courseComplete: true,\n  toolData: {\n    title: 'Congratulations! Course Complete',\n    summary: `You've successfully completed all ${totalConcepts} concepts in the course.`,\n    statistics: {\n      coreConceptsCompleted,\n      dynamicConceptsAdded: dynamicConceptsCompleted,\n      totalInteractions: session.interactionHistory.length\n    },\n    message: 'Great job completing the AI Native Product Manager course!'\n  },\n  waitingForInput: false\n};\n\nreturn {\n  responseData\n};"
+        },
+        "id": "e7c698ca-026d-4532-af27-cff2d985a74d",
+        "name": "Course Completion",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          0,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "// Welcome Message for Course Start\nconst sessionId = $json.sessionId;\nconst courseTopic = $json.courseTopic;\n\nconst responseData = {\n  sessionId,\n  toolType: 'welcome',\n  toolData: {\n    title: `Welcome to: ${courseTopic}`,\n    message: 'This adaptive course will guide you through 10 core concepts with personalized instruction based on your progress.',\n    instructions: 'Click Next to begin with the first concept.'\n  },\n  waitingForInput: false,\n  nextAction: 'start_course'\n};\n\nreturn {\n  ...($json),\n  responseData\n};"
+        },
+        "id": "68b6be6a-85b6-486c-90d7-57dedd40168f",
+        "name": "Welcome Message",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          0,
+          200
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "// Determine Next Tool Logic\nconst session = $json.sessionState;\nconst currentConcept = $json.currentConcept;\nconst lastToolUsed = session.lastToolUsed;\nconst conceptTools = session.currentConceptTools || [];\n\n// Determine next tool\nlet nextTool = 'concept_card'; // Default\n\nif (!conceptTools.includes('concept_card')) {\n  // Always start with concept card\n  nextTool = 'concept_card';\n} else if (!conceptTools.includes('assessment')) {\n  // Assessment typically follows concept card\n  nextTool = 'assessment';\n} else if (!conceptTools.includes('prompt_exercise') && \n           session.lastAssessmentScore >= 4 && \n           currentConcept.promptTask) {\n  // Prompt exercise for high performers\n  nextTool = 'prompt_exercise';\n} else {\n  // Move to orchestrator for next concept decision\n  nextTool = 'orchestrate';\n}\n\nreturn {\n  ...($json),\n  nextTool,\n  toolDecision: {\n    tool: nextTool,\n    reasoning: `Concept tools used: ${conceptTools.join(', ')}. Assessment score: ${session.lastAssessmentScore}`\n  }\n};"
+        },
+        "id": "420829e4-139c-4767-bc5d-af3589bbe0ed",
+        "name": "Determine Next Tool",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1540,
+          880
+        ]
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.nextTool }}",
+                      "rightValue": "concept_card",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "tool1"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "conceptCard"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.nextTool }}",
+                      "rightValue": "assessment",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "tool2"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "assessment"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.nextTool }}",
+                      "rightValue": "prompt_exercise",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "tool3"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "promptExercise"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict"
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.nextTool }}",
+                      "rightValue": "orchestrate",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "tool4"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "orchestrate"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "3e27405a-a9bd-4bae-88ff-8ffc4375b41e",
+        "name": "Tool Router",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          -1320,
+          860
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "// Concept Card Handler\nconst concept = $json.currentConcept;\nconst sessionId = $json.sessionId;\nconst learnerNote = $json.learnerInput?.note;\n\n// Update session state\nconst session = $json.sessionState;\nif (!session.currentConceptTools.includes('concept_card')) {\n  session.currentConceptTools.push('concept_card');\n}\nsession.lastToolUsed = 'concept_card';\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\nconst responseData = {\n  sessionId,\n  toolType: 'concept_card',\n  conceptProgress: {\n    current: session.completedConcepts.length + 1,\n    total: session.remainingCoreConcepts.length + \n           session.completedConcepts.length + \n           session.insertedConcepts.length\n  },\n  toolData: {\n    title: concept.title,\n    summary: concept.summary,\n    expertTips: concept.expertTips,\n    canSubmitNote: true\n  },\n  waitingForInput: !learnerNote,\n  inputType: 'note',\n  message: 'Read through the concept and feel free to add any notes or questions.'\n};\n\n// If we have a note, we need to generate a smart reply\nif (learnerNote) {\n  return {\n    ...($json),\n    needsSmartReply: true,\n    learnerNote,\n    responseData\n  };\n}\n\nreturn {\n  ...($json),\n  needsSmartReply: false,\n  responseData\n};"
+        },
+        "id": "a42fd25c-eb97-4977-b5d2-7ed2bbb48012",
+        "name": "Concept Card Handler",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -660,
+          480
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.needsSmartReply }}",
+                "rightValue": "={{ true }}",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true"
+                },
+                "id": "needreply"
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "586467ba-a21a-4dc5-8aec-82db865e1164",
+        "name": "Need Smart Reply?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.1,
+        "position": [
+          -440,
+          480
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.openai.com/v1/chat/completions",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "openAiApi",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "model",
+                "value": "gpt-4o"
+              },
+              {
+                "name": "messages",
+                "value": "=[{\"role\": \"system\", \"content\": \"You are a helpful AI instructor providing brief, encouraging responses to learner comments. Keep responses under 3 sentences and personalized to their role.\"}, {\"role\": \"user\", \"content\": \"The learner submitted this comment while learning about '{{ $json.currentConcept.title }}':\\n'{{ $json.learnerNote }}'\\n\\nGenerate a brief, encouraging response that acknowledges their input, provides clarification if needed, and maintains engagement. The learner is a {{ $json.learnerProfile.role }}.\\n\\nRespond in plain text, not JSON.\"}]"
+              },
+              {
+                "name": "temperature",
+                "value": "0.7"
+              },
+              {
+                "name": "max_tokens",
+                "value": "150"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "c126c8bd-097c-4c82-b3ad-5c9f6cece984",
+        "name": "Generate Smart Reply",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -220,
+          400
+        ],
+        "credentials": {
+          "openAiApi": {
+            "id": "UFaW72U0IV5U0Ec5",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Add Smart Reply to Response\nconst smartReply = $json.choices[0].message.content;\nconst responseData = $node[\"Concept Card Handler\"].json.responseData;\n\n// Add smart reply to response\nresponseData.toolData.smartReply = smartReply;\nresponseData.waitingForInput = false;\nresponseData.nextAction = 'Click Next to continue to the assessment';\n\nreturn {\n  ...($node[\"Concept Card Handler\"].json),\n  responseData\n};"
+        },
+        "id": "34028c0f-5567-4b50-b187-15c22dbf25e0",
+        "name": "Add Smart Reply",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          0,
+          400
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "// Assessment Handler\nconst concept = $json.currentConcept;\nconst sessionId = $json.sessionId;\nconst learnerAnswer = $json.learnerInput?.answer;\nconst session = $json.sessionState;\n\n// Update session state\nif (!session.currentConceptTools.includes('assessment')) {\n  session.currentConceptTools.push('assessment');\n}\nsession.lastToolUsed = 'assessment';\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\nconst responseData = {\n  sessionId,\n  toolType: 'assessment',\n  conceptProgress: {\n    current: session.completedConcepts.length + 1,\n    total: session.remainingCoreConcepts.length + \n           session.completedConcepts.length + \n           session.insertedConcepts.length\n  },\n  toolData: {\n    question: concept.assessmentQuestion,\n    conceptTitle: concept.title\n  },\n  waitingForInput: !learnerAnswer,\n  inputType: 'answer',\n  message: 'Answer the question to check your understanding.'\n};\n\n// If we have an answer, we need to grade it\nif (learnerAnswer) {\n  return {\n    ...($json),\n    needsGrading: true,\n    learnerAnswer,\n    responseData\n  };\n}\n\nreturn {\n  ...($json),\n  needsGrading: false,\n  responseData\n};"
+        },
+        "id": "14f72ee9-3ca2-4fde-9e36-b44b383ba980",
+        "name": "Assessment Handler",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -660,
+          740
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.needsGrading }}",
+                "rightValue": "={{ true }}",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true"
+                },
+                "id": "needgrade"
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "a8982cb8-04f3-48a0-8ff8-f13bca22de36",
+        "name": "Need Grading?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.1,
+        "position": [
+          -440,
+          680
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.openai.com/v1/chat/completions",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "openAiApi",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "model",
+                "value": "gpt-4o"
+              },
+              {
+                "name": "messages",
+                "value": "=[{\"role\": \"system\", \"content\": \"You are an expert instructional coach evaluating a learner's understanding. Return your evaluation as a JSON object.\"}, {\"role\": \"user\", \"content\": \"Context:\\n- Course Topic: {{ $json.courseTopic }}\\n- Current Concept: {{ $json.currentConcept.title }}\\n- Question: {{ $json.currentConcept.assessmentQuestion }}\\n- Correct Answer: {{ $json.currentConcept.correctAnswer }}\\n- Learner's Answer: {{ $json.learnerAnswer }}\\n- Learner Profile: {{ $json.learnerProfile.role }} at {{ $json.learnerProfile.company }}\\n\\nEvaluate the answer and return a JSON object with this exact structure:\\n{\\n  \\\"score\\\": (0-5 number),\\n  \\\"feedback\\\": \\\"Brief, encouraging feedback\\\",\\n  \\\"understood\\\": (true or false),\\n  \\\"knowledgeGaps\\\": [\\\"specific areas of confusion if any\\\"]\\n}\"}]"
+              },
+              {
+                "name": "temperature",
+                "value": "0.3"
+              },
+              {
+                "name": "max_tokens",
+                "value": "200"
+              },
+              {
+                "name": "response_format",
+                "value": "={{ {\"type\": \"json_object\"} }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "5bf77b67-eac5-4808-8225-4e18b312540a",
+        "name": "Grade Assessment",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -220,
+          800
+        ],
+        "credentials": {
+          "openAiApi": {
+            "id": "UFaW72U0IV5U0Ec5",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Process Grading Result\nconst gradingResult = JSON.parse($json.choices[0].message.content);\nconst responseData = $node[\"Assessment Handler\"].json.responseData;\nconst sessionId = $node[\"Assessment Handler\"].json.sessionId;\n\n// Update session with assessment results\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\nsession.lastAssessmentScore = gradingResult.score;\nsession.knowledgeGaps = gradingResult.knowledgeGaps || [];\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Add grading to response\nresponseData.toolData.gradingResult = gradingResult;\nresponseData.waitingForInput = false;\nresponseData.nextAction = gradingResult.score >= 4 ? \n  'Great job! Click Next to continue.' : \n  'Click Next to continue. We\\'ll address any gaps.';\n\nreturn {\n  ...($node[\"Assessment Handler\"].json),\n  gradingResult,\n  responseData\n};"
+        },
+        "id": "4a671f09-938a-4c91-9d1a-98fe09d865d8",
+        "name": "Process Grading",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          80,
+          880
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "// Prompt Exercise Handler\nconst concept = $json.currentConcept;\nconst sessionId = $json.sessionId;\nconst learnerPrompt = $json.learnerInput?.prompt;\nconst session = $json.sessionState;\n\n// Update session state\nif (!session.currentConceptTools.includes('prompt_exercise')) {\n  session.currentConceptTools.push('prompt_exercise');\n}\nsession.lastToolUsed = 'prompt_exercise';\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\nconst responseData = {\n  sessionId,\n  toolType: 'prompt_exercise',\n  conceptProgress: {\n    current: session.completedConcepts.length + 1,\n    total: session.remainingCoreConcepts.length + \n           session.completedConcepts.length + \n           session.insertedConcepts.length\n  },\n  toolData: {\n    task: concept.promptTask,\n    conceptTitle: concept.title\n  },\n  waitingForInput: !learnerPrompt,\n  inputType: 'prompt',\n  message: 'Practice your prompt engineering skills with this task.'\n};\n\n// If we have a prompt, we need to evaluate it\nif (learnerPrompt) {\n  return {\n    ...($json),\n    needsEvaluation: true,\n    learnerPrompt,\n    responseData\n  };\n}\n\nreturn {\n  ...($json),\n  needsEvaluation: false,\n  responseData\n};"
+        },
+        "id": "d10fb503-b367-4438-9915-ccee63d66d2d",
+        "name": "Prompt Exercise Handler",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -660,
+          1040
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.needsEvaluation }}",
+                "rightValue": "={{ true }}",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true"
+                },
+                "id": "needeval"
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "8a1c4dc8-b215-47cb-a093-aacae1abf507",
+        "name": "Need Evaluation?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.1,
+        "position": [
+          -440,
+          1040
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.openai.com/v1/chat/completions",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "openAiApi",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "model",
+                "value": "gpt-4o"
+              },
+              {
+                "name": "messages",
+                "value": "=[{\"role\": \"system\", \"content\": \"You are an expert at evaluating AI prompts for product management tasks. Return your evaluation as a JSON object.\"}, {\"role\": \"user\", \"content\": \"Task: {{ $json.currentConcept.promptTask }}\\nLearner's Prompt: {{ $json.learnerPrompt }}\\nLearner Background: {{ $json.learnerProfile.role }} with skills in {{ $json.learnerProfile.skills.join(', ') }}\\n\\nEvaluate the prompt and return a JSON object with this exact structure:\\n{\\n  \\\"score\\\": (0-5 number),\\n  \\\"feedback\\\": \\\"Constructive feedback\\\",\\n  \\\"strengths\\\": [\\\"what they did well\\\"],\\n  \\\"improvements\\\": [\\\"specific suggestions\\\"],\\n  \\\"simulatedAIResponse\\\": \\\"What an AI would generate from this prompt\\\"\\n}\"}]"
+              },
+              {
+                "name": "temperature",
+                "value": "0.7"
+              },
+              {
+                "name": "max_tokens",
+                "value": "300"
+              },
+              {
+                "name": "response_format",
+                "value": "={{ {\"type\": \"json_object\"} }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "53a8e149-0475-4300-99b7-6abd781c74a6",
+        "name": "Evaluate Prompt",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -220,
+          1100
+        ],
+        "credentials": {
+          "openAiApi": {
+            "id": "UFaW72U0IV5U0Ec5",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Process Prompt Evaluation\nconst evaluationResult = JSON.parse($json.choices[0].message.content);\nconst responseData = $node[\"Prompt Exercise Handler\"].json.responseData;\n\n// Add evaluation to response\nresponseData.toolData.evaluationResult = evaluationResult;\nresponseData.waitingForInput = false;\nresponseData.nextAction = 'Click Next to continue to the next concept.';\n\nreturn {\n  ...($node[\"Prompt Exercise Handler\"].json),\n  evaluationResult,\n  responseData\n};"
+        },
+        "id": "41876967-63e1-4d05-b260-c27f0429434a",
+        "name": "Process Evaluation",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          60,
+          1140
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.openai.com/v1/chat/completions",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "openAiApi",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "model",
+                "value": "gpt-4o"
+              },
+              {
+                "name": "messages",
+                "value": "=[{\"role\": \"system\", \"content\": \"You are an adaptive learning orchestrator. Based on the current learning state, decide if a new concept should be inserted to address knowledge gaps.\"}, {\"role\": \"user\", \"content\": \"Current State:\\n- Course Topic: {{ $json.courseTopic }}\\n- Current Concept: {{ $json.currentConcept.title }}\\n- Learner Performance:\\n  - Last Assessment Score: {{ $json.sessionState.lastAssessmentScore }}/5\\n  - Knowledge Gaps: {{ $json.sessionState.knowledgeGaps.join(', ') }}\\n  - Recent Questions: {{ $json.sessionState.recentQuestions.join('; ') }}\\n\\nDetermine if we need to insert a new concept. Return JSON:\\n{\\n  \\\"insertNewConcept\\\": true/false,\\n  \\\"reasoning\\\": \\\"Brief explanation\\\",\\n  \\\"newConceptNeeded\\\": {\\n    \\\"reason\\\": \\\"what gap to address\\\",\\n    \\\"relatedTo\\\": \\\"current concept title\\\"\\n  }\\n}\"}]"
+              },
+              {
+                "name": "temperature",
+                "value": "0.3"
+              },
+              {
+                "name": "max_tokens",
+                "value": "200"
+              },
+              {
+                "name": "response_format",
+                "value": "={{ {\"type\": \"json_object\"} }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "74915b6f-8335-4e96-a476-80e09aef75fe",
+        "name": "Adaptive Orchestrator",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -1100,
+          1380
+        ],
+        "credentials": {
+          "openAiApi": {
+            "id": "UFaW72U0IV5U0Ec5",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Process Orchestrator Decision\nconst orchestratorDecision = JSON.parse($json.choices[0].message.content);\n\nreturn {\n  ...($node[\"Determine Next Tool\"].json),\n  orchestratorDecision,\n  needsNewConcept: orchestratorDecision.insertNewConcept\n};"
+        },
+        "id": "0e12f8bd-05bb-4979-a129-c1f45d9c121f",
+        "name": "Process Orchestrator",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -880,
+          1380
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.needsNewConcept }}",
+                "rightValue": "={{ true }}",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true"
+                },
+                "id": "neednew"
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "2c30c261-c92f-4152-b793-64d1b652b802",
+        "name": "Need New Concept?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.1,
+        "position": [
+          -660,
+          1380
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.openai.com/v1/chat/completions",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "openAiApi",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "model",
+                "value": "gpt-4o"
+              },
+              {
+                "name": "messages",
+                "value": "=[{\"role\": \"system\", \"content\": \"Generate a new mini-concept to address a specific learning gap. Create focused content that directly addresses the confusion.\"}, {\"role\": \"user\", \"content\": \"Context:\\n- Main Topic: {{ $json.courseTopic }}\\n- Current Concept: {{ $json.currentConcept.title }}\\n- Knowledge Gap: {{ $json.orchestratorDecision.newConceptNeeded.reason }}\\n- Learner Profile: {{ $json.learnerProfile.role }} at {{ $json.learnerProfile.company }}\\n\\nCreate a focused concept that directly addresses the confusion and builds a bridge to understanding. Return JSON:\\n{\\n  \\\"title\\\": \\\"Clear, specific title\\\",\\n  \\\"summary\\\": \\\"2-3 sentence overview\\\",\\n  \\\"expertTips\\\": [\\\"2-3 practical tips\\\"],\\n  \\\"assessmentQuestion\\\": \\\"Targeted question to verify understanding\\\",\\n  \\\"correctAnswer\\\": \\\"Brief correct answer\\\",\\n  \\\"promptTask\\\": \\\"Optional - only if relevant to the gap\\\"\\n}\"}]"
+              },
+              {
+                "name": "temperature",
+                "value": "0.7"
+              },
+              {
+                "name": "max_tokens",
+                "value": "400"
+              },
+              {
+                "name": "response_format",
+                "value": "={{ {\"type\": \"json_object\"} }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "27291520-f27e-4e7d-8c17-628e9f57fc78",
+        "name": "Generate New Concept",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -440,
+          1300
+        ],
+        "credentials": {
+          "openAiApi": {
+            "id": "UFaW72U0IV5U0Ec5",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Insert New Concept into Queue\nconst newConcept = JSON.parse($json.choices[0].message.content);\nconst sessionId = $node[\"Process Orchestrator\"].json.sessionId;\n\n// Add metadata to new concept\nnewConcept.id = `dynamic_${Date.now()}`;\nnewConcept.isCore = false;\n\n// Get session and add to inserted concepts\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\nsession.insertedConcepts.push(newConcept);\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\nreturn {\n  ...($node[\"Process Orchestrator\"].json),\n  newConceptInserted: true,\n  newConcept\n};"
+        },
+        "id": "333b8d6c-e32a-4529-bb0c-f90ac0585be3",
+        "name": "Insert Concept",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -220,
+          1300
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "// Complete Current Concept and Move to Next\nconst sessionId = $json.sessionId;\nconst currentConcept = $json.currentConcept;\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// Mark current concept as completed\nif (currentConcept) {\n  session.completedConcepts.push(currentConcept.id);\n  \n  // Remove from remaining if it was a core concept\n  if (currentConcept.isCore) {\n    session.remainingCoreConcepts = session.remainingCoreConcepts.filter(\n      id => id !== currentConcept.id\n    );\n  }\n}\n\n// Reset for next concept\nsession.currentConcept = null;\nsession.currentConceptTools = [];\nsession.lastToolUsed = null;\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Prepare response to move to next concept\nconst responseData = {\n  sessionId,\n  toolType: 'transition',\n  conceptProgress: {\n    current: session.completedConcepts.length,\n    total: session.remainingCoreConcepts.length + \n           session.completedConcepts.length + \n           session.insertedConcepts.length\n  },\n  toolData: {\n    completedConcept: currentConcept?.title,\n    message: 'Moving to next concept...'\n  },\n  waitingForInput: false,\n  nextAction: 'auto_continue'\n};\n\nreturn {\n  ...($json),\n  responseData,\n  moveToNext: true\n};"
+        },
+        "id": "869fd420-00f4-429b-959b-5ae6a581c986",
+        "name": "Complete Concept",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          140,
+          1400
+        ]
+      },
+      {
+        "parameters": {
+          "numberInputs": 9
+        },
+        "id": "370aca34-75ee-4d57-8aa2-f11073474248",
+        "name": "Merge Responses",
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3,
+        "position": [
+          500,
+          580
+        ]
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "59908bf9-fdc7-414e-a7ea-4ed40cfe7099",
+        "name": "Webhook Response",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          660,
+          620
+        ]
+      },
+      {
+        "parameters": {
+          "path": "reset-session",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "id": "2681cb71-55a9-4ee5-9449-d22ed9b81ec5",
+        "name": "Reset Session Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1.1,
+        "position": [
+          -2420,
+          1640
+        ],
+        "webhookId": "594653ea-5a3e-4e99-9a1d-c2ecdf0f5c56"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Reset Session\nconst sessionId = $json.query?.sessionId || 'default-session';\n\n// Clear session data\nconst sessionState = $getWorkflowStaticData('global');\nif (sessionState.sessions && sessionState.sessions[sessionId]) {\n  delete sessionState.sessions[sessionId];\n}\n\nreturn {\n  success: true,\n  message: `Session ${sessionId} has been reset`,\n  sessionId\n};"
+        },
+        "id": "d5b504ae-167c-43cd-b033-91c16eceff45",
+        "name": "Reset Session",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -2200,
+          1640
+        ]
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "4845f773-9791-4dc7-9298-1f63a40531d1",
+        "name": "Reset Response",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          -1980,
+          1640
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "// Extract webhook data from the first item in the array\nconst webhookData = $input.first().json.body;\n\n// Add course data\nreturn {\n  sessionId: webhookData.sessionId,\n  userName: webhookData.userName,\n  action: webhookData.action,\n  learnerInput: webhookData.learnerInput,\n  courseTopic: \"How to Become an AI Native Product Manager\",\n  learnerProfile: {\n    role: \"Product Manager\",\n    company: \"TechCorp\",\n    skills: [\"Agile\", \"User Research\", \"Basic Python\"]\n  },\n  coreConcepts: [\n    {\n      \"id\": 1,\n      \"title\": \"Understanding AI Capabilities\",\n      \"summary\": \"Learn what AI can and cannot do in product management\",\n      \"expertTips\": [\"Focus on problem-solving, not just technology\", \"Start with user needs\"],\n      \"assessmentQuestion\": \"What is the primary consideration when integrating AI into a product?\",\n      \"correctAnswer\": \"User value and problem-solution fit\",\n      \"promptTask\": \"Write a prompt to help identify user pain points for a fitness app\",\n      \"isCore\": true\n    },\n    {\n      \"id\": 2,\n      \"title\": \"AI-First Product Strategy\",\n      \"summary\": \"Develop strategies that leverage AI as a core differentiator\",\n      \"expertTips\": [\"Think beyond automation\", \"Consider AI as a team member\"],\n      \"assessmentQuestion\": \"How does AI-first differ from AI-enabled products?\",\n      \"correctAnswer\": \"AI-first products have AI at their core value proposition, not just as an enhancement\",\n      \"promptTask\": \"Create a prompt to brainstorm AI-first features for an e-commerce platform\",\n      \"isCore\": true\n    },\n    {\n      \"id\": 3,\n      \"title\": \"Prompt Engineering for PMs\",\n      \"summary\": \"Master the art of writing effective prompts for product tasks\",\n      \"expertTips\": [\"Be specific and contextual\", \"Iterate based on outputs\"],\n      \"assessmentQuestion\": \"What makes a product management prompt effective?\",\n      \"correctAnswer\": \"Clear context, specific goals, and measurable outcomes\",\n      \"promptTask\": \"Write a prompt to generate user stories for a new feature\",\n      \"isCore\": true\n    },\n    {\n      \"id\": 4,\n      \"title\": \"AI Ethics in Product Design\",\n      \"summary\": \"Navigate ethical considerations when building AI products\",\n      \"expertTips\": [\"Consider bias in data and algorithms\", \"Prioritize transparency\"],\n      \"assessmentQuestion\": \"What is the most important ethical consideration for AI products?\",\n      \"correctAnswer\": \"Ensuring fairness and preventing harm to users\",\n      \"promptTask\": \"Draft a prompt to identify potential ethical issues in a healthcare AI product\",\n      \"isCore\": true\n    },\n    {\n      \"id\": 5,\n      \"title\": \"Measuring AI Product Success\",\n      \"summary\": \"Define and track metrics for AI-powered features\",\n      \"expertTips\": [\"Balance accuracy with user satisfaction\", \"Track both technical and business metrics\"],\n      \"assessmentQuestion\": \"Beyond accuracy, what metric is crucial for AI products?\",\n      \"correctAnswer\": \"User trust and adoption rate\",\n      \"promptTask\": \"Create a prompt to generate a metrics dashboard for an AI feature\",\n      \"isCore\": true\n    },\n    {\n      \"id\": 6,\n      \"title\": \"Cross-functional AI Collaboration\",\n      \"summary\": \"Work effectively with data scientists and ML engineers\",\n      \"expertTips\": [\"Learn the language of AI teams\", \"Focus on outcomes, not algorithms\"],\n      \"assessmentQuestion\": \"What's the PM's primary role in AI development?\",\n      \"correctAnswer\": \"Translating user needs into technical requirements and ensuring alignment\",\n      \"promptTask\": \"Write a prompt to create a collaboration plan between PM and AI teams\",\n      \"isCore\": true\n    },\n    {\n      \"id\": 7,\n      \"title\": \"AI Product Roadmapping\",\n      \"summary\": \"Plan and prioritize AI features in your roadmap\",\n      \"expertTips\": [\"Account for uncertainty in AI development\", \"Build in experimentation time\"],\n      \"assessmentQuestion\": \"How does AI impact traditional roadmapping?\",\n      \"correctAnswer\": \"Requires more flexibility and iterative approaches due to uncertainty\",\n      \"promptTask\": \"Generate a prompt for creating an AI feature prioritization matrix\",\n      \"isCore\": true\n    },\n    {\n      \"id\": 8,\n      \"title\": \"User Research for AI Products\",\n      \"summary\": \"Conduct research to understand AI product needs\",\n      \"expertTips\": [\"Test AI interactions early\", \"Understand user mental models of AI\"],\n      \"assessmentQuestion\": \"What's unique about user research for AI products?\",\n      \"correctAnswer\": \"Need to understand user expectations and trust in AI systems\",\n      \"promptTask\": \"Create a prompt for designing an AI product user interview guide\",\n      \"isCore\": true\n    },\n    {\n      \"id\": 9,\n      \"title\": \"AI Product Launch Strategies\",\n      \"summary\": \"Successfully launch and iterate on AI features\",\n      \"expertTips\": [\"Start with beta users\", \"Communicate limitations clearly\"],\n      \"assessmentQuestion\": \"What's critical for AI product launches?\",\n      \"correctAnswer\": \"Setting proper expectations and having a feedback loop for improvements\",\n      \"promptTask\": \"Write a prompt to create an AI feature launch checklist\",\n      \"isCore\": true\n    },\n    {\n      \"id\": 10,\n      \"title\": \"Future of AI in Product Management\",\n      \"summary\": \"Prepare for emerging AI trends and technologies\",\n      \"expertTips\": [\"Stay curious about new AI capabilities\", \"Think about AI as augmentation\"],\n      \"assessmentQuestion\": \"How will AI change the PM role itself?\",\n      \"correctAnswer\": \"AI will augment PM capabilities, enabling data-driven decisions at scale\",\n      \"promptTask\": \"Generate a prompt to explore future AI use cases in your industry\",\n      \"isCore\": true\n    }\n  ]\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -2220,
+          260
+        ],
+        "id": "ae102d8c-fd83-41de-be05-5236101dd3e3",
+        "name": "Init Course Data"
+      }
+    ],
+    "pinData": {},
+    "connections": {
+      "Main Webhook": {
+        "main": [
+          [
+            {
+              "node": "Init Course Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Initialize Course Data": {
+        "main": [
+          []
+        ]
+      },
+      "Session State Manager": {
+        "main": [
+          [
+            {
+              "node": "Route by State",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Route by State": {
+        "main": [
+          [
+            {
+              "node": "Course Completion",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Welcome Message",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Determine Next Tool",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Determine Next Tool": {
+        "main": [
+          [
+            {
+              "node": "Tool Router",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Tool Router": {
+        "main": [
+          [
+            {
+              "node": "Concept Card Handler",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Assessment Handler",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Prompt Exercise Handler",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Adaptive Orchestrator",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Concept Card Handler": {
+        "main": [
+          [
+            {
+              "node": "Need Smart Reply?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Need Smart Reply?": {
+        "main": [
+          [
+            {
+              "node": "Generate Smart Reply",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Merge Responses",
+              "type": "main",
+              "index": 3
+            }
+          ]
+        ]
+      },
+      "Generate Smart Reply": {
+        "main": [
+          [
+            {
+              "node": "Add Smart Reply",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Add Smart Reply": {
+        "main": [
+          [
+            {
+              "node": "Merge Responses",
+              "type": "main",
+              "index": 2
+            }
+          ]
+        ]
+      },
+      "Assessment Handler": {
+        "main": [
+          [
+            {
+              "node": "Need Grading?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Need Grading?": {
+        "main": [
+          [
+            {
+              "node": "Grade Assessment",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Merge Responses",
+              "type": "main",
+              "index": 4
+            }
+          ]
+        ]
+      },
+      "Grade Assessment": {
+        "main": [
+          [
+            {
+              "node": "Process Grading",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Process Grading": {
+        "main": [
+          [
+            {
+              "node": "Merge Responses",
+              "type": "main",
+              "index": 6
+            }
+          ]
+        ]
+      },
+      "Prompt Exercise Handler": {
+        "main": [
+          [
+            {
+              "node": "Need Evaluation?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Need Evaluation?": {
+        "main": [
+          [
+            {
+              "node": "Evaluate Prompt",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Merge Responses",
+              "type": "main",
+              "index": 5
+            }
+          ]
+        ]
+      },
+      "Evaluate Prompt": {
+        "main": [
+          [
+            {
+              "node": "Process Evaluation",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Process Evaluation": {
+        "main": [
+          [
+            {
+              "node": "Merge Responses",
+              "type": "main",
+              "index": 7
+            }
+          ]
+        ]
+      },
+      "Adaptive Orchestrator": {
+        "main": [
+          [
+            {
+              "node": "Process Orchestrator",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Process Orchestrator": {
+        "main": [
+          [
+            {
+              "node": "Need New Concept?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Need New Concept?": {
+        "main": [
+          [
+            {
+              "node": "Generate New Concept",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Complete Concept",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Generate New Concept": {
+        "main": [
+          [
+            {
+              "node": "Insert Concept",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert Concept": {
+        "main": [
+          [
+            {
+              "node": "Complete Concept",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Complete Concept": {
+        "main": [
+          [
+            {
+              "node": "Merge Responses",
+              "type": "main",
+              "index": 8
+            }
+          ]
+        ]
+      },
+      "Course Completion": {
+        "main": [
+          [
+            {
+              "node": "Merge Responses",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Welcome Message": {
+        "main": [
+          [
+            {
+              "node": "Merge Responses",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Merge Responses": {
+        "main": [
+          [
+            {
+              "node": "Webhook Response",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Reset Session Webhook": {
+        "main": [
+          [
+            {
+              "node": "Reset Session",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Reset Session": {
+        "main": [
+          [
+            {
+              "node": "Reset Response",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Init Course Data": {
+        "main": [
+          [
+            {
+              "node": "Session State Manager",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "active": false,
+    "settings": {
+      "executionOrder": "v1"
+    },
+    "versionId": "b5c20d25-5f59-48c5-9b16-af1456053093",
+    "meta": {
+      "instanceId": "eea8bfa4918320bc469ce323a7b217b8209b639e450c67bc3e6a88bdf340b7de"
+    },
+    "id": "qN35i3ovipOnneVY",
+    "tags": []
+  }

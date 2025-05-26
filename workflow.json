@@ -130,7 +130,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          400,
+          840,
           -80
         ]
       },
@@ -143,7 +143,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          400,
+          840,
           120
         ]
       },
@@ -161,11 +161,12 @@
                   },
                   "conditions": [
                     {
-                      "leftValue": "={{ $json.nextTool }}",
+                      "leftValue": "={{ ['concept_card', 'insert_concept'].includes($json.nextAction) }}",
                       "rightValue": "concept_card",
                       "operator": {
-                        "type": "string",
-                        "operation": "equals"
+                        "type": "boolean",
+                        "operation": "true",
+                        "singleValue": true
                       },
                       "id": "tool1"
                     }
@@ -185,7 +186,7 @@
                   },
                   "conditions": [
                     {
-                      "leftValue": "={{ $json.nextTool }}",
+                      "leftValue": "={{ $json.nextAction }}",
                       "rightValue": "assessment",
                       "operator": {
                         "type": "string",
@@ -209,7 +210,7 @@
                   },
                   "conditions": [
                     {
-                      "leftValue": "={{ $json.nextTool }}",
+                      "leftValue": "={{ $json.nextAction }}",
                       "rightValue": "prompt_exercise",
                       "operator": {
                         "type": "string",
@@ -232,8 +233,8 @@
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.2,
         "position": [
-          -780,
-          560
+          -300,
+          920
         ]
       },
       {
@@ -246,8 +247,8 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -420,
-          340
+          180,
+          395
         ]
       },
       {
@@ -279,8 +280,8 @@
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.1,
         "position": [
-          -160,
-          300
+          400,
+          395
         ]
       },
       {
@@ -317,7 +318,7 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          180,
+          620,
           320
         ],
         "credentials": {
@@ -336,7 +337,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          400,
+          840,
           320
         ]
       },
@@ -349,8 +350,8 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -560,
-          560
+          -40,
+          670
         ]
       },
       {
@@ -381,57 +382,9 @@
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.1,
         "position": [
-          -260,
-          580
+          180,
+          670
         ]
-      },
-      {
-        "parameters": {
-          "method": "POST",
-          "url": "https://api.openai.com/v1/chat/completions",
-          "authentication": "predefinedCredentialType",
-          "nodeCredentialType": "openAiApi",
-          "sendBody": true,
-          "bodyParameters": {
-            "parameters": [
-              {
-                "name": "model",
-                "value": "gpt-4o"
-              },
-              {
-                "name": "messages",
-                "value": "=[{\"role\": \"system\", \"content\": \"You are an expert instructional coach evaluating a learner's understanding. Return your evaluation as a JSON object.\"}, {\"role\": \"user\", \"content\": \"Context:\\n- Course Topic: {{ $json.courseTopic }}\\n- Current Concept: {{ $json.currentConcept.title }}\\n- Question: {{ $json.currentConcept.assessmentQuestion }}\\n- Correct Answer: {{ $json.currentConcept.correctAnswer }}\\n- Learner's Answer: {{ $json.learnerAnswer }}\\n- Learner Profile: {{ $json.learnerProfile.role }} at {{ $json.learnerProfile.company }}\\n\\nEvaluate the answer and return a JSON object with this exact structure:\\n{\\n  \\\"score\\\": (0-5 number),\\n  \\\"feedback\\\": \\\"Brief, encouraging feedback\\\",\\n  \\\"understood\\\": (true or false),\\n  \\\"knowledgeGaps\\\": [\\\"specific areas of confusion if any\\\"]\\n}\"}]"
-              },
-              {
-                "name": "temperature",
-                "value": "0.3"
-              },
-              {
-                "name": "max_tokens",
-                "value": "200"
-              },
-              {
-                "name": "response_format",
-                "value": "={{ {\"type\": \"json_object\"} }}"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "id": "02d57bf3-2a84-446a-8177-2b1e08ad985c",
-        "name": "Grade Assessment",
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          60,
-          700
-        ],
-        "credentials": {
-          "openAiApi": {
-            "id": "UFaW72U0IV5U0Ec5",
-            "name": "OpenAi account"
-          }
-        }
       },
       {
         "parameters": {
@@ -442,8 +395,8 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          400,
-          720
+          840,
+          745
         ]
       },
       {
@@ -455,8 +408,8 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -260,
-          945
+          180,
+          995
         ]
       },
       {
@@ -487,8 +440,8 @@
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.1,
         "position": [
-          -40,
-          945
+          400,
+          995
         ]
       },
       {
@@ -529,8 +482,8 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          180,
-          1020
+          620,
+          1070
         ],
         "credentials": {
           "openAiApi": {
@@ -548,83 +501,35 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          400,
-          1020
+          840,
+          1070
         ]
       },
       {
         "parameters": {
-          "method": "POST",
-          "url": "https://api.openai.com/v1/chat/completions",
-          "authentication": "predefinedCredentialType",
-          "nodeCredentialType": "openAiApi",
-          "sendBody": true,
-          "bodyParameters": {
-            "parameters": [
-              {
-                "name": "model",
-                "value": "gpt-4o"
-              },
-              {
-                "name": "messages",
-                "value": "=[{\"role\": \"system\", \"content\": \"Generate a new mini-concept to address a specific learning gap. Create focused content that directly addresses the confusion.\"}, {\"role\": \"user\", \"content\": \"Context:\\n- Main Topic: {{ $json.courseTopic }}\\n- Current Concept: {{ $json.currentConcept.title }}\\n- Knowledge Gap: {{ $json.orchestratorDecision.conceptNeeded.reason }}\\n- Learner Profile: {{ $json.learnerProfile.role }} at {{ $json.learnerProfile.company }}\\n\\nCreate a focused concept that directly addresses the confusion and builds a bridge to understanding. Return JSON:\\n{\\n  \\\"title\\\": \\\"Clear, specific title\\\",\\n  \\\"summary\\\": \\\"2-3 sentence overview\\\",\\n  \\\"expertTips\\\": [\\\"2-3 practical tips\\\"],\\n  \\\"assessmentQuestion\\\": \\\"Targeted question to verify understanding\\\",\\n  \\\"correctAnswer\\\": \\\"Brief correct answer\\\",\\n  \\\"promptTask\\\": \\\"Optional - only if relevant to the gap\\\"\\n}\"}]"
-              },
-              {
-                "name": "temperature",
-                "value": "0.7"
-              },
-              {
-                "name": "max_tokens",
-                "value": "400"
-              },
-              {
-                "name": "response_format",
-                "value": "={{ {\"type\": \"json_object\"} }}"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "id": "f177ff98-5be5-47fb-b2e5-59736f4829a0",
-        "name": "Generate New Concept",
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          -1420,
-          1040
-        ],
-        "credentials": {
-          "openAiApi": {
-            "id": "UFaW72U0IV5U0Ec5",
-            "name": "OpenAi account"
-          }
-        }
-      },
-      {
-        "parameters": {
           "mode": "runOnceForEachItem",
-          "jsCode": "// Insert New Concept and Set as Current\nconst newConcept = JSON.parse($json.choices[0].message.content);\nconst sessionId = $node[\"Process Orchestrator Decision\"].json.sessionId;\n\n// Add metadata to new concept\nnewConcept.id = `dynamic_${Date.now()}`;\nnewConcept.isCore = false;\nnewConcept.isDynamic = true;\n\n// Get session and set new concept as current\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\nsession.currentConcept = newConcept;\nsession.currentConceptTools = [];\nsession.lastToolUsed = null;\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Route directly to concept card with the new concept\nreturn {\n  ...($node[\"Process Orchestrator Decision\"].json),\n  currentConcept: newConcept,\n  nextTool: 'concept_card',\n  newConceptInserted: true\n};"
+          "jsCode": "// Insert New Concept and Set as Current\nconst newConcept = JSON.parse($json.choices[0].message.content);\nconst sessionId = $node[\"Process Orchestrator Decision\"].json.sessionId;\n\n// Add metadata to new concept\nnewConcept.id = `dynamic_${Date.now()}`;\nnewConcept.isCore = false;\nnewConcept.isDynamic = true;\n\n// Get session and properly update it\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// CRITICAL: Update the current concept to the NEW concept\nsession.currentConcept = newConcept;\nsession.currentConceptTools = []; // Fresh start for the new concept\nsession.lastToolUsed = null;\n\n// IMPORTANT: Clear previous assessment data since this is a new concept\nsession.lastAssessmentScore = null;\nsession.knowledgeGaps = []; // Clear the gaps - they were for the previous concept!\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Return with the updated current concept\nreturn {\n  ...($node[\"Process Orchestrator Decision\"].json),\n  currentConcept: newConcept,\n  sessionState: session, // Pass updated session state\n  nextAction: 'concept_card', // Changed from nextTool\n  newConceptInserted: true\n};"
         },
         "id": "1c1a1c8f-a54a-4d60-8621-497f34f73406",
         "name": "Insert Concept",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -1100,
-          1040
+          -480,
+          670
         ]
       },
       {
         "parameters": {
-          "jsCode": "// Complete Current Concept and Move to Next\nconst sessionId = $json.sessionId;\nconst currentConcept = $json.currentConcept;\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// Mark current concept as completed\nif (currentConcept) {\n  session.completedConcepts.push(currentConcept.id);\n  \n  // Remove from remaining if it was a core concept\n  if (currentConcept.isCore) {\n    session.remainingCoreConcepts = session.remainingCoreConcepts.filter(\n      id => id !== currentConcept.id\n    );\n  }\n}\n\n// Reset for next concept\nsession.currentConcept = null;\nsession.currentConceptTools = [];\nsession.lastToolUsed = null;\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Prepare response to move to next concept\nconst responseData = {\n  sessionId,\n  toolType: 'transition',\n  conceptProgress: {\n    current: session.completedConcepts.length,\n    total: session.remainingCoreConcepts.length + \n           session.completedConcepts.length + \n           session.insertedConcepts.length\n  },\n  toolData: {\n    completedConcept: currentConcept?.title,\n    message: 'Moving to next concept...'\n  },\n  waitingForInput: false,\n  nextAction: 'auto_continue'\n};\n\nreturn {\n  ...($json),\n  responseData,\n  moveToNext: true\n};"
+          "jsCode": "// Complete Current Concept and Move to Next\nconst sessionId = $json.sessionId;\nconst currentConcept = $json.currentConcept;\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// Mark current concept as completed\nif (currentConcept) {\n  session.completedConcepts.push(currentConcept.id);\n  \n  // Remove from remaining if it was a core concept\n  if (currentConcept.isCore) {\n    session.remainingCoreConcepts = session.remainingCoreConcepts.filter(\n      id => id !== currentConcept.id\n    );\n  }\n}\n\n// Reset for next concept - THIS IS THE FIX\nsession.currentConcept = null;\nsession.currentConceptTools = []; // This should be empty!\nsession.lastToolUsed = null;\nsession.lastAssessmentScore = null; // Also clear this\nsession.knowledgeGaps = []; // And this\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Prepare response to move to next concept\nconst responseData = {\n  sessionId,\n  toolType: 'transition',\n  conceptProgress: {\n    current: session.completedConcepts.length,\n    total: session.remainingCoreConcepts.length + \n           session.completedConcepts.length + \n           session.insertedConcepts.length\n  },\n  toolData: {\n    completedConcept: currentConcept?.title,\n    message: 'Moving to next concept...'\n  },\n  waitingForInput: false,\n  nextAction: 'auto_continue'\n};\n\nreturn {\n  ...($json),\n  responseData,\n  moveToNext: true\n};"
         },
         "id": "f8d9c490-76af-4eeb-bac5-aac3c41e0767",
         "name": "Complete Concept",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          400,
-          1220
+          840,
+          1270
         ]
       },
       {
@@ -636,8 +541,8 @@
         "type": "n8n-nodes-base.merge",
         "typeVersion": 3,
         "position": [
-          620,
-          423
+          1060,
+          448
         ]
       },
       {
@@ -649,8 +554,8 @@
         "type": "n8n-nodes-base.respondToWebhook",
         "typeVersion": 1.1,
         "position": [
-          1060,
-          570
+          1500,
+          595
         ]
       },
       {
@@ -665,7 +570,7 @@
         "typeVersion": 1.1,
         "position": [
           -2900,
-          1480
+          1530
         ],
         "webhookId": "594653ea-5a3e-4e99-9a1d-c2ecdf0f5c56"
       },
@@ -679,7 +584,7 @@
         "typeVersion": 2,
         "position": [
           -2680,
-          1480
+          1530
         ]
       },
       {
@@ -692,7 +597,7 @@
         "typeVersion": 1.1,
         "position": [
           -2460,
-          1480
+          1530
         ]
       },
       {
@@ -716,8 +621,8 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          840,
-          570
+          1280,
+          595
         ],
         "id": "e5a45044-14f9-47eb-bcfc-729d4ecea042",
         "name": "Limit Data"
@@ -760,8 +665,8 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          -2020,
-          800
+          -1580,
+          1270
         ],
         "credentials": {
           "openAiApi": {
@@ -799,13 +704,13 @@
       {
         "parameters": {
           "mode": "runOnceForEachItem",
-          "jsCode": "// Prepare Orchestrator OpenAI request\nconst messages = [\n  {\n    role: \"system\",\n    content: \"You are an adaptive learning orchestrator. Analyze the current learning state and decide the next best action for the learner.\"\n  },\n  {\n    role: \"user\", \n    content: `Current Learning State:\n- Course Topic: ${$json.courseTopic}\n- Current Concept: ${$json.currentConcept?.title || 'None'}\n- Tools Already Used: ${$json.sessionState.currentConceptTools.join(', ') || 'None'}\n- Last Assessment Score: ${$json.sessionState.lastAssessmentScore || 'N/A'}/5\n- Knowledge Gaps: ${$json.sessionState.knowledgeGaps?.join(', ') || 'None'}\n- Recent Questions: ${$json.sessionState.recentQuestions?.join('; ') || 'None'}\n- Completed Concepts: ${$json.sessionState.completedConcepts.length}\n- Remaining Core Concepts: ${$json.sessionState.remainingCoreConcepts.length}\n\nRules:\n1. Always start new concepts with concept_card\n2. Follow concept_card with assessment\n3. Only use prompt_exercise if assessment score >= 4 and a prompt task exists\n4. If assessment score < 3 or significant gaps exist, consider inserting a clarifying concept\n5. Move to next_concept when all tools for current concept are complete\n\nReturn JSON:\n{\n  \"nextTool\": \"concept_card|assessment|prompt_exercise|next_concept\",\n  \"reasoning\": \"Brief explanation of decision\",\n  \"shouldInsertConcept\": true/false,\n  \"conceptNeeded\": {\n    \"reason\": \"specific gap to address if inserting\",\n    \"focus\": \"topic area for new concept\"\n  }\n}`\n  }\n];\n\nreturn {\n  messages,\n  model: \"gpt-4o\",\n  temperature: 0.3,\n  max_tokens: 200,\n  response_format: { type: \"json_object\" },\n  // Pass through original data\n  originalData: $json\n};"
+          "jsCode": "// Prepare Orchestrator OpenAI request\nconst messages = [\n  {\n    role: \"system\",\n    content: \"You are an adaptive learning orchestrator. Analyze the current learning state and decide the next best action for the learner.\"\n  },\n  {\n    role: \"user\", \n    content: `Current Learning State:\n- Course Topic: ${$json.courseTopic}\n- Current Concept: ${$json.currentConcept?.title || 'None'}\n- Tools Already Used: ${$json.sessionState.currentConceptTools.join(', ') || 'None'}\n- Last Assessment Score: ${$json.sessionState.lastAssessmentScore || 'N/A'}/5\n- Knowledge Gaps: ${$json.sessionState.knowledgeGaps?.join(', ') || 'None'}\n- Recent Questions: ${$json.sessionState.recentQuestions?.join('; ') || 'None'}\n- Completed Concepts: ${$json.sessionState.completedConcepts.length}\n- Remaining Core Concepts: ${$json.sessionState.remainingCoreConcepts.length}\n\nRules:\n1. Always start new concepts with concept_card\n2. Follow concept_card with assessment\n3. Only use prompt_exercise if assessment score >= 4 and a prompt task exists\n4. If assessment score < 3 or significant gaps exist, use insert_concept INSTEAD of continuing\n5. Use concept_complete when all tools for current concept are done\n\nReturn JSON:\n{\n  \"nextAction\": \"concept_card|assessment|prompt_exercise|concept_complete|insert_concept\",\n  \"reasoning\": \"Brief explanation of decision\",\n  \"conceptNeeded\": {\n    \"reason\": \"specific gap to address if action is insert_concept\",\n    \"focus\": \"topic area for new concept if inserting\"\n  }\n}`\n  }\n];\n\nreturn {\n  messages,\n  model: \"gpt-4o\",\n  temperature: 0.3,\n  max_tokens: 200,\n  response_format: { type: \"json_object\" },\n  // Pass through original data\n  originalData: $json\n};"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -2240,
-          800
+          -1800,
+          1270
         ],
         "id": "050f622c-edbb-40c1-9bf5-9dd1c20c613e",
         "name": "Orchestrator Prompt"
@@ -813,15 +718,15 @@
       {
         "parameters": {
           "mode": "runOnceForEachItem",
-          "jsCode": "// Process Orchestrator Decision\nconst orchestratorDecision = JSON.parse($json.choices[0].message.content);\nconst originalData = $node[\"Orchestrator Prompt\"].json.originalData;\n\nreturn {\n  ...originalData,\n  orchestratorDecision,\n  nextTool: orchestratorDecision.nextTool,\n  needsNewConcept: orchestratorDecision.shouldInsertConcept\n};"
+          "jsCode": "// Process Orchestrator Decision\nconst orchestratorDecision = JSON.parse($json.choices[0].message.content);\nconst originalData = $node[\"Orchestrator Prompt\"].json.originalData;\n\nreturn {\n  ...originalData,\n  orchestratorDecision,\n  nextAction: orchestratorDecision.nextAction\n};"
         },
         "id": "8fa14885-6cc2-4531-828b-74510c64e508",
         "name": "Process Orchestrator Decision",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -1800,
-          800
+          -1360,
+          1270
         ]
       },
       {
@@ -838,20 +743,19 @@
                   },
                   "conditions": [
                     {
-                      "leftValue": "={{ ['concept_card', 'assessment', 'prompt_exercise'].includes($json.nextTool) }}",
-                      "rightValue": "={{ true }}",
+                      "id": "6131214d-57dc-4724-a4ee-daa86b8687ff",
+                      "leftValue": "={{ $json.nextAction }}",
+                      "rightValue": "=insert_concept",
                       "operator": {
-                        "type": "boolean",
-                        "operation": "true",
-                        "singleValue": true
-                      },
-                      "id": "252d4b84-cc5a-482b-b966-c78ad46410f5"
+                        "type": "string",
+                        "operation": "equals"
+                      }
                     }
                   ],
                   "combinator": "and"
                 },
                 "renameOutput": true,
-                "outputKey": "routeToTool"
+                "outputKey": "insertNewConcept"
               },
               {
                 "conditions": {
@@ -864,8 +768,8 @@
                   "conditions": [
                     {
                       "id": "c41e007c-c9f8-4e01-9c3b-f5416eaa4575",
-                      "leftValue": "={{ $json.nextTool }}",
-                      "rightValue": "=next_concept",
+                      "leftValue": "={{ $json.nextAction }}",
+                      "rightValue": "=concept_complete",
                       "operator": {
                         "type": "string",
                         "operation": "equals"
@@ -887,20 +791,20 @@
                   },
                   "conditions": [
                     {
-                      "id": "6131214d-57dc-4724-a4ee-daa86b8687ff",
-                      "leftValue": "={{ $json.needsNewConcept }}",
+                      "leftValue": "={{ ['concept_card', 'assessment', 'prompt_exercise'].includes($json.nextAction) }}",
                       "rightValue": "={{ true }}",
                       "operator": {
                         "type": "boolean",
                         "operation": "true",
                         "singleValue": true
-                      }
+                      },
+                      "id": "252d4b84-cc5a-482b-b966-c78ad46410f5"
                     }
                   ],
                   "combinator": "and"
                 },
                 "renameOutput": true,
-                "outputKey": "insertNewConcept"
+                "outputKey": "routeToTool"
               }
             ]
           },
@@ -911,8 +815,8 @@
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.2,
         "position": [
-          -1580,
-          800
+          -1140,
+          1270
         ]
       },
       {
@@ -953,8 +857,8 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          220,
-          540
+          620,
+          745
         ],
         "credentials": {
           "openAiApi": {
@@ -966,16 +870,78 @@
       {
         "parameters": {
           "mode": "runOnceForEachItem",
-          "jsCode": "// Prepare Orchestrator OpenAI request\nconst messages = [\n  {\n    role: \"system\",\n    content: \"You are an adaptive learning orchestrator. Analyze the current learning state and decide the next best action for the learner.\"\n  },\n  {\n    role: \"user\", \n    content: `Current Learning State:\n- Course Topic: ${$json.courseTopic}\n- Current Concept: ${$json.currentConcept?.title || 'None'}\n- Tools Already Used: ${$json.sessionState.currentConceptTools.join(', ') || 'None'}\n- Last Assessment Score: ${$json.sessionState.lastAssessmentScore || 'N/A'}/5\n- Knowledge Gaps: ${$json.sessionState.knowledgeGaps?.join(', ') || 'None'}\n- Recent Questions: ${$json.sessionState.recentQuestions?.join('; ') || 'None'}\n- Completed Concepts: ${$json.sessionState.completedConcepts.length}\n- Remaining Core Concepts: ${$json.sessionState.remainingCoreConcepts.length}\n\nRules:\n1. Always start new concepts with concept_card\n2. Follow concept_card with assessment\n3. Only use prompt_exercise if assessment score >= 4 and a prompt task exists\n4. If assessment score < 3 or significant gaps exist, consider inserting a clarifying concept\n5. Move to next_concept when all tools for current concept are complete\n\nReturn JSON:\n{\n  \"nextTool\": \"concept_card|assessment|prompt_exercise|next_concept\",\n  \"reasoning\": \"Brief explanation of decision\",\n  \"shouldInsertConcept\": true/false,\n  \"conceptNeeded\": {\n    \"reason\": \"specific gap to address if inserting\",\n    \"focus\": \"topic area for new concept\"\n  }\n}`\n  }\n];\n\nreturn {\n  messages,\n  model: \"gpt-4o\",\n  temperature: 0.3,\n  max_tokens: 200,\n  response_format: { type: \"json_object\" },\n  // Pass through original data\n  originalData: $json\n};"
+          "jsCode": "// In the \"Grade Assessment Prompt\" node, replace the jsCode with:\nconst messages = [\n  {\n    role: \"system\",\n    content: \"You are an expert instructional coach evaluating a learner's understanding. Return your evaluation as a JSON object.\"\n  },\n  {\n    role: \"user\", \n    content: `Context:\n- Course Topic: ${$json.courseTopic}\n- Current Concept: ${$json.currentConcept.title}\n- Question: ${$json.currentConcept.assessmentQuestion}\n- Correct Answer: ${$json.currentConcept.correctAnswer}\n- Learner's Answer: ${$json.learnerAnswer}\n- Learner Profile: ${$json.learnerProfile.role} at ${$json.learnerProfile.company}\n\nEvaluate the answer and return a JSON object with this exact structure:\n{\n  \"score\": (0-5 number),\n  \"feedback\": \"Brief, encouraging feedback\",\n  \"understood\": (true or false),\n  \"knowledgeGaps\": [\"specific areas of confusion if any\"]\n}`\n  }\n];\n\nreturn {\n  messages,\n  model: \"gpt-4o\",\n  temperature: 0.3,\n  max_tokens: 200,\n  response_format: { type: \"json_object\" },\n  // Pass through original data\n  originalData: $json\n};"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -20,
-          480
+          400,
+          745
         ],
         "id": "17cc3663-9607-4652-9a3c-3cc587eedd66",
         "name": "Grade Assessment Prompt"
+      },
+      {
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "// Generate Concept Prompt - Prepares prompt for creating new adaptive concepts\nconst messages = [\n  {\n    role: \"system\",\n    content: \"Generate a new mini-concept to address a specific learning gap. Create focused content that directly addresses the confusion.\"\n  },\n  {\n    role: \"user\", \n    content: `Context:\n- Main Topic: ${$json.courseTopic}\n- Current Concept: ${$json.currentConcept.title}\n- Knowledge Gap: ${$json.orchestratorDecision.conceptNeeded.reason}\n- Learner Profile: ${$json.learnerProfile.role} at ${$json.learnerProfile.company}\n\nCreate a focused concept that directly addresses the confusion and builds a bridge to understanding. Return JSON:\n{\n  \"title\": \"Clear, specific title\",\n  \"summary\": \"2-3 sentence overview\",\n  \"expertTips\": [\"2-3 practical tips\"],\n  \"assessmentQuestion\": \"Targeted question to verify understanding\",\n  \"correctAnswer\": \"Brief correct answer\",\n  \"promptTask\": \"Optional - only if relevant to the gap\"\n}`\n  }\n];\n\nreturn {\n  messages,\n  model: \"gpt-4o\",\n  temperature: 0.7,\n  max_tokens: 400,\n  response_format: { type: \"json_object\" },\n  // Pass through original data\n  originalData: $json\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -920,
+          670
+        ],
+        "id": "37c2f3cf-ff88-469c-a551-0037a7824c9d",
+        "name": "Generate New Concept Prompt"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.openai.com/v1/chat/completions",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "openAiApi",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "model",
+                "value": "={{ $json.model }}"
+              },
+              {
+                "name": "messages",
+                "value": "={{ $json.messages }}"
+              },
+              {
+                "name": "temperature",
+                "value": "={{ $json.temperature }}"
+              },
+              {
+                "name": "max_tokens",
+                "value": "={{ $json.max_tokens }}"
+              },
+              {
+                "name": "response_format",
+                "value": "={{ $json.response_format }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "c75743f1-9e7b-4af5-bbc8-2a1373422c6c",
+        "name": "Generate New Concept AI Call",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -700,
+          670
+        ],
+        "credentials": {
+          "openAiApi": {
+            "id": "UFaW72U0IV5U0Ec5",
+            "name": "OpenAi account"
+          }
+        }
       }
     ],
     "pinData": {},
@@ -1132,11 +1098,6 @@
           ]
         ]
       },
-      "Grade Assessment": {
-        "main": [
-          []
-        ]
-      },
       "Process Grading": {
         "main": [
           [
@@ -1195,17 +1156,6 @@
               "node": "Merge Responses",
               "type": "main",
               "index": 7
-            }
-          ]
-        ]
-      },
-      "Generate New Concept": {
-        "main": [
-          [
-            {
-              "node": "Insert Concept",
-              "type": "main",
-              "index": 0
             }
           ]
         ]
@@ -1368,7 +1318,7 @@
         "main": [
           [
             {
-              "node": "Tool Router",
+              "node": "Generate New Concept Prompt",
               "type": "main",
               "index": 0
             }
@@ -1382,13 +1332,11 @@
           ],
           [
             {
-              "node": "Generate New Concept",
+              "node": "Tool Router",
               "type": "main",
               "index": 0
             }
-          ],
-          [],
-          []
+          ]
         ]
       },
       "Grade Assessment Prompt": {
@@ -1412,13 +1360,35 @@
             }
           ]
         ]
+      },
+      "Generate New Concept Prompt": {
+        "main": [
+          [
+            {
+              "node": "Generate New Concept AI Call",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Generate New Concept AI Call": {
+        "main": [
+          [
+            {
+              "node": "Insert Concept",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "active": true,
     "settings": {
       "executionOrder": "v1"
     },
-    "versionId": "f1796f14-9347-48af-9850-5d090789fa10",
+    "versionId": "5755350a-a612-40b6-a64c-86a50b7fda83",
     "meta": {
       "instanceId": "eea8bfa4918320bc469ce323a7b217b8209b639e450c67bc3e6a88bdf340b7de"
     },

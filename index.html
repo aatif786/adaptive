@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adaptive Instructor - LinkedIn Learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: #f3f2ef;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #0a66c2;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            background-color: rgba(255,255,255,0.3);
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background-color: #70b5f9;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 14px;
+            margin-top: 8px;
+            opacity: 0.9;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            min-height: 300px;
+        }
+
+        .tool-type {
+            color: #0a66c2;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tool-icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+        }
+
+        .concept-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #000;
+        }
+
+        .concept-summary {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .expert-tips {
+            background-color: #f8f9fa;
+            border-left: 4px solid #0a66c2;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .expert-tips h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #0a66c2;
+        }
+
+        .expert-tips ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .expert-tips li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .expert-tips li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #0a66c2;
+        }
+
+        .question-box {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .input-area {
+            margin-top: 30px;
+        }
+
+        .input-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        input[type="text"] {
+            min-height: auto;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #0a66c2;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #004182;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: #0a66c2;
+            border: 1px solid #0a66c2;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f8f9fa;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .feedback-box {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #155724;
+        }
+
+        .feedback-box.error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .feedback-box.warning {
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+            color: #856404;
+        }
+
+        .smart-reply {
+            background-color: #e3f2fd;
+            border-left: 4px solid #0a66c2;
+            padding: 15px;
+            margin: 20px 0;
+            font-style: italic;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0a66c2;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .welcome-screen {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .welcome-screen h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #0a66c2;
+        }
+
+        .welcome-screen p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .user-info {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .user-info h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .user-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .user-input label {
+            flex: 0 0 100px;
+            font-weight: 500;
+        }
+
+        .user-input input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .score-display {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .score-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #0a66c2;
+        }
+
+        .score-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .completion-screen {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .completion-screen h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #0a66c2;
+        }
+
+        .completion-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #0a66c2;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .session-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 10px;
+            padding: 5px;
+            background-color: #f0f8ff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Adaptive Instructor - LinkedIn Learning</h1>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            <div class="progress-text" id="progressText">Ready to start</div>
+        </div>
+
+        <div class="card" id="mainCard">
+            <div class="welcome-screen" id="welcomeScreen">
+                <h2>How to Become an AI Native Product Manager</h2>
+                <p>This adaptive course will guide you through 10 core concepts with personalized instruction based on your progress.</p>
+                
+                <div class="user-info">
+                    <h3>Welcome!</h3>
+                    <div class="user-input">
+                        <label for="userName">Your Name:</label>
+                        <input type="text" id="userName" placeholder="Enter your name" value="">
+                    </div>
+                    <div class="session-info" id="sessionInfo">
+                        <!-- Session ID will be displayed here -->
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="startCourse()">Start Course</button>
+            </div>
+
+            <div id="contentArea" style="display: none;">
+                <!-- Dynamic content will be loaded here -->
+            </div>
+
+            <div class="loading" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p>Processing...</p>
+            </div>
+
+            <div class="error-message" id="errorMessage">
+                <strong>Connection Error:</strong> <span id="errorText"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURATION - Update this with your n8n webhook URL
+        const N8N_WEBHOOK_URL = 'https://your-n8n-instance.com/webhook/adaptive-instructor';
+        // For development/testing, you can use: 'http://localhost:5678/webhook/adaptive-instructor'
+        
+        let currentState = {
+            sessionId: '',
+            userName: '',
+            toolType: '',
+            waitingForInput: false,
+            inputType: ''
+        };
+
+        // Generate unique session ID on load
+        window.onload = function() {
+            // Restore user name if previously saved
+            const savedUserName = localStorage.getItem('adaptiveInstructorUserName');
+            if (savedUserName) {
+                document.getElementById('userName').value = savedUserName;
+            }
+            
+            // Generate session ID
+            generateSessionId();
+        };
+
+        function generateSessionId() {
+            const timestamp = Date.now();
+            const random = Math.random().toString(36).substring(2, 9);
+            currentState.sessionId = `session-${timestamp}-${random}`;
+            document.getElementById('sessionInfo').textContent = `Session ID: ${currentState.sessionId}`;
+        }
+
+        function startCourse() {
+            currentState.userName = document.getElementById('userName').value.trim();
+            
+            if (!currentState.userName) {
+                showError('Please enter your name to continue');
+                return;
+            }
+            
+            // Save user name for next time
+            localStorage.setItem('adaptiveInstructorUserName', currentState.userName);
+            
+            sendRequest('start', {});
+        }
+
+        function showError(message) {
+            const errorEl = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            errorText.textContent = message;
+            errorEl.style.display = 'block';
+            setTimeout(() => {
+                errorEl.style.display = 'none';
+            }, 5000);
+        }
+
+        async function sendRequest(action, learnerInput) {
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            loadingSpinner.classList.add('active');
+            
+            try {
+                const response = await fetch(N8N_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        sessionId: currentState.sessionId,
+                        userName: currentState.userName,
+                        action: action,
+                        learnerInput: learnerInput
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                handleResponse(data);
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Cannot connect to the learning system. Please try again later or contact support.');
+            } finally {
+                loadingSpinner.classList.remove('active');
+            }
+        }
+
+        function handleResponse(data) {
+            currentState = { ...currentState, ...data };
+            
+            // Update progress bar
+            if (data.conceptProgress) {
+                const progress = (data.conceptProgress.current / data.conceptProgress.total) * 100;
+                document.getElementById('progressBar').style.width = `${progress}%`;
+                document.getElementById('progressText').textContent = `Concept ${data.conceptProgress.current} of ${data.conceptProgress.total}`;
+            }
+            
+            // Hide welcome screen
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('contentArea').style.display = 'block';
+            
+            // Render based on tool type
+            const contentArea = document.getElementById('contentArea');
+            
+            if (data.courseComplete) {
+                renderCompletionScreen(contentArea, data.toolData);
+            } else {
+                switch (data.toolType) {
+                    case 'welcome':
+                        renderWelcome(contentArea, data.toolData);
+                        break;
+                    case 'concept_card':
+                        renderConceptCard(contentArea, data.toolData);
+                        break;
+                    case 'assessment':
+                        renderAssessment(contentArea, data.toolData);
+                        break;
+                    case 'prompt_exercise':
+                        renderPromptExercise(contentArea, data.toolData);
+                        break;
+                    case 'transition':
+                        setTimeout(() => sendRequest('next_concept', {}), 1000);
+                        break;
+                    case 'course_complete':
+                        renderCompletionScreen(contentArea, data.toolData);
+                        break;
+                }
+            }
+            
+            // Auto-continue if specified
+            if (data.nextAction === 'auto_continue') {
+                setTimeout(() => sendRequest('next_concept', {}), 1500);
+            }
+        }
+
+        function renderWelcome(container, data) {
+            container.innerHTML = `
+                <div class="tool-type">
+                    <span class="tool-icon">🎯</span>
+                    Welcome
+                </div>
+                <h2>${data.title}</h2>
+                <p>${data.message}</p>
+                <p style="margin-top: 10px; color: #666;">Hello ${currentState.userName}! Let's begin your personalized learning journey.</p>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="sendRequest('next', {})">Start Learning</button>
+                </div>
+            `;
+        }
+
+        function renderConceptCard(container, data) {
+            let html = `
+                <div class="tool-type">
+                    <span class="tool-icon">📚</span>
+                    Concept Card
+                </div>
+                <h2 class="concept-title">${data.title}</h2>
+                <p class="concept-summary">${data.summary}</p>
+                
+                <div class="expert-tips">
+                    <h3>Expert Tips</h3>
+                    <ul>
+                        ${data.expertTips.map(tip => `<li>${tip}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+            
+            if (data.smartReply) {
+                html += `<div class="smart-reply">${data.smartReply}</div>`;
+            }
+            
+            if (currentState.waitingForInput) {
+                html += `
+                    <div class="input-area">
+                        <label class="input-label">Add a note or question (optional):</label>
+                        <textarea id="learnerNote" placeholder="Type your thoughts or questions here..."></textarea>
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="submitNote()">Submit Note</button>
+                            <button class="btn btn-secondary" onclick="sendRequest('next', {})">Continue</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="sendRequest('next', {})">Continue to Assessment</button>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = html;
+        }
+
+        function renderAssessment(container, data) {
+            let html = `
+                <div class="tool-type">
+                    <span class="tool-icon">✅</span>
+                    Assessment
+                </div>
+                <h2 class="concept-title">${data.conceptTitle}</h2>
+                
+                <div class="question-box">
+                    <div class="question-text">${data.question}</div>
+                </div>
+            `;
+            
+            if (data.gradingResult) {
+                const scoreClass = data.gradingResult.score >= 4 ? 'feedback-box' : 
+                                 data.gradingResult.score >= 2 ? 'feedback-box warning' : 
+                                 'feedback-box error';
+                
+                html += `
+                    <div class="score-display">
+                        <div class="score-number">${data.gradingResult.score}/5</div>
+                        <div class="score-label">Your Score</div>
+                    </div>
+                    <div class="${scoreClass}">
+                        ${data.gradingResult.feedback}
+                    </div>
+                `;
+            }
+            
+            if (currentState.waitingForInput) {
+                html += `
+                    <div class="input-area">
+                        <label class="input-label">Your answer:</label>
+                        <textarea id="learnerAnswer" placeholder="Type your answer here..."></textarea>
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="submitAssessment()">Submit Answer</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="sendRequest('next', {})">Continue</button>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = html;
+        }
+
+        function renderPromptExercise(container, data) {
+            let html = `
+                <div class="tool-type">
+                    <span class="tool-icon">💡</span>
+                    Prompt Exercise
+                </div>
+                <h2 class="concept-title">${data.conceptTitle} - Practice</h2>
+                
+                <div class="question-box">
+                    <div class="question-text">Task: ${data.task}</div>
+                </div>
+            `;
+            
+            if (data.evaluationResult) {
+                const scoreClass = data.evaluationResult.score >= 4 ? 'feedback-box' : 
+                                 data.evaluationResult.score >= 2 ? 'feedback-box warning' : 
+                                 'feedback-box error';
+                
+                html += `
+                    <div class="score-display">
+                        <div class="score-number">${data.evaluationResult.score}/5</div>
+                        <div class="score-label">Prompt Quality</div>
+                    </div>
+                    <div class="${scoreClass}">
+                        <strong>Feedback:</strong> ${data.evaluationResult.feedback}
+                    </div>
+                `;
+                
+                if (data.evaluationResult.simulatedAIResponse) {
+                    html += `
+                        <div class="smart-reply">
+                            <strong>AI would respond with:</strong><br>
+                            ${data.evaluationResult.simulatedAIResponse}
+                        </div>
+                    `;
+                }
+            }
+            
+            if (currentState.waitingForInput) {
+                html += `
+                    <div class="input-area">
+                        <label class="input-label">Write your prompt:</label>
+                        <textarea id="learnerPrompt" placeholder="Type your prompt here..."></textarea>
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="submitPrompt()">Submit Prompt</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="sendRequest('next', {})">Continue to Next Concept</button>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = html;
+        }
+
+        function renderCompletionScreen(container, data) {
+            container.innerHTML = `
+                <div class="completion-screen">
+                    <h2>${data.title}</h2>
+                    <p>${data.summary}</p>
+                    <p style="margin-top: 20px; color: #666;">Great job, ${currentState.userName}!</p>
+                    
+                    <div class="completion-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">${data.statistics.coreConceptsCompleted}</div>
+                            <div class="stat-label">Core Concepts</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${data.statistics.dynamicConceptsAdded}</div>
+                            <div class="stat-label">Personalized Concepts</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${data.statistics.totalInteractions}</div>
+                            <div class="stat-label">Total Interactions</div>
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="resetCourse()">Start New Session</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function submitNote() {
+            const note = document.getElementById('learnerNote').value;
+            sendRequest('submit_response', { note: note });
+        }
+
+        function submitAssessment() {
+            const answer = document.getElementById('learnerAnswer').value;
+            if (!answer.trim()) {
+                showError('Please provide an answer');
+                return;
+            }
+            sendRequest('submit_response', { answer: answer });
+        }
+
+        function submitPrompt() {
+            const prompt = document.getElementById('learnerPrompt').value;
+            if (!prompt.trim()) {
+                showError('Please write a prompt');
+                return;
+            }
+            sendRequest('submit_response', { prompt: prompt });
+        }
+
+        function resetCourse() {
+            // Generate new session ID
+            generateSessionId();
+            
+            // Reset UI
+            document.getElementById('welcomeScreen').style.display = 'block';
+            document.getElementById('contentArea').style.display = 'none';
+            document.getElementById('progressBar').style.width = '0%';
+            document.getElementById('progressText').textContent = 'Ready to start';
+            
+            // Optional: Call reset endpoint
+            fetch(N8N_WEBHOOK_URL.replace('adaptive-instructor', 'reset-session') + '?sessionId=' + currentState.sessionId)
+                .catch(err => console.log('Reset endpoint not available'));
+        }
+    </script>
+</body>
+</html>

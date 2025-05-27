@@ -40,7 +40,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -220,
+          0,
           0
         ]
       },
@@ -53,7 +53,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -220,
+          0,
           200
         ]
       },
@@ -157,7 +157,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -880,
+          -660,
           1075
         ]
       },
@@ -170,7 +170,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -880,
+          -660,
           1275
         ]
       },
@@ -196,8 +196,8 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -2200,
-          660
+          -1320,
+          1475
         ]
       },
       {
@@ -223,7 +223,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -880,
+          -660,
           875
         ]
       },
@@ -236,7 +236,7 @@
         "type": "n8n-nodes-base.merge",
         "typeVersion": 3,
         "position": [
-          0,
+          220,
           200
         ]
       },
@@ -249,7 +249,7 @@
         "type": "n8n-nodes-base.respondToWebhook",
         "typeVersion": 1.1,
         "position": [
-          440,
+          660,
           200
         ]
       },
@@ -316,7 +316,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          220,
+          440,
           200
         ],
         "id": "37069332-1455-4940-b6f6-aafa1043c4c1",
@@ -535,20 +535,6 @@
             "name": "OpenAi account"
           }
         }
-      },
-      {
-        "parameters": {
-          "mode": "runOnceForEachItem",
-          "jsCode": "const sessionId = $json.sessionId;\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\nif (!session) {\n  throw new Error(`Session ${sessionId} not found in global state`);\n}\n\nconst messages = [\n  {\n    role: \"system\",\n    content: \"You are an expert instructional coach who evaluates learner understanding AND tracks their evolving knowledge state. Analyze both the current answer and overall knowledge progression.\"\n  },\n  {\n    role: \"user\", \n    content: `Context:\n- Course Topic: ${$json.courseTopic}\n- Current Concept: ${session.currentConcept.title}\n- Question: ${session.currentConcept.assessmentQuestion}\n- Correct Answer: ${session.currentConcept.correctAnswer}\n- Learner's Answer: ${$json.learnerAnswer}\n- Learner Profile: ${$json.learnerProfile.role} at ${$json.learnerProfile.company}\n\nCurrent Knowledge State:\n- Strengths: ${session.knowledgeStrengths?.join(', ') || 'None tracked yet'}\n- Gaps: ${session.knowledgeGaps?.join(', ') || 'None tracked yet'}\n\nAssessment Context:\n- Is this a dynamic concept?: ${session.currentConcept.isDynamic || false}\n- Targeted gaps (if dynamic): ${session.currentConcept.targetedGaps?.join(', ') || 'N/A'}\n- Previous score: ${session.lastAssessmentScore || 'N/A'}\n\nEvaluate the answer AND update their knowledge state. Return JSON:\n{\n  \"score\": (0-5 number),\n  \"feedback\": \"Brief, encouraging feedback\",\n  \"understood\": (true or false),\n  \"knowledgeUpdate\": {\n    \"updatedStrengths\": [\"Complete list of what learner knows well\"],\n    \"updatedGaps\": [\"Complete list of significant gaps needing attention\"],\n    \"reasoning\": \"Brief explanation of knowledge state changes\"\n  }\n}\n\nGrading Rules:\n- 5: Perfect understanding\n- 4: Good understanding with minor gaps\n- 3: Adequate understanding for progression\n- 2: Significant gaps but some understanding\n- 0-1: Major misunderstanding\n\nKnowledge Rules:\n- Add strengths for demonstrated understanding (scores 3+)\n- Remove gaps that were successfully addressed\n- Only list actionable, specific gaps\n- For dynamic concepts addressing gaps, be generous if progress is shown\n- Empty gaps array means no significant issues`\n  }\n];\n\nreturn {\n  messages,\n  model: \"gpt-4o\",\n  temperature: 0.3,\n  max_tokens: 400,\n  response_format: { type: \"json_object\" },\n  // Pass through minimal data needed for processing\n  originalData: {\n    sessionId: $json.sessionId,\n    courseTopic: $json.courseTopic,\n    learnerAnswer: $json.learnerAnswer,\n    learnerProfile: $json.learnerProfile\n  }\n};"
-        },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          -2200,
-          460
-        ],
-        "id": "f1647970-1dd1-4326-9e8f-998e1221e5e0",
-        "name": "Grade Assessment Prompt"
       },
       {
         "parameters": {
@@ -772,20 +758,6 @@
       },
       {
         "parameters": {
-          "mode": "runOnceForEachItem",
-          "jsCode": "// Adaptive Orchestrator Router Prompt - WITH LEARNER NOTE SUPPORT\n// Get session directly from global\nconst sessionId = $json.sessionId;\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\nif (!session) {\n  throw new Error(`Session ${sessionId} not found in global state`);\n}\n\nconst messages = [\n  {\n    role: \"system\",\n    content: \"You are an adaptive learning orchestrator. Analyze the current learning state and decide the next best action for the learner. When learner notes are provided, carefully analyze them to determine if the learner needs clarification, wants to skip, is ready to progress, or would benefit from additional content. You can also decide whether to grade a pending assessment or skip grading based on the learner's needs.\"\n  },\n  {\n    role: \"user\", \n    content: `Current State Machine:\n- Current State: ${session.stateMachine.currentState}\n- Previous State: ${session.stateMachine.previousState || 'None'}\n- Pending Grading: ${session.stateMachine.pendingGrading}\n${session.stateMachine.currentState === 'first_concept_ready' ? '- Note: This is the first concept after welcome' : ''}\n\nCurrent Learning State:\n- Course Topic: ${$json.courseTopic}\n- Current Concept: ${session.currentConcept?.title || 'None'}\n- Tools Already Used: ${session.currentConceptTools.join(', ') || 'None'}\n- Last Assessment Score: ${session.lastAssessmentScore || 'N/A'}/5\n- Knowledge Gaps: ${session.knowledgeGaps?.join(', ') || 'None'}\n- Gap Attempts: ${JSON.stringify(session.gapAttempts || {})}\n- Recent Questions: ${session.recentQuestions?.join('; ') || 'None'}\n- Completed Concepts: ${session.completedConcepts.length}\n- Remaining Core Concepts: ${session.remainingCoreConcepts.length}\n\n${$json.learnerInput?.note ? `\nIMPORTANT - LEARNER NOTE ANALYSIS REQUIRED:\nThe learner just submitted this note/question with their input:\n\"${$json.learnerInput.note}\"\n\nCurrent Concept Being Studied: ${session.currentConcept?.title}\nConcept Summary: ${session.currentConcept?.summary || 'N/A'}\n\nAnalyze this note carefully to determine:\n1. Is the learner confused or asking for clarification? \n   - Look for: question marks, words like \"confused\", \"don't understand\", \"unclear\", \"help\"\n   - If yes → strongly consider insert_concept to address the confusion\n\n2. Is the learner showing understanding and ready to move on?\n   - Look for: \"I get it\", \"makes sense\", \"understood\", \"ready\"\n   - If yes → proceed to assessment\n\n3. Is the learner making connections or showing deeper thinking?\n   - Look for: relating to their role/experience, asking advanced questions, making analogies\n   - If yes AND prior assessment scores are high → consider prompt_exercise\n\n4. Does the note reveal specific knowledge gaps?\n   - Look for: misconceptions, incorrect assumptions, missing foundational knowledge\n   - If yes → insert_concept with specific focus on the gap\n\n5. Is the learner asking for examples or application to their role?\n   - Look for: \"example\", \"how does this apply\", \"in practice\", \"for ${$json.learnerProfile?.role}\"\n   - If yes → insert_concept with practical examples\n` : ''}\n\n${session.pendingAssessment ? `\nPENDING ASSESSMENT:\n- Answer submitted: \"${session.pendingAssessment.answer}\"\n- Note submitted: \"${session.pendingAssessment.note}\"\n- Question was: \"${session.pendingAssessment.question}\"\n\nYou must decide whether to:\n1. Grade the assessment (nextAction: \"grade_assessment\")\n2. Skip grading and move to something else based on the note content\n` : ''}\n\n${session.pendingPromptEvaluation ? `\nPENDING PROMPT EVALUATION:\n- Prompt submitted: \"${session.pendingPromptEvaluation.prompt}\"\n- Note submitted: \"${session.pendingPromptEvaluation.note}\"\n- Task was: \"${session.pendingPromptEvaluation.task}\"\n\nYou must decide whether to:\n1. Evaluate the prompt (nextAction: \"evaluate_prompt\")\n2. Skip evaluation and do something else based on the note content\n\nDecision Rules for Prompt Exercise:\n1. If learner shows confusion or asks for help with prompting:\n   - Set skipEvaluation: true\n   - Set nextAction: \"insert_concept\" with focus on prompt engineering\n2. If learner wants to skip or says they understand:\n   - Set skipEvaluation: true\n   - Set nextAction: \"concept_complete\"\n3. Otherwise, proceed with evaluation:\n   - Set nextAction: \"evaluate_prompt\"\n` : ''}\n\nDecision Rules:\n1. Always start new concepts with concept_card\n2. If learner explicitly asks to skip (e.g., \"skip this\", \"I know this\", \"move on\"):\n   - Set skipGrading: true (if assessment pending)\n   - Set markAsComplete: true with completionType: \"skipped\"\n   - Set nextAction: \"concept_complete\"\n3. If learner shows severe confusion and has pending assessment:\n   - Set skipGrading: true (grading won't help)\n   - Set nextAction: \"insert_concept\" to address confusion\n4. If learner has pending assessment and asks a clarifying question:\n   - Set nextAction: \"grade_assessment\" to evaluate first\n5. Follow normal progression rules for other cases\n\n${$json.learnerInput?.note ? 'IMPORTANT: The learner note should heavily influence your decision. Prioritize addressing their specific question or concern.' : ''}\n\nReturn JSON:\n{\n  \"nextAction\": \"grade_assessment|concept_card|assessment|prompt_exercise|concept_complete|insert_concept\",\n  \"reasoning\": \"Brief explanation of decision\",\n  \"skipGrading\": true|false (only if assessment is pending),\n  \"markAsComplete\": true|false (if learner wants to skip),\n  \"completionType\": \"normal|skipped\" (if markAsComplete is true),\n  \"skipReason\": \"reason for skipping if applicable\",\n  \"conceptNeeded\": {\n    \"reason\": \"specific gap to address if action is insert_concept\",\n    \"focus\": \"topic area for new concept if inserting\"\n  },\n  \"noteAnalysis\": {\n    \"understanding\": \"low|medium|high\",\n    \"needsClarification\": true|false,\n    \"wantsToSkip\": true|false,\n    \"specificRequest\": \"what they are asking for if clear\",\n    \"sentiment\": \"confused|curious|confident|frustrated|dismissive\"\n  }\n}`\n  }\n];\n\nreturn {\n  messages,\n  model: \"gpt-4o\",\n  temperature: 0.3,\n  max_tokens: 300,\n  response_format: { type: \"json_object\" },\n  // Pass through original data WITHOUT sessionState\n  originalData: {\n    sessionId: $json.sessionId,\n    action: $json.action,\n    learnerInput: $json.learnerInput,\n    courseTopic: $json.courseTopic,\n    learnerProfile: $json.learnerProfile,\n    coreConcepts: $json.coreConcepts,\n    userName: $json.userName,\n    currentConcept: session.currentConcept, // Include current concept for reference\n    stateMachine: {\n      currentState: session.stateMachine.currentState // Only pass minimal state info\n    }\n  }\n};"
-        },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          -3080,
-          875
-        ],
-        "id": "0b120739-9790-444d-b56a-c130d289fb03",
-        "name": "Adaptive Orchestrator Router Prompt"
-      },
-      {
-        "parameters": {
           "method": "POST",
           "url": "https://api.openai.com/v1/chat/completions",
           "authentication": "predefinedCredentialType",
@@ -853,7 +825,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -660,
+          -440,
           996
         ],
         "id": "a446c2ae-3f89-4d49-bd72-d4cae7841669",
@@ -897,7 +869,7 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          -440,
+          -220,
           996
         ],
         "credentials": {
@@ -914,7 +886,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -220,
+          0,
           996
         ],
         "id": "33aab026-8e0c-4f77-abef-4723136dff71",
@@ -940,37 +912,11 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -1320,
+          -1100,
           1475
         ],
         "id": "3c3ab628-9801-4765-8c4b-fd098b817d2a",
         "name": "Generate Prompt Exercise Prompt"
-      },
-      {
-        "parameters": {
-          "jsCode": "// Process Generated Prompt Exercise\nconst exerciseData = JSON.parse($json.choices[0].message.content);\n\n// Get data from the pipeline (from Generate Prompt Exercise Generate AI Call)\nconst originalData = $json.originalData;\nconst sessionId = originalData.sessionId;\n\n// Get session from global\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// Create enhanced prompt task combining base and generated data\nconst enhancedTask = {\n  baseTask: session.currentConcept?.promptTask || exerciseData.task,\n  generatedTask: exerciseData.task,\n  context: exerciseData.context,\n  hints: exerciseData.hints,\n  difficulty: exerciseData.difficulty,\n  targetedSkills: exerciseData.targetedSkills,\n  evaluationCriteria: exerciseData.evaluationCriteria\n};\n\n// Store the enhanced task in session for evaluation later\nsession.currentPromptExercise = enhancedTask;\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Return to prompt exercise handler with enhanced data\nreturn {\n  ...originalData,\n  enhancedPromptTask: enhancedTask,\n  nextAction: 'prompt_exercise'\n};"
-        },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          -880,
-          1475
-        ],
-        "id": "db9ee068-bfb3-4661-a3aa-815bf147a66e",
-        "name": "Process Generated Exercise"
-      },
-      {
-        "parameters": {
-          "jsCode": "// Prepare Prompt Evaluation Request\nconst sessionId = $json.sessionId;\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\nif (!session || !session.pendingPromptEvaluation) {\n  throw new Error('No pending prompt evaluation found');\n}\n\nconst messages = [\n  {\n    role: \"system\",\n    content: \"You are an expert at evaluating AI prompts for product management tasks AND tracking knowledge mastery. Analyze both the prompt quality and what it reveals about the learner's understanding.\"\n  },\n  {\n    role: \"user\",\n    content: `Task: ${session.pendingPromptEvaluation.task}\nLearner's Prompt: ${session.pendingPromptEvaluation.prompt}\nLearner Background: ${$json.learnerProfile.role} with skills in ${$json.learnerProfile.skills.join(', ')}\n\nEvaluation Criteria:\n${JSON.stringify(session.pendingPromptEvaluation.evaluationCriteria || {})}\n\nCurrent Knowledge State:\n- Strengths: ${session.knowledgeStrengths?.join(', ') || 'None'}\n- Gaps: ${session.knowledgeGaps?.join(', ') || 'None'}\n\nEvaluate the prompt and return a JSON object with this exact structure:\n{\n  \"score\": (0-5 number),\n  \"feedback\": \"Constructive feedback on the prompt quality\",\n  \"strengths\": [\"what they did well\"],\n  \"improvements\": [\"specific suggestions\"],\n  \"simulatedAIResponse\": \"What an AI would generate from this prompt\",\n  \"knowledgeUpdate\": {\n    \"masteredConcepts\": [\"concepts demonstrated mastery of\"],\n    \"identifiedGaps\": [\"gaps revealed by the prompt\"],\n    \"reasoning\": \"Brief explanation of knowledge assessment\"\n  }\n}`\n  }\n];\n\nreturn {\n  messages,\n  model: \"gpt-4o\",\n  temperature: 0.3,\n  max_tokens: 400,\n  response_format: { type: \"json_object\" },\n  // Pass through all data needed for processing\n  originalData: {\n    sessionId: $json.sessionId,\n    courseTopic: $json.courseTopic,\n    learnerProfile: $json.learnerProfile,\n    pendingPromptEvaluation: session.pendingPromptEvaluation,\n    responseData: $json.responseData // Add this line to pass responseData through\n  }\n};"
-        },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          -1980,
-          650
-        ],
-        "id": "006d7bee-2046-4aee-8a0f-a1a90ab2d2f5",
-        "name": "Evaluate Prompt Excercise Prompt"
       },
       {
         "parameters": {
@@ -1010,7 +956,7 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          -1760,
+          -1980,
           650
         ],
         "credentials": {
@@ -1058,7 +1004,7 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          -1100,
+          -880,
           1475
         ],
         "credentials": {
@@ -1077,9 +1023,63 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -1540,
-          660
+          -1760,
+          650
         ]
+      },
+      {
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "const sessionId = $json.sessionId;\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\nif (!session) {\n  throw new Error(`Session ${sessionId} not found in global state`);\n}\n\nconst messages = [\n  {\n    role: \"system\",\n    content: \"You are an expert instructional coach who evaluates learner understanding AND tracks their evolving knowledge state. Analyze both the current answer and overall knowledge progression.\"\n  },\n  {\n    role: \"user\", \n    content: `Context:\n- Course Topic: ${$json.courseTopic}\n- Current Concept: ${session.currentConcept.title}\n- Question: ${session.currentConcept.assessmentQuestion}\n- Correct Answer: ${session.currentConcept.correctAnswer}\n- Learner's Answer: ${$json.learnerAnswer}\n- Learner Profile: ${$json.learnerProfile.role} at ${$json.learnerProfile.company}\n\nCurrent Knowledge State:\n- Strengths: ${session.knowledgeStrengths?.join(', ') || 'None tracked yet'}\n- Gaps: ${session.knowledgeGaps?.join(', ') || 'None tracked yet'}\n\nAssessment Context:\n- Is this a dynamic concept?: ${session.currentConcept.isDynamic || false}\n- Targeted gaps (if dynamic): ${session.currentConcept.targetedGaps?.join(', ') || 'N/A'}\n- Previous score: ${session.lastAssessmentScore || 'N/A'}\n\nEvaluate the answer AND update their knowledge state. Return JSON:\n{\n  \"score\": (0-5 number),\n  \"feedback\": \"Brief, encouraging feedback\",\n  \"understood\": (true or false),\n  \"knowledgeUpdate\": {\n    \"updatedStrengths\": [\"Complete list of what learner knows well\"],\n    \"updatedGaps\": [\"Complete list of significant gaps needing attention\"],\n    \"reasoning\": \"Brief explanation of knowledge state changes\"\n  }\n}\n\nGrading Rules:\n- 5: Perfect understanding\n- 4: Good understanding with minor gaps\n- 3: Adequate understanding for progression\n- 2: Significant gaps but some understanding\n- 0-1: Major misunderstanding\n\nKnowledge Rules:\n- Add strengths for demonstrated understanding (scores 3+)\n- Remove gaps that were successfully addressed\n- Only list actionable, specific gaps\n- For dynamic concepts addressing gaps, be generous if progress is shown\n- Empty gaps array means no significant issues`\n  }\n];\n\nreturn {\n  messages,\n  model: \"gpt-4o\",\n  temperature: 0.3,\n  max_tokens: 400,\n  response_format: { type: \"json_object\" },\n  // Pass through minimal data needed for processing\n  originalData: {\n    sessionId: $json.sessionId,\n    courseTopic: $json.courseTopic,\n    learnerAnswer: $json.learnerAnswer,\n    learnerProfile: $json.learnerProfile\n  }\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -2200,
+          450
+        ],
+        "id": "f1647970-1dd1-4326-9e8f-998e1221e5e0",
+        "name": "Generate Assessment Grading Prompt"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Process Generated Prompt Exercise\nconst exerciseData = JSON.parse($json.choices[0].message.content);\n\n// Get data from the pipeline (from Generate Prompt Exercise Generate AI Call)\nconst originalData = $json.originalData;\nconst sessionId = originalData.sessionId;\n\n// Get session from global\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// Create enhanced prompt task combining base and generated data\nconst enhancedTask = {\n  baseTask: session.currentConcept?.promptTask || exerciseData.task,\n  generatedTask: exerciseData.task,\n  context: exerciseData.context,\n  hints: exerciseData.hints,\n  difficulty: exerciseData.difficulty,\n  targetedSkills: exerciseData.targetedSkills,\n  evaluationCriteria: exerciseData.evaluationCriteria\n};\n\n// Store the enhanced task in session for evaluation later\nsession.currentPromptExercise = enhancedTask;\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Return to prompt exercise handler with enhanced data\nreturn {\n  ...originalData,\n  enhancedPromptTask: enhancedTask,\n  nextAction: 'prompt_exercise'\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -660,
+          1475
+        ],
+        "id": "db9ee068-bfb3-4661-a3aa-815bf147a66e",
+        "name": "Process Generated Prompt Exercise"
+      },
+      {
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "// Adaptive Orchestrator Router Prompt - WITH LEARNER NOTE SUPPORT\n// Get session directly from global\nconst sessionId = $json.sessionId;\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\nif (!session) {\n  throw new Error(`Session ${sessionId} not found in global state`);\n}\n\nconst messages = [\n  {\n    role: \"system\",\n    content: \"You are an adaptive learning orchestrator. Analyze the current learning state and decide the next best action for the learner. When learner notes are provided, carefully analyze them to determine if the learner needs clarification, wants to skip, is ready to progress, or would benefit from additional content. You can also decide whether to grade a pending assessment or skip grading based on the learner's needs.\"\n  },\n  {\n    role: \"user\", \n    content: `Current State Machine:\n- Current State: ${session.stateMachine.currentState}\n- Previous State: ${session.stateMachine.previousState || 'None'}\n- Pending Grading: ${session.stateMachine.pendingGrading}\n${session.stateMachine.currentState === 'first_concept_ready' ? '- Note: This is the first concept after welcome' : ''}\n\nCurrent Learning State:\n- Course Topic: ${$json.courseTopic}\n- Current Concept: ${session.currentConcept?.title || 'None'}\n- Tools Already Used: ${session.currentConceptTools.join(', ') || 'None'}\n- Last Assessment Score: ${session.lastAssessmentScore || 'N/A'}/5\n- Knowledge Gaps: ${session.knowledgeGaps?.join(', ') || 'None'}\n- Gap Attempts: ${JSON.stringify(session.gapAttempts || {})}\n- Recent Questions: ${session.recentQuestions?.join('; ') || 'None'}\n- Completed Concepts: ${session.completedConcepts.length}\n- Remaining Core Concepts: ${session.remainingCoreConcepts.length}\n\n${$json.learnerInput?.note ? `\nIMPORTANT - LEARNER NOTE ANALYSIS REQUIRED:\nThe learner just submitted this note/question with their input:\n\"${$json.learnerInput.note}\"\n\nCurrent Concept Being Studied: ${session.currentConcept?.title}\nConcept Summary: ${session.currentConcept?.summary || 'N/A'}\n\nAnalyze this note carefully to determine:\n1. Is the learner confused or asking for clarification? \n   - Look for: question marks, words like \"confused\", \"don't understand\", \"unclear\", \"help\"\n   - If yes → strongly consider insert_concept to address the confusion\n\n2. Is the learner showing understanding and ready to move on?\n   - Look for: \"I get it\", \"makes sense\", \"understood\", \"ready\"\n   - If yes → proceed to assessment\n\n3. Is the learner making connections or showing deeper thinking?\n   - Look for: relating to their role/experience, asking advanced questions, making analogies\n   - If yes AND prior assessment scores are high → consider prompt_exercise\n\n4. Does the note reveal specific knowledge gaps?\n   - Look for: misconceptions, incorrect assumptions, missing foundational knowledge\n   - If yes → insert_concept with specific focus on the gap\n\n5. Is the learner asking for examples or application to their role?\n   - Look for: \"example\", \"how does this apply\", \"in practice\", \"for ${$json.learnerProfile?.role}\"\n   - If yes → insert_concept with practical examples\n` : ''}\n\n${session.pendingAssessment ? `\nPENDING ASSESSMENT:\n- Answer submitted: \"${session.pendingAssessment.answer}\"\n- Note submitted: \"${session.pendingAssessment.note}\"\n- Question was: \"${session.pendingAssessment.question}\"\n\nYou must decide whether to:\n1. Grade the assessment (nextAction: \"grade_assessment\")\n2. Skip grading and move to something else based on the note content\n` : ''}\n\n${session.pendingPromptEvaluation ? `\nPENDING PROMPT EVALUATION:\n- Prompt submitted: \"${session.pendingPromptEvaluation.prompt}\"\n- Note submitted: \"${session.pendingPromptEvaluation.note}\"\n- Task was: \"${session.pendingPromptEvaluation.task}\"\n\nYou must decide whether to:\n1. Evaluate the prompt (nextAction: \"evaluate_prompt\")\n2. Skip evaluation and do something else based on the note content\n\nDecision Rules for Prompt Exercise:\n1. If learner shows confusion or asks for help with prompting:\n   - Set skipEvaluation: true\n   - Set nextAction: \"insert_concept\" with focus on prompt engineering\n2. If learner wants to skip or says they understand:\n   - Set skipEvaluation: true\n   - Set nextAction: \"concept_complete\"\n3. Otherwise, proceed with evaluation:\n   - Set nextAction: \"evaluate_prompt\"\n` : ''}\n\nDecision Rules:\n1. Always start new concepts with concept_card\n2. If learner explicitly asks to skip (e.g., \"skip this\", \"I know this\", \"move on\"):\n   - Set skipGrading: true (if assessment pending)\n   - Set markAsComplete: true with completionType: \"skipped\"\n   - Set nextAction: \"concept_complete\"\n3. If learner shows severe confusion and has pending assessment:\n   - Set skipGrading: true (grading won't help)\n   - Set nextAction: \"insert_concept\" to address confusion\n4. If learner has pending assessment and asks a clarifying question:\n   - Set nextAction: \"grade_assessment\" to evaluate first\n5. Follow normal progression rules for other cases\n\n${$json.learnerInput?.note ? 'IMPORTANT: The learner note should heavily influence your decision. Prioritize addressing their specific question or concern.' : ''}\n\nReturn JSON:\n{\n  \"nextAction\": \"grade_assessment|concept_card|assessment|prompt_exercise|concept_complete|insert_concept\",\n  \"reasoning\": \"Brief explanation of decision\",\n  \"skipGrading\": true|false (only if assessment is pending),\n  \"markAsComplete\": true|false (if learner wants to skip),\n  \"completionType\": \"normal|skipped\" (if markAsComplete is true),\n  \"skipReason\": \"reason for skipping if applicable\",\n  \"conceptNeeded\": {\n    \"reason\": \"specific gap to address if action is insert_concept\",\n    \"focus\": \"topic area for new concept if inserting\"\n  },\n  \"noteAnalysis\": {\n    \"understanding\": \"low|medium|high\",\n    \"needsClarification\": true|false,\n    \"wantsToSkip\": true|false,\n    \"specificRequest\": \"what they are asking for if clear\",\n    \"sentiment\": \"confused|curious|confident|frustrated|dismissive\"\n  }\n}`\n  }\n];\n\nreturn {\n  messages,\n  model: \"gpt-4o\",\n  temperature: 0.3,\n  max_tokens: 300,\n  response_format: { type: \"json_object\" },\n  // Pass through original data WITHOUT sessionState\n  originalData: {\n    sessionId: $json.sessionId,\n    action: $json.action,\n    learnerInput: $json.learnerInput,\n    courseTopic: $json.courseTopic,\n    learnerProfile: $json.learnerProfile,\n    coreConcepts: $json.coreConcepts,\n    userName: $json.userName,\n    currentConcept: session.currentConcept, // Include current concept for reference\n    stateMachine: {\n      currentState: session.stateMachine.currentState // Only pass minimal state info\n    }\n  }\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -3080,
+          875
+        ],
+        "id": "0b120739-9790-444d-b56a-c130d289fb03",
+        "name": "Generate Adaptive Orchestrator Router Prompt"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Prepare Prompt Evaluation Request\nconst sessionId = $json.sessionId;\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\nif (!session || !session.pendingPromptEvaluation) {\n  throw new Error('No pending prompt evaluation found');\n}\n\nconst messages = [\n  {\n    role: \"system\",\n    content: \"You are an expert at evaluating AI prompts for product management tasks AND tracking knowledge mastery. Analyze both the prompt quality and what it reveals about the learner's understanding.\"\n  },\n  {\n    role: \"user\",\n    content: `Task: ${session.pendingPromptEvaluation.task}\nLearner's Prompt: ${session.pendingPromptEvaluation.prompt}\nLearner Background: ${$json.learnerProfile.role} with skills in ${$json.learnerProfile.skills.join(', ')}\n\nEvaluation Criteria:\n${JSON.stringify(session.pendingPromptEvaluation.evaluationCriteria || {})}\n\nCurrent Knowledge State:\n- Strengths: ${session.knowledgeStrengths?.join(', ') || 'None'}\n- Gaps: ${session.knowledgeGaps?.join(', ') || 'None'}\n\nEvaluate the prompt and return a JSON object with this exact structure:\n{\n  \"score\": (0-5 number),\n  \"feedback\": \"Constructive feedback on the prompt quality\",\n  \"strengths\": [\"what they did well\"],\n  \"improvements\": [\"specific suggestions\"],\n  \"simulatedAIResponse\": \"What an AI would generate from this prompt\",\n  \"knowledgeUpdate\": {\n    \"masteredConcepts\": [\"concepts demonstrated mastery of\"],\n    \"identifiedGaps\": [\"gaps revealed by the prompt\"],\n    \"reasoning\": \"Brief explanation of knowledge assessment\"\n  }\n}`\n  }\n];\n\nreturn {\n  messages,\n  model: \"gpt-4o\",\n  temperature: 0.3,\n  max_tokens: 400,\n  response_format: { type: \"json_object\" },\n  // Pass through all data needed for processing\n  originalData: {\n    sessionId: $json.sessionId,\n    courseTopic: $json.courseTopic,\n    learnerProfile: $json.learnerProfile,\n    pendingPromptEvaluation: session.pendingPromptEvaluation,\n    responseData: $json.responseData // Add this line to pass responseData through\n  }\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -2200,
+          650
+        ],
+        "id": "006d7bee-2046-4aee-8a0f-a1a90ab2d2f5",
+        "name": "Generate Evaluate Prompt Excercise Prompt"
       }
     ],
     "pinData": {},
@@ -1124,7 +1124,7 @@
           ],
           [
             {
-              "node": "Generate Prompt Exercise Prompt",
+              "node": "Prompt Exercise Handler",
               "type": "main",
               "index": 0
             }
@@ -1168,7 +1168,7 @@
         "main": [
           [
             {
-              "node": "Evaluate Prompt Excercise Prompt",
+              "node": "Generate Prompt Exercise Prompt",
               "type": "main",
               "index": 0
             }
@@ -1300,14 +1300,14 @@
         "main": [
           [
             {
-              "node": "Grade Assessment Prompt",
+              "node": "Generate Assessment Grading Prompt",
               "type": "main",
               "index": 0
             }
           ],
           [
             {
-              "node": "Prompt Exercise Handler",
+              "node": "Generate Evaluate Prompt Excercise Prompt",
               "type": "main",
               "index": 0
             }
@@ -1329,17 +1329,6 @@
           [
             {
               "node": "Generate New Concept Prompt",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Grade Assessment Prompt": {
-        "main": [
-          [
-            {
-              "node": "Grade Assessment AI Call",
               "type": "main",
               "index": 0
             }
@@ -1408,39 +1397,28 @@
           ],
           [
             {
-              "node": "Grade Assessment Prompt",
+              "node": "Generate Assessment Grading Prompt",
               "type": "main",
               "index": 0
             }
           ],
           [
             {
-              "node": "Prompt Exercise Handler",
+              "node": "Generate Evaluate Prompt Excercise Prompt",
               "type": "main",
               "index": 0
             }
           ],
           [
             {
-              "node": "Adaptive Orchestrator Router Prompt",
+              "node": "Generate Adaptive Orchestrator Router Prompt",
               "type": "main",
               "index": 0
             }
           ],
           [
             {
-              "node": "Adaptive Orchestrator Router Prompt",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Adaptive Orchestrator Router Prompt": {
-        "main": [
-          [
-            {
-              "node": "Adaptive Orchestrator AI Call",
+              "node": "Generate Adaptive Orchestrator Router Prompt",
               "type": "main",
               "index": 0
             }
@@ -1518,22 +1496,11 @@
           ]
         ]
       },
-      "Evaluate Prompt Excercise Prompt": {
-        "main": [
-          [
-            {
-              "node": "Generate Prompt Exercise Evaluation AI Call",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Generate Prompt Exercise Generate AI Call": {
         "main": [
           [
             {
-              "node": "Process Generated Exercise",
+              "node": "Process Generated Prompt Exercise",
               "type": "main",
               "index": 0
             }
@@ -1551,7 +1518,7 @@
           ]
         ]
       },
-      "Process Generated Exercise": {
+      "Process Prompt Evaluation": {
         "main": [
           [
             {
@@ -1562,11 +1529,44 @@
           ]
         ]
       },
-      "Process Prompt Evaluation": {
+      "Generate Assessment Grading Prompt": {
+        "main": [
+          [
+            {
+              "node": "Grade Assessment AI Call",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Process Generated Prompt Exercise": {
         "main": [
           [
             {
               "node": "Smart Reply Generator Prompt",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Generate Adaptive Orchestrator Router Prompt": {
+        "main": [
+          [
+            {
+              "node": "Adaptive Orchestrator AI Call",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Generate Evaluate Prompt Excercise Prompt": {
+        "main": [
+          [
+            {
+              "node": "Generate Prompt Exercise Evaluation AI Call",
               "type": "main",
               "index": 0
             }
@@ -1578,7 +1578,7 @@
     "settings": {
       "executionOrder": "v1"
     },
-    "versionId": "00e29746-5d3a-41b7-b4de-8006a8b8586b",
+    "versionId": "6b5cba2c-05f5-41b7-aafb-4b357b130f99",
     "meta": {
       "instanceId": "eea8bfa4918320bc469ce323a7b217b8209b639e450c67bc3e6a88bdf340b7de"
     },

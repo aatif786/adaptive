@@ -1,7 +1,8 @@
 
 IMMEDIATE
 ------
-d) audit all flow states to make sure they are correct
+a) audit all flow states to make sure they are correct
+b) smart reply generator shoudl take into account all input paths
 
 MID
 ------

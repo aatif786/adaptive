@@ -11,6 +11,7 @@ MID
 1) add smart replies to UI
 2) add debug data to UI
 3) add derivative data to UI
+3b) display expert skills in UI
 4) make prompts smarter
 5) change UI for learner notes to have one button, not 2
 6) Change concepts to be longer, should show a lot of data

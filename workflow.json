@@ -1,5 +1,5 @@
 {
-    "name": "My workflow 4",
+    "name": "My workflow 5",
     "nodes": [
       {
         "parameters": {
@@ -8,13 +8,13 @@
           "responseMode": "responseNode",
           "options": {}
         },
-        "id": "ea8b9de2-3076-4f2f-a606-c21a619a3a1b",
+        "id": "380062d0-b28f-4586-92c1-293a4d0ee0ab",
         "name": "Main Webhook",
         "type": "n8n-nodes-base.webhook",
         "typeVersion": 1.1,
         "position": [
-          -3520,
-          230
+          -4180,
+          360
         ],
         "webhookId": "9ef00e80-0d3e-4fcb-b8ff-e621ee6fc02e"
       },
@@ -22,39 +22,39 @@
         "parameters": {
           "jsCode": "// CLEAN Session State Manager - ONLY manages state storage\n// No business logic, no routing, no decisions\n\nconst sessionId = $json.sessionId || 'default-session';\nconst action = $json.action || 'start';\nconst learnerInput = $json.learnerInput || {};\n\n// Initialize global state store if needed\nlet globalState = $getWorkflowStaticData('global');\nif (!globalState.sessions) {\n  globalState.sessions = {};\n}\n\n// Initialize new session ONLY if it doesn't exist or action is 'start'\nif (!globalState.sessions[sessionId] || action === 'start') {\n  globalState.sessions[sessionId] = {\n    // Learning state\n    currentConceptIndex: 0,\n    completedConcepts: [],\n    remainingCoreConcepts: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],\n    insertedConcepts: [],\n    interactionHistory: [],\n    currentConcept: null,\n    lastToolUsed: null,\n    currentConceptTools: [],\n    lastAssessmentScore: null,\n    knowledgeGaps: [],\n    knowledgeStrengths: [],\n    knowledgeEvolution: [],\n    assessmentHistory: [],\n    gapAttempts: {},\n    deferredGaps: [],\n    gapConceptHistory: {},\n    recentQuestions: [],\n    \n    // State Machine (isolated in global)\n    stateMachine: {\n      currentState: 'uninitialized',\n      previousState: null,\n      stateHistory: [],\n      lastTransition: null,\n      pendingGrading: false\n    },\n    \n    // Metadata\n    createdAt: new Date().toISOString(),\n    lastUpdated: new Date().toISOString()\n  };\n}\n\n// That's it! Just pass through the request data\n// Other nodes will read state directly and make decisions\nreturn {\n  sessionId,\n  action,\n  learnerInput,\n  courseTopic: $json.courseTopic,\n  learnerProfile: $json.learnerProfile,\n  coreConcepts: $json.coreConcepts,\n  userName: $json.userName\n};"
         },
-        "id": "1bf4e08e-812b-43d6-9f3b-f855124799d1",
+        "id": "bf3244f4-4235-4d4c-aa3f-5d961f68ce87",
         "name": "Session State Manager",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -3080,
-          130
+          -3740,
+          260
         ]
       },
       {
         "parameters": {
           "jsCode": "// Course Completion Handler\nconst sessionId = $json.sessionId;\nconst session = $json.sessionState;\n\n// Calculate final statistics\nconst totalConcepts = session.completedConcepts.length;\nconst coreConceptsCompleted = session.completedConcepts.filter(id => \n  typeof id === 'number'\n).length;\nconst dynamicConceptsCompleted = totalConcepts - coreConceptsCompleted;\nconst skippedConcepts = session.skippedConcepts?.length || 0;\n\n// Prepare completion response\nconst responseData = {\n  sessionId,\n  toolType: 'course_complete',\n  courseComplete: true,\n  toolData: {\n    title: 'Congratulations! Course Complete',\n    summary: `You've successfully completed all ${totalConcepts} concepts in the course.`,\n    statistics: {\n  coreConceptsCompleted,\n  dynamicConceptsAdded: dynamicConceptsCompleted,\n  conceptsSkipped: skippedConcepts,\n  totalInteractions: session.interactionHistory.length,\n  completionBreakdown: {\n    mastered: Object.values(session.completionMetadata || {})\n      .filter(m => m.completionType === 'mastered').length,\n    adequate: Object.values(session.completionMetadata || {})\n      .filter(m => m.completionType === 'adequate').length,\n    struggled: Object.values(session.completionMetadata || {})\n      .filter(m => m.completionType === 'struggled').length,\n    skipped: skippedConcepts\n  }\n},\n    message: 'Great job completing the AI Native Product Manager course!'\n  },\n  waitingForInput: false\n};\n\nreturn {\n  responseData\n};"
         },
-        "id": "12bb91ad-3f12-49ad-bc5f-5f1168b098a1",
+        "id": "2d900545-90bc-408f-936b-61401a433359",
         "name": "Course Completion",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          660,
-          -120
+          0,
+          0
         ]
       },
       {
         "parameters": {
           "jsCode": "// Welcome Message for Course Start\nconst sessionId = $json.sessionId;\nconst courseTopic = $json.courseTopic;\n\nconst responseData = {\n  sessionId,\n  toolType: 'welcome',\n  toolData: {\n    title: `Welcome to: ${courseTopic}`,\n    message: 'This adaptive course will guide you through 10 core concepts with personalized instruction based on your progress.',\n    instructions: 'Click Next to begin with the first concept.'\n  },\n  waitingForInput: false,\n  nextAction: 'start_course'\n};\n\nreturn {\n  ...($json),\n  responseData\n};"
         },
-        "id": "c8c482e5-1068-4324-9fd7-dfbc727ef66b",
+        "id": "e45cbce7-2fbc-4aea-8cd2-e2026962a006",
         "name": "Welcome Message",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          660,
-          80
+          0,
+          200
         ]
       },
       {
@@ -138,13 +138,13 @@
           },
           "options": {}
         },
-        "id": "105382c9-bcd2-45a1-a461-7418049985c9",
+        "id": "d596e235-0315-487d-8ba5-afe4f4413533",
         "name": "Tool Router",
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.2,
         "position": [
-          -880,
-          855
+          -1540,
+          980
         ]
       },
       {
@@ -152,145 +152,65 @@
           "mode": "runOnceForEachItem",
           "jsCode": "// Concept Card Handler - UPDATED to remove smart reply logic\nconst concept = $json.currentConcept;\nconst sessionId = $json.sessionId;\nconst learnerNote = $json.learnerInput?.note;\n\n// Update session state\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\nif (!session.currentConceptTools.includes('concept_card')) {\n  session.currentConceptTools.push('concept_card');\n}\nsession.lastToolUsed = 'concept_card';\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\nconst responseData = {\n  sessionId,\n  toolType: 'concept_card',\n  conceptProgress: {\n    current: session.completedConcepts.length + 1,\n    total: session.remainingCoreConcepts.length + \n           session.completedConcepts.length + \n           session.insertedConcepts.length\n  },\n  toolData: {\n    title: concept.title,\n    summary: concept.summary,\n    expertTips: concept.expertTips,\n    canSubmitNote: true\n  },\n  waitingForInput: !learnerNote,\n  inputType: 'note',\n  message: 'Read through the concept and feel free to add any notes or questions.'\n};\n\n// Just return the response\nreturn {\n  ...($json),\n  responseData,\n  sessionId,\n  learnerProfile: $json.learnerProfile\n};"
         },
-        "id": "e98c526a-8d16-4b63-87dc-fe6d3843cf4b",
+        "id": "7e0bdcfb-442d-4048-a52d-ad46626c4606",
         "name": "Concept Card Handler",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          0,
-          655
+          -660,
+          780
         ]
       },
       {
         "parameters": {
           "jsCode": "// Assessment Handler\nconst concept = $json.currentConcept;\nconst sessionId = $json.sessionId;\nconst learnerAnswer = $json.learnerInput?.answer;\nconst session = $json.sessionState;\n\n// Update session state\nif (!session.currentConceptTools.includes('assessment')) {\n  session.currentConceptTools.push('assessment');\n}\nsession.lastToolUsed = 'assessment';\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\nconst responseData = {\n  sessionId,\n  toolType: 'assessment',\n  conceptProgress: {\n    current: session.completedConcepts.length + 1,\n    total: session.remainingCoreConcepts.length + \n           session.completedConcepts.length + \n           session.insertedConcepts.length\n  },\n  toolData: {\n    question: concept.assessmentQuestion,\n    conceptTitle: concept.title\n  },\n  waitingForInput: !learnerAnswer,\n  inputType: 'answer',\n  message: 'Answer the question to check your understanding.'\n};\n\n// If we have an answer, we need to grade it\nif (learnerAnswer) {\n  return {\n    ...($json),\n    needsGrading: true,\n    learnerAnswer,\n    responseData\n  };\n}\n\nreturn {\n  ...($json),\n  needsGrading: false,\n  responseData\n};"
         },
-        "id": "20b424af-7d76-4d88-b9f6-baccecb434f1",
+        "id": "250f470e-d38c-4076-afd6-a06ff0a4219b",
         "name": "Assessment Handler",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          0,
-          855
+          -660,
+          980
         ]
       },
       {
         "parameters": {
           "jsCode": "// Process Combined Grading and Knowledge Analysis\nconst result = JSON.parse($json.choices[0].message.content);\nconst responseData = $node[\"Assessment Handler\"].json.responseData;\nconst sessionId = $node[\"Assessment Handler\"].json.sessionId;\n\n// Get session directly from global\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// Update assessment score\nsession.lastAssessmentScore = result.score;\n\n// Update knowledge state from the combined analysis\nif (result.knowledgeUpdate) {\n  session.knowledgeStrengths = result.knowledgeUpdate.updatedStrengths || [];\n  session.knowledgeGaps = result.knowledgeUpdate.updatedGaps || [];\n  \n  // Track knowledge evolution\n  if (!session.knowledgeEvolution) {\n    session.knowledgeEvolution = [];\n  }\n  \n  session.knowledgeEvolution.push({\n    timestamp: new Date().toISOString(),\n    concept: session.currentConcept.title,\n    conceptId: session.currentConcept.id,\n    isDynamic: session.currentConcept.isDynamic || false,\n    score: result.score,\n    strengths: result.knowledgeUpdate.updatedStrengths,\n    gaps: result.knowledgeUpdate.updatedGaps,\n    reasoning: result.knowledgeUpdate.reasoning\n  });\n}\n\n// UPDATE STATE MACHINE\nsession.stateMachine.previousState = session.stateMachine.currentState;\nsession.stateMachine.currentState = 'assessment_graded';\nsession.stateMachine.stateHistory.push({\n  from: 'assessment_submitted',\n  to: 'assessment_graded',\n  action: 'grading_complete',\n  timestamp: new Date().toISOString(),\n  orchestrator: 'core',\n  data: { score: result.score }\n});\nsession.stateMachine.pendingGrading = false;\n\n// Handle dynamic concept gap resolution\nif (session.currentConcept.isDynamic && result.score >= 3 && session.currentConcept.targetedGaps) {\n  session.knowledgeGaps = session.knowledgeGaps.filter(\n    gap => !session.currentConcept.targetedGaps.includes(gap)\n  );\n}\n\n// Track assessment history\nif (!session.assessmentHistory) {\n  session.assessmentHistory = [];\n}\n\nsession.assessmentHistory.push({\n  concept: session.currentConcept.title,\n  conceptId: session.currentConcept.id,\n  score: result.score,\n  timestamp: new Date().toISOString()\n});\n\n// Save updated state back to global\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Add grading to response\nresponseData.toolData.gradingResult = {\n  score: result.score,\n  feedback: result.feedback,\n  understood: result.understood\n};\nresponseData.waitingForInput = false;\nresponseData.nextAction = result.score >= 4 ? \n  'Excellent work! Click Next to continue.' : \n  result.score >= 3 ?\n  'Good understanding! Click Next to continue.' :\n  'Let\\'s reinforce this concept. Click Next to continue.';\n\n// IMPORTANT: Do NOT include sessionState in return\nreturn {\n  ...($node[\"Assessment Handler\"].json),\n  gradingResult: result,\n  responseData\n  // Remove: sessionState, knowledgeState\n};"
         },
-        "id": "62e829fb-caf5-490d-89c6-d876fb53f4b4",
+        "id": "5a8bf5e9-b9cd-4e08-b716-81fe6c62d1ad",
         "name": "Process Grading",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -1100,
-          280
+          -1760,
+          400
         ]
       },
       {
         "parameters": {
-          "jsCode": "// Prompt Exercise Handler\nconst concept = $json.currentConcept;\nconst sessionId = $json.sessionId;\nconst learnerPrompt = $json.learnerInput?.prompt;\nconst session = $json.sessionState;\n\n// Update session state\nif (!session.currentConceptTools.includes('prompt_exercise')) {\n  session.currentConceptTools.push('prompt_exercise');\n}\nsession.lastToolUsed = 'prompt_exercise';\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\nconst responseData = {\n  sessionId,\n  toolType: 'prompt_exercise',\n  conceptProgress: {\n    current: session.completedConcepts.length + 1,\n    total: session.remainingCoreConcepts.length + \n           session.completedConcepts.length + \n           session.insertedConcepts.length\n  },\n  toolData: {\n    task: concept.promptTask,\n    conceptTitle: concept.title\n  },\n  waitingForInput: !learnerPrompt,\n  inputType: 'prompt',\n  message: 'Practice your prompt engineering skills with this task.'\n};\n\n// If we have a prompt, we need to evaluate it\nif (learnerPrompt) {\n  return {\n    ...($json),\n    needsEvaluation: true,\n    learnerPrompt,\n    responseData\n  };\n}\n\nreturn {\n  ...($json),\n  needsEvaluation: false,\n  responseData\n};"
+          "jsCode": "// Enhanced Prompt Exercise Handler\nconst concept = $json.currentConcept;\nconst sessionId = $json.sessionId;\nconst learnerPrompt = $json.learnerInput?.prompt;\nconst learnerNote = $json.learnerInput?.note;\nconst session = $json.sessionState;\n\n// Get enhanced task from session if available\nconst enhancedTask = session.currentPromptExercise || null;\n\n// Update session state\nif (!session.currentConceptTools.includes('prompt_exercise')) {\n  session.currentConceptTools.push('prompt_exercise');\n}\nsession.lastToolUsed = 'prompt_exercise';\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\nconst responseData = {\n  sessionId,\n  toolType: 'prompt_exercise',\n  conceptProgress: {\n    current: session.completedConcepts.length + 1,\n    total: session.remainingCoreConcepts.length + \n           session.completedConcepts.length + \n           session.insertedConcepts.length\n  },\n  toolData: {\n    // Use enhanced task if available, otherwise fall back to concept task\n    task: enhancedTask?.generatedTask || concept.promptTask,\n    context: enhancedTask?.context,\n    hints: enhancedTask?.hints,\n    conceptTitle: concept.title,\n    difficulty: enhancedTask?.difficulty\n  },\n  waitingForInput: !learnerPrompt,\n  inputType: 'prompt',\n  message: 'Practice your prompt engineering skills with this task.'\n};\n\n// If we have a prompt (and possibly a note), route to Adaptive Orchestrator\nif (learnerPrompt) {\n  // Store prompt and note for orchestrator decision\n  session.pendingPromptEvaluation = {\n    prompt: learnerPrompt,\n    note: learnerNote,\n    task: responseData.toolData.task,\n    evaluationCriteria: enhancedTask?.evaluationCriteria\n  };\n  \n  // Save state\n  $getWorkflowStaticData('global').sessions[sessionId] = session;\n  \n  return {\n    ...($json),\n    needsOrchestration: true,\n    responseData\n  };\n}\n\nreturn {\n  ...($json),\n  needsOrchestration: false,\n  responseData\n};"
         },
-        "id": "994762b1-a884-4ca1-a8bc-5365dfd893de",
+        "id": "8c078252-11f0-45cc-8a78-b9325c7852a0",
         "name": "Prompt Exercise Handler",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -660,
-          1090.5
+          -1720,
+          700
         ]
       },
       {
         "parameters": {
-          "conditions": {
-            "options": {
-              "caseSensitive": true,
-              "leftValue": "",
-              "typeValidation": "strict"
-            },
-            "conditions": [
-              {
-                "leftValue": "={{ $json.needsEvaluation }}",
-                "rightValue": "={{ true }}",
-                "operator": {
-                  "type": "boolean",
-                  "operation": "true"
-                },
-                "id": "needeval"
-              }
-            ],
-            "combinator": "and"
-          },
-          "options": {}
+          "jsCode": "// Enhanced Process Prompt Evaluation with Knowledge Tracking\nconst evaluationResult = JSON.parse($json.choices[0].message.content);\nconst responseData = $node[\"Prompt Exercise Handler\"].json.responseData;\nconst sessionId = $node[\"Prompt Exercise Handler\"].json.sessionId;\n\n// Get session from global\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// Update knowledge state based on evaluation\nif (evaluationResult.knowledgeUpdate) {\n  // Add mastered concepts to strengths\n  evaluationResult.knowledgeUpdate.masteredConcepts.forEach(concept => {\n    if (!session.knowledgeStrengths.includes(concept)) {\n      session.knowledgeStrengths.push(concept);\n    }\n  });\n  \n  // Update gaps - remove mastered ones, add new ones\n  session.knowledgeGaps = session.knowledgeGaps.filter(\n    gap => !evaluationResult.knowledgeUpdate.masteredConcepts.includes(gap)\n  );\n  \n  evaluationResult.knowledgeUpdate.identifiedGaps.forEach(gap => {\n    if (!session.knowledgeGaps.includes(gap)) {\n      session.knowledgeGaps.push(gap);\n    }\n  });\n  \n  // Track in knowledge evolution\n  if (!session.knowledgeEvolution) {\n    session.knowledgeEvolution = [];\n  }\n  \n  session.knowledgeEvolution.push({\n    timestamp: new Date().toISOString(),\n    tool: 'prompt_exercise',\n    concept: session.currentConcept.title,\n    conceptId: session.currentConcept.id,\n    score: evaluationResult.score,\n    mastered: evaluationResult.knowledgeUpdate.masteredConcepts,\n    gaps: evaluationResult.knowledgeUpdate.identifiedGaps,\n    reasoning: evaluationResult.knowledgeUpdate.reasoning\n  });\n}\n\n// Clear pending evaluation\nsession.pendingPromptEvaluation = null;\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Add evaluation to response\nresponseData.toolData.evaluationResult = evaluationResult;\nresponseData.waitingForInput = false;\nresponseData.nextAction = 'Click Next to continue to the next concept.';\n\nreturn {\n  ...($node[\"Prompt Exercise Handler\"].json),\n  evaluationResult,\n  responseData\n};"
         },
-        "id": "7ec0b707-324e-463d-aa26-a9d0ab0e3cc7",
-        "name": "Need Evaluation?",
-        "type": "n8n-nodes-base.if",
-        "typeVersion": 2.1,
-        "position": [
-          -440,
-          1090.5
-        ]
-      },
-      {
-        "parameters": {
-          "method": "POST",
-          "url": "https://api.openai.com/v1/chat/completions",
-          "authentication": "predefinedCredentialType",
-          "nodeCredentialType": "openAiApi",
-          "sendBody": true,
-          "bodyParameters": {
-            "parameters": [
-              {
-                "name": "model",
-                "value": "gpt-4o"
-              },
-              {
-                "name": "messages",
-                "value": "=[{\"role\": \"system\", \"content\": \"You are an expert at evaluating AI prompts for product management tasks. Return your evaluation as a JSON object.\"}, {\"role\": \"user\", \"content\": \"Task: {{ $json.currentConcept.promptTask }}\\nLearner's Prompt: {{ $json.learnerPrompt }}\\nLearner Background: {{ $json.learnerProfile.role }} with skills in {{ $json.learnerProfile.skills.join(', ') }}\\n\\nEvaluate the prompt and return a JSON object with this exact structure:\\n{\\n  \\\"score\\\": (0-5 number),\\n  \\\"feedback\\\": \\\"Constructive feedback\\\",\\n  \\\"strengths\\\": [\\\"what they did well\\\"],\\n  \\\"improvements\\\": [\\\"specific suggestions\\\"],\\n  \\\"simulatedAIResponse\\\": \\\"What an AI would generate from this prompt\\\"\\n}\"}]"
-              },
-              {
-                "name": "temperature",
-                "value": "0.7"
-              },
-              {
-                "name": "max_tokens",
-                "value": "300"
-              },
-              {
-                "name": "response_format",
-                "value": "={{ {\"type\": \"json_object\"} }}"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "id": "589ebfbf-04ed-4418-aec3-b7d033649059",
-        "name": "Evaluate Prompt",
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          -220,
-          1155
-        ],
-        "credentials": {
-          "openAiApi": {
-            "id": "UFaW72U0IV5U0Ec5",
-            "name": "OpenAi account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "jsCode": "// Process Prompt Evaluation\nconst evaluationResult = JSON.parse($json.choices[0].message.content);\nconst responseData = $node[\"Prompt Exercise Handler\"].json.responseData;\n\n// Add evaluation to response\nresponseData.toolData.evaluationResult = evaluationResult;\nresponseData.waitingForInput = false;\nresponseData.nextAction = 'Click Next to continue to the next concept.';\n\nreturn {\n  ...($node[\"Prompt Exercise Handler\"].json),\n  evaluationResult,\n  responseData\n};"
-        },
-        "id": "fb3a3510-9b2d-464b-aaf4-5a8645fbc535",
+        "id": "37cee35c-04b1-4afe-a139-6e0ed6fbc136",
         "name": "Process Evaluation",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          0,
-          1155
+          -1060,
+          700
         ]
       },
       {
@@ -298,52 +218,52 @@
           "mode": "runOnceForEachItem",
           "jsCode": "// Insert New Concept and Set as Current\nconst newConcept = JSON.parse($json.choices[0].message.content);\n\n// Get the original data from the correct previous node\nconst originalData = $node[\"Generate New Concept Prompt\"].json.originalData;\nconst sessionId = originalData.sessionId;\nconst orchestratorDecision = originalData.orchestratorDecision;\n\n// Add metadata to new concept\nnewConcept.id = `dynamic_${Date.now()}`;\nnewConcept.isCore = false;\nnewConcept.isDynamic = true;\n\n// Get session from global directly\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// Set targeted gaps from orchestrator decision\nconst targetGap = orchestratorDecision.conceptNeeded.reason || session.knowledgeGaps[0];\nnewConcept.targetedGaps = [targetGap];\nnewConcept.targetedGap = targetGap; // Keep both for compatibility\n\n// Increment the attempt counter for this gap\nif (targetGap) {\n  if (!session.gapAttempts) session.gapAttempts = {};\n  session.gapAttempts[targetGap] = (session.gapAttempts[targetGap] || 0) + 1;\n  newConcept.attemptNumber = session.gapAttempts[targetGap];\n}\n\n// IMPORTANT: Mark the struggling concept as completed so we don't return to it\nif (session.currentConcept && session.currentConcept.isCore) {\n  // Add the original concept to completed list\n  session.completedConcepts.push(session.currentConcept.id);\n  \n  // Remove it from remaining core concepts\n  session.remainingCoreConcepts = session.remainingCoreConcepts.filter(\n    id => id !== session.currentConcept.id\n  );\n}\n\n// Set the new concept as current\nsession.currentConcept = newConcept;\nsession.currentConceptTools = []; // Fresh start for the new concept\nsession.lastToolUsed = null;\n\n// Track the inserted dynamic concept\nsession.insertedConcepts.push(newConcept.id);\n\n// Clear previous assessment data since this is a new concept\nsession.lastAssessmentScore = null;\nsession.knowledgeGaps = []; // Clear the gaps\n\n// Save updated state back to global\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Return with the updated current concept - NO sessionState\nreturn {\n  ...originalData,\n  currentConcept: newConcept,\n  nextAction: 'concept_card',\n  newConceptInserted: true\n  // Remove: sessionState\n};"
         },
-        "id": "e6225627-6936-447f-ba33-92ab36bbc005",
+        "id": "7c47630c-fde1-4f62-bf47-69266549c785",
         "name": "Insert Concept",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -1100,
-          940.5
+          -1760,
+          1080
         ]
       },
       {
         "parameters": {
           "jsCode": "// Complete Current Concept and Move to Next\nconst sessionId = $json.sessionId;\nconst currentConcept = $json.currentConcept;\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// Mark current concept as completed\nif (currentConcept) {\n  session.completedConcepts.push(currentConcept.id);\n  \n  // Remove from remaining if it was a core concept\n  if (currentConcept.isCore) {\n    session.remainingCoreConcepts = session.remainingCoreConcepts.filter(\n      id => id !== currentConcept.id\n    );\n  }\n\n  // Remove from insertedConcepts if it was dynamic\n  if (currentConcept.isDynamic) {\n    session.insertedConcepts = session.insertedConcepts.filter(\n      id => id !== currentConcept.id\n    );\n  }\n}\n\n// Around line 15, after marking concept as completed:\n// Check if this was a skipped concept\nconst wasSkipped = session.skippedConcepts?.some(\n  skip => skip.conceptId === currentConcept.id\n);\n\n// Add metadata to completion\nif (!session.completionMetadata) session.completionMetadata = {};\nsession.completionMetadata[currentConcept.id] = {\n  completedAt: new Date().toISOString(),\n  wasSkipped: wasSkipped,\n  toolsUsed: session.currentConceptTools,\n  assessmentScore: session.lastAssessmentScore,\n  completionType: wasSkipped ? 'skipped' : \n                  session.lastAssessmentScore >= 4 ? 'mastered' :\n                  session.lastAssessmentScore >= 3 ? 'adequate' : 'struggled'\n};\n\n// Reset for next concept\nsession.currentConcept = null;\nsession.currentConceptTools = []; // This should be empty!\nsession.lastToolUsed = null;\nsession.lastAssessmentScore = null; // Also clear this\nsession.knowledgeGaps = []; // And this\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Prepare response to move to next concept\nconst responseData = {\n  sessionId,\n  toolType: 'transition',\n  conceptProgress: {\n    current: session.completedConcepts.length,\n    total: session.remainingCoreConcepts.length + \n           session.completedConcepts.length + \n           session.insertedConcepts.length\n  },\n  toolData: {\n    completedConcept: currentConcept?.title,\n    message: 'Moving to next concept...'\n  },\n  waitingForInput: false,\n  nextAction: 'auto_continue'\n};\n\nreturn {\n  ...($json),\n  responseData,\n  moveToNext: true\n};"
         },
-        "id": "cd7e4801-dcf5-42e4-b832-8979f3a95cd2",
+        "id": "c972ccf9-c54e-456d-a5ca-2ca5d9dc5387",
         "name": "Complete Concept",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          0,
-          455
+          -660,
+          580
         ]
       },
       {
         "parameters": {
           "numberInputs": 3
         },
-        "id": "96a252dc-c125-4964-92b4-e02a7094b939",
+        "id": "48bd83e1-57a9-48c5-b956-54b042bba16b",
         "name": "Merge Responses",
         "type": "n8n-nodes-base.merge",
         "typeVersion": 3,
         "position": [
-          880,
-          80
+          220,
+          200
         ]
       },
       {
         "parameters": {
           "options": {}
         },
-        "id": "fd65523c-3f4e-4dd5-93c2-c22496358174",
+        "id": "b7aa546f-c26b-463d-9eac-8c185da3b798",
         "name": "Webhook Response",
         "type": "n8n-nodes-base.respondToWebhook",
         "typeVersion": 1.1,
         "position": [
-          1320,
-          80
+          660,
+          200
         ]
       },
       {
@@ -352,13 +272,13 @@
           "responseMode": "responseNode",
           "options": {}
         },
-        "id": "96b78c16-369a-4eac-bbca-3047131bf1fd",
+        "id": "d8d4ae42-7481-45a2-8915-7ff0d33e5bdf",
         "name": "Reset Session Webhook",
         "type": "n8n-nodes-base.webhook",
         "typeVersion": 1.1,
         "position": [
-          -3740,
-          1415
+          -4400,
+          1540
         ],
         "webhookId": "594653ea-5a3e-4e99-9a1d-c2ecdf0f5c56"
       },
@@ -366,26 +286,26 @@
         "parameters": {
           "jsCode": "// Reset Session\nconst sessionId = $json.query?.sessionId || 'default-session';\n\n// Clear session data\nconst sessionState = $getWorkflowStaticData('global');\nif (sessionState.sessions && sessionState.sessions[sessionId]) {\n  delete sessionState.sessions[sessionId];\n}\n\nreturn {\n  success: true,\n  message: `Session ${sessionId} has been reset`,\n  sessionId\n};"
         },
-        "id": "797eefe9-48f7-4ac7-a647-a5787c8b0d53",
+        "id": "8e2cdadc-f4bb-4013-b5c4-ddf68c053df8",
         "name": "Reset Session",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -3520,
-          1415
+          -4180,
+          1540
         ]
       },
       {
         "parameters": {
           "options": {}
         },
-        "id": "b106a3c1-10ec-456d-aa88-dad4fa19ce91",
+        "id": "fcc9ddd2-4128-4dbf-bc8b-84d5b5e89c42",
         "name": "Reset Response",
         "type": "n8n-nodes-base.respondToWebhook",
         "typeVersion": 1.1,
         "position": [
-          -3300,
-          1415
+          -3960,
+          1540
         ]
       },
       {
@@ -395,10 +315,10 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -3300,
-          130
+          -3960,
+          260
         ],
-        "id": "e3e60765-ac9f-4eca-89f5-1345f9637886",
+        "id": "0ca79391-caa9-441e-b45f-97e7ff15274d",
         "name": "Init Course Data"
       },
       {
@@ -409,10 +329,10 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          1100,
-          80
+          440,
+          200
         ],
-        "id": "6c95a2ab-4737-4e59-8cdb-601a6ff03f3d",
+        "id": "37069332-1455-4940-b6f6-aafa1043c4c1",
         "name": "Limit Data"
       },
       {
@@ -420,10 +340,10 @@
         "type": "n8n-nodes-base.manualTrigger",
         "typeVersion": 1,
         "position": [
-          -3740,
-          30
+          -4400,
+          160
         ],
-        "id": "effd9526-5f2d-451b-9c65-d2833053562a",
+        "id": "df81d807-4ec5-4d7c-b4ec-522cbdd6fb6c",
         "name": "When clicking 'Test workflow'"
       },
       {
@@ -435,10 +355,10 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          -3520,
-          30
+          -4180,
+          160
         ],
-        "id": "142a07db-b0f3-4226-a480-805447fc1890",
+        "id": "90ce120e-03b0-496b-9caf-a2e4866385b9",
         "name": "Edit Fields"
       },
       {
@@ -542,18 +462,43 @@
                 },
                 "renameOutput": true,
                 "outputKey": "insertNewConcept"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "60aca0f7-b783-4e53-a0b2-153342db2528",
+                      "leftValue": "={{ $json.nextAction }}",
+                      "rightValue": "generate_prompt_exercise",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "evaluatePrompt"
               }
             ]
           },
           "options": {}
         },
-        "id": "466ee47d-fefe-4842-9fe8-821b976ec12e",
+        "id": "03bf6fe5-28da-4c5b-a93b-464765047f1a",
         "name": "Check Next Action",
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.2,
         "position": [
-          -1760,
-          484
+          -2420,
+          620
         ]
       },
       {
@@ -589,13 +534,13 @@
           },
           "options": {}
         },
-        "id": "386b2aa4-f6b7-4304-aa88-cee4df29dfb7",
+        "id": "0ebb862e-83c2-402c-b3e7-1d1178a8f8db",
         "name": "Grade Assessment AI Call",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          -1320,
-          280
+          -1980,
+          400
         ],
         "credentials": {
           "openAiApi": {
@@ -612,10 +557,10 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -1540,
-          280
+          -2200,
+          400
         ],
-        "id": "6e045226-b64a-4a6d-b917-58b19be3ee51",
+        "id": "f1647970-1dd1-4326-9e8f-998e1221e5e0",
         "name": "Grade Assessment Prompt"
       },
       {
@@ -626,10 +571,10 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -1540,
-          940.5
+          -2200,
+          1080
         ],
-        "id": "2d488480-b378-4fee-8fc6-a1c6d58e41dd",
+        "id": "9a4c3359-97ba-4835-ae3d-5e3b7f8f9370",
         "name": "Generate New Concept Prompt"
       },
       {
@@ -665,13 +610,13 @@
           },
           "options": {}
         },
-        "id": "4efb9f86-d47d-49d0-830f-250ebf32531a",
+        "id": "4e522cad-bf03-4f44-a98a-d2ddc52fb728",
         "name": "Generate New Concept AI Call",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          -1320,
-          940.5
+          -1980,
+          1080
         ],
         "credentials": {
           "openAiApi": {
@@ -688,10 +633,10 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -2860,
-          130
+          -3520,
+          260
         ],
-        "id": "ad1ad3f2-6de6-4e89-a838-cf98ea0c983f",
+        "id": "f3863d49-eae1-4d92-ba15-e80f7d67671d",
         "name": "Core Orchestrator"
       },
       {
@@ -807,24 +752,24 @@
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.2,
         "position": [
-          -2640,
-          88
+          -3300,
+          220
         ],
-        "id": "a8f5c0f1-b534-45ea-b001-5cc3ebc1c6b8",
+        "id": "5fca4f59-d2c7-4936-907a-cfa0475f25c4",
         "name": "Core Router"
       },
       {
         "parameters": {
           "mode": "runOnceForEachItem",
-          "jsCode": "// Adaptive Orchestrator Router Prompt - WITH LEARNER NOTE SUPPORT\n// Get session directly from global\nconst sessionId = $json.sessionId;\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\nif (!session) {\n  throw new Error(`Session ${sessionId} not found in global state`);\n}\n\nconst messages = [\n  {\n    role: \"system\",\n    content: \"You are an adaptive learning orchestrator. Analyze the current learning state and decide the next best action for the learner. When learner notes are provided, carefully analyze them to determine if the learner needs clarification, wants to skip, is ready to progress, or would benefit from additional content. You can also decide whether to grade a pending assessment or skip grading based on the learner's needs.\"\n  },\n  {\n    role: \"user\", \n    content: `Current State Machine:\n- Current State: ${session.stateMachine.currentState}\n- Previous State: ${session.stateMachine.previousState || 'None'}\n- Pending Grading: ${session.stateMachine.pendingGrading}\n${session.stateMachine.currentState === 'first_concept_ready' ? '- Note: This is the first concept after welcome' : ''}\n\nCurrent Learning State:\n- Course Topic: ${$json.courseTopic}\n- Current Concept: ${session.currentConcept?.title || 'None'}\n- Tools Already Used: ${session.currentConceptTools.join(', ') || 'None'}\n- Last Assessment Score: ${session.lastAssessmentScore || 'N/A'}/5\n- Knowledge Gaps: ${session.knowledgeGaps?.join(', ') || 'None'}\n- Gap Attempts: ${JSON.stringify(session.gapAttempts || {})}\n- Recent Questions: ${session.recentQuestions?.join('; ') || 'None'}\n- Completed Concepts: ${session.completedConcepts.length}\n- Remaining Core Concepts: ${session.remainingCoreConcepts.length}\n\n${$json.learnerInput?.note ? `\nIMPORTANT - LEARNER NOTE ANALYSIS REQUIRED:\nThe learner just submitted this note/question with their input:\n\"${$json.learnerInput.note}\"\n\nCurrent Concept Being Studied: ${session.currentConcept?.title}\nConcept Summary: ${session.currentConcept?.summary || 'N/A'}\n\nAnalyze this note carefully to determine:\n1. Is the learner confused or asking for clarification? \n   - Look for: question marks, words like \"confused\", \"don't understand\", \"unclear\", \"help\"\n   - If yes → strongly consider insert_concept to address the confusion\n\n2. Is the learner showing understanding and ready to move on?\n   - Look for: \"I get it\", \"makes sense\", \"understood\", \"ready\"\n   - If yes → proceed to assessment\n\n3. Is the learner making connections or showing deeper thinking?\n   - Look for: relating to their role/experience, asking advanced questions, making analogies\n   - If yes AND prior assessment scores are high → consider prompt_exercise\n\n4. Does the note reveal specific knowledge gaps?\n   - Look for: misconceptions, incorrect assumptions, missing foundational knowledge\n   - If yes → insert_concept with specific focus on the gap\n\n5. Is the learner asking for examples or application to their role?\n   - Look for: \"example\", \"how does this apply\", \"in practice\", \"for ${$json.learnerProfile?.role}\"\n   - If yes → insert_concept with practical examples\n` : ''}\n\n${session.pendingAssessment ? `\nPENDING ASSESSMENT:\n- Answer submitted: \"${session.pendingAssessment.answer}\"\n- Note submitted: \"${session.pendingAssessment.note}\"\n- Question was: \"${session.pendingAssessment.question}\"\n\nYou must decide whether to:\n1. Grade the assessment (nextAction: \"grade_assessment\")\n2. Skip grading and move to something else based on the note content\n` : ''}\n\nDecision Rules:\n1. Always start new concepts with concept_card\n2. If learner explicitly asks to skip (e.g., \"skip this\", \"I know this\", \"move on\"):\n   - Set skipGrading: true (if assessment pending)\n   - Set markAsComplete: true with completionType: \"skipped\"\n   - Set nextAction: \"concept_complete\"\n3. If learner shows severe confusion and has pending assessment:\n   - Set skipGrading: true (grading won't help)\n   - Set nextAction: \"insert_concept\" to address confusion\n4. If learner has pending assessment and asks a clarifying question:\n   - Set nextAction: \"grade_assessment\" to evaluate first\n5. Follow normal progression rules for other cases\n\n${$json.learnerInput?.note ? 'IMPORTANT: The learner note should heavily influence your decision. Prioritize addressing their specific question or concern.' : ''}\n\nReturn JSON:\n{\n  \"nextAction\": \"grade_assessment|concept_card|assessment|prompt_exercise|concept_complete|insert_concept\",\n  \"reasoning\": \"Brief explanation of decision\",\n  \"skipGrading\": true|false (only if assessment is pending),\n  \"markAsComplete\": true|false (if learner wants to skip),\n  \"completionType\": \"normal|skipped\" (if markAsComplete is true),\n  \"skipReason\": \"reason for skipping if applicable\",\n  \"conceptNeeded\": {\n    \"reason\": \"specific gap to address if action is insert_concept\",\n    \"focus\": \"topic area for new concept if inserting\"\n  },\n  \"noteAnalysis\": {\n    \"understanding\": \"low|medium|high\",\n    \"needsClarification\": true|false,\n    \"wantsToSkip\": true|false,\n    \"specificRequest\": \"what they are asking for if clear\",\n    \"sentiment\": \"confused|curious|confident|frustrated|dismissive\"\n  }\n}`\n  }\n];\n\nreturn {\n  messages,\n  model: \"gpt-4o\",\n  temperature: 0.3,\n  max_tokens: 300,\n  response_format: { type: \"json_object\" },\n  // Pass through original data WITHOUT sessionState\n  originalData: {\n    sessionId: $json.sessionId,\n    action: $json.action,\n    learnerInput: $json.learnerInput,\n    courseTopic: $json.courseTopic,\n    learnerProfile: $json.learnerProfile,\n    coreConcepts: $json.coreConcepts,\n    userName: $json.userName,\n    currentConcept: session.currentConcept, // Include current concept for reference\n    stateMachine: {\n      currentState: session.stateMachine.currentState // Only pass minimal state info\n    }\n  }\n};"
+          "jsCode": "// Adaptive Orchestrator Router Prompt - WITH LEARNER NOTE SUPPORT\n// Get session directly from global\nconst sessionId = $json.sessionId;\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\nif (!session) {\n  throw new Error(`Session ${sessionId} not found in global state`);\n}\n\nconst messages = [\n  {\n    role: \"system\",\n    content: \"You are an adaptive learning orchestrator. Analyze the current learning state and decide the next best action for the learner. When learner notes are provided, carefully analyze them to determine if the learner needs clarification, wants to skip, is ready to progress, or would benefit from additional content. You can also decide whether to grade a pending assessment or skip grading based on the learner's needs.\"\n  },\n  {\n    role: \"user\", \n    content: `Current State Machine:\n- Current State: ${session.stateMachine.currentState}\n- Previous State: ${session.stateMachine.previousState || 'None'}\n- Pending Grading: ${session.stateMachine.pendingGrading}\n${session.stateMachine.currentState === 'first_concept_ready' ? '- Note: This is the first concept after welcome' : ''}\n\nCurrent Learning State:\n- Course Topic: ${$json.courseTopic}\n- Current Concept: ${session.currentConcept?.title || 'None'}\n- Tools Already Used: ${session.currentConceptTools.join(', ') || 'None'}\n- Last Assessment Score: ${session.lastAssessmentScore || 'N/A'}/5\n- Knowledge Gaps: ${session.knowledgeGaps?.join(', ') || 'None'}\n- Gap Attempts: ${JSON.stringify(session.gapAttempts || {})}\n- Recent Questions: ${session.recentQuestions?.join('; ') || 'None'}\n- Completed Concepts: ${session.completedConcepts.length}\n- Remaining Core Concepts: ${session.remainingCoreConcepts.length}\n\n${$json.learnerInput?.note ? `\nIMPORTANT - LEARNER NOTE ANALYSIS REQUIRED:\nThe learner just submitted this note/question with their input:\n\"${$json.learnerInput.note}\"\n\nCurrent Concept Being Studied: ${session.currentConcept?.title}\nConcept Summary: ${session.currentConcept?.summary || 'N/A'}\n\nAnalyze this note carefully to determine:\n1. Is the learner confused or asking for clarification? \n   - Look for: question marks, words like \"confused\", \"don't understand\", \"unclear\", \"help\"\n   - If yes → strongly consider insert_concept to address the confusion\n\n2. Is the learner showing understanding and ready to move on?\n   - Look for: \"I get it\", \"makes sense\", \"understood\", \"ready\"\n   - If yes → proceed to assessment\n\n3. Is the learner making connections or showing deeper thinking?\n   - Look for: relating to their role/experience, asking advanced questions, making analogies\n   - If yes AND prior assessment scores are high → consider prompt_exercise\n\n4. Does the note reveal specific knowledge gaps?\n   - Look for: misconceptions, incorrect assumptions, missing foundational knowledge\n   - If yes → insert_concept with specific focus on the gap\n\n5. Is the learner asking for examples or application to their role?\n   - Look for: \"example\", \"how does this apply\", \"in practice\", \"for ${$json.learnerProfile?.role}\"\n   - If yes → insert_concept with practical examples\n` : ''}\n\n${session.pendingAssessment ? `\nPENDING ASSESSMENT:\n- Answer submitted: \"${session.pendingAssessment.answer}\"\n- Note submitted: \"${session.pendingAssessment.note}\"\n- Question was: \"${session.pendingAssessment.question}\"\n\nYou must decide whether to:\n1. Grade the assessment (nextAction: \"grade_assessment\")\n2. Skip grading and move to something else based on the note content\n` : ''}\n\n${session.pendingPromptEvaluation ? `\nPENDING PROMPT EVALUATION:\n- Prompt submitted: \"${session.pendingPromptEvaluation.prompt}\"\n- Note submitted: \"${session.pendingPromptEvaluation.note}\"\n- Task was: \"${session.pendingPromptEvaluation.task}\"\n\nYou must decide whether to:\n1. Evaluate the prompt (nextAction: \"evaluate_prompt\")\n2. Skip evaluation and do something else based on the note content\n\nDecision Rules for Prompt Exercise:\n1. If learner shows confusion or asks for help with prompting:\n   - Set skipEvaluation: true\n   - Set nextAction: \"insert_concept\" with focus on prompt engineering\n2. If learner wants to skip or says they understand:\n   - Set skipEvaluation: true\n   - Set nextAction: \"concept_complete\"\n3. Otherwise, proceed with evaluation:\n   - Set nextAction: \"evaluate_prompt\"\n` : ''}\n\nDecision Rules:\n1. Always start new concepts with concept_card\n2. If learner explicitly asks to skip (e.g., \"skip this\", \"I know this\", \"move on\"):\n   - Set skipGrading: true (if assessment pending)\n   - Set markAsComplete: true with completionType: \"skipped\"\n   - Set nextAction: \"concept_complete\"\n3. If learner shows severe confusion and has pending assessment:\n   - Set skipGrading: true (grading won't help)\n   - Set nextAction: \"insert_concept\" to address confusion\n4. If learner has pending assessment and asks a clarifying question:\n   - Set nextAction: \"grade_assessment\" to evaluate first\n5. Follow normal progression rules for other cases\n\n${$json.learnerInput?.note ? 'IMPORTANT: The learner note should heavily influence your decision. Prioritize addressing their specific question or concern.' : ''}\n\nReturn JSON:\n{\n  \"nextAction\": \"grade_assessment|concept_card|assessment|prompt_exercise|concept_complete|insert_concept\",\n  \"reasoning\": \"Brief explanation of decision\",\n  \"skipGrading\": true|false (only if assessment is pending),\n  \"markAsComplete\": true|false (if learner wants to skip),\n  \"completionType\": \"normal|skipped\" (if markAsComplete is true),\n  \"skipReason\": \"reason for skipping if applicable\",\n  \"conceptNeeded\": {\n    \"reason\": \"specific gap to address if action is insert_concept\",\n    \"focus\": \"topic area for new concept if inserting\"\n  },\n  \"noteAnalysis\": {\n    \"understanding\": \"low|medium|high\",\n    \"needsClarification\": true|false,\n    \"wantsToSkip\": true|false,\n    \"specificRequest\": \"what they are asking for if clear\",\n    \"sentiment\": \"confused|curious|confident|frustrated|dismissive\"\n  }\n}`\n  }\n];\n\nreturn {\n  messages,\n  model: \"gpt-4o\",\n  temperature: 0.3,\n  max_tokens: 300,\n  response_format: { type: \"json_object\" },\n  // Pass through original data WITHOUT sessionState\n  originalData: {\n    sessionId: $json.sessionId,\n    action: $json.action,\n    learnerInput: $json.learnerInput,\n    courseTopic: $json.courseTopic,\n    learnerProfile: $json.learnerProfile,\n    coreConcepts: $json.coreConcepts,\n    userName: $json.userName,\n    currentConcept: session.currentConcept, // Include current concept for reference\n    stateMachine: {\n      currentState: session.stateMachine.currentState // Only pass minimal state info\n    }\n  }\n};"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -2420,
-          505
+          -3080,
+          640
         ],
-        "id": "06db88ce-a959-484a-b3ae-40106cef6daa",
+        "id": "0b120739-9790-444d-b56a-c130d289fb03",
         "name": "Adaptive Orchestrator Router Prompt"
       },
       {
@@ -860,13 +805,13 @@
           },
           "options": {}
         },
-        "id": "5c507846-adac-4cb6-b280-69e318f94781",
+        "id": "d150222c-67cb-4140-b485-0a6d2de4a0d9",
         "name": "Adaptive Orchestrator AI Call",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          -2200,
-          505
+          -2860,
+          640
         ],
         "credentials": {
           "openAiApi": {
@@ -880,13 +825,13 @@
           "mode": "runOnceForEachItem",
           "jsCode": "// Process Adaptive Orchestrator Decision - ENHANCED\nconst orchestratorDecision = JSON.parse($json.choices[0].message.content);\nconst originalData = $node[\"Adaptive Orchestrator Router Prompt\"].json.originalData;\nconst sessionId = originalData.sessionId;\n\n// Get session directly from global\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// Initialize tracking if needed\nif (!session.gapAttempts) session.gapAttempts = {};\nif (!session.deferredGaps) session.deferredGaps = [];\nif (!session.skippedConcepts) session.skippedConcepts = [];\n\n// HANDLE SKIP GRADING SIGNAL\nif (orchestratorDecision.skipGrading && session.pendingAssessment) {\n  // Clear pending grading state\n  session.stateMachine.pendingGrading = false;\n  \n  // Track that assessment was skipped\n  if (!session.assessmentHistory) session.assessmentHistory = [];\n  session.assessmentHistory.push({\n    concept: session.currentConcept.title,\n    conceptId: session.currentConcept.id,\n    answer: session.pendingAssessment.answer,\n    note: session.pendingAssessment.note,\n    score: null,\n    skipped: true,\n    skipReason: orchestratorDecision.skipReason || 'Based on learner note',\n    timestamp: new Date().toISOString()\n  });\n  \n  // Clear pending assessment\n  session.pendingAssessment = null;\n}\n\n// HANDLE MARK AS COMPLETE SIGNAL (for skipping concepts)\nif (orchestratorDecision.markAsComplete && orchestratorDecision.completionType === 'skipped') {\n  // Track as skipped concept\n  session.skippedConcepts.push({\n    conceptId: session.currentConcept.id,\n    conceptTitle: session.currentConcept.title,\n    reason: orchestratorDecision.skipReason || 'Learner requested skip',\n    toolsCompleted: session.currentConceptTools,\n    hadPendingAssessment: !!session.pendingAssessment,\n    timestamp: new Date().toISOString()\n  });\n  \n  // Clear any pending assessment data\n  session.pendingAssessment = null;\n  session.lastAssessmentScore = null;\n  session.stateMachine.pendingGrading = false;\n  \n  // Override action to concept_complete to move forward\n  orchestratorDecision.nextAction = 'concept_complete';\n}\n\n// EXISTING GAP ATTEMPT LOGIC\n// Check if we're trying to insert a concept for a gap we've already attempted multiple times\nif (orchestratorDecision.nextAction === 'insert_concept' && session.knowledgeGaps.length > 0) {\n  const targetGap = session.knowledgeGaps[0];\n  const attempts = session.gapAttempts[targetGap] || 0;\n  \n  if (attempts >= 2) {\n    // Override the orchestrator's decision\n    orchestratorDecision.nextAction = 'concept_complete';\n    orchestratorDecision.reasoning = `Gap \"${targetGap}\" has been attempted ${attempts} times. Moving forward with core curriculum.`;\n    \n    // Move gap to deferred list\n    session.knowledgeGaps = session.knowledgeGaps.filter(gap => gap !== targetGap);\n    session.deferredGaps.push({\n      gap: targetGap,\n      attempts: attempts,\n      timestamp: new Date().toISOString()\n    });\n    \n    // Clean up attempts counter\n    delete session.gapAttempts[targetGap];\n  }\n}\n\n// EXISTING FIRST CONCEPT VALIDATION\nif (originalData.stateMachine?.currentState === 'first_concept_ready' && \n    orchestratorDecision.nextAction !== 'concept_card' &&\n    !originalData.learnerInput?.note) {\n  orchestratorDecision.nextAction = 'concept_card';\n  orchestratorDecision.reasoning = 'Starting first concept with concept card as required';\n}\n\n// Save updated session state back to global\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Return WITHOUT sessionState\nreturn {\n  ...originalData,\n  orchestratorDecision,\n  nextAction: orchestratorDecision.nextAction\n};"
         },
-        "id": "924dc5db-eb65-4570-9d4b-74c21f2d94a7",
+        "id": "83218294-be40-429c-b4bb-ee4127a29109",
         "name": "Process Adaptive Orchestrator Decision",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -1980,
-          505
+          -2640,
+          640
         ]
       },
       {
@@ -896,10 +841,10 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          220,
-          765.5
+          -440,
+          900
         ],
-        "id": "be64665b-45fb-4adb-8b1e-2cb107856920",
+        "id": "a446c2ae-3f89-4d49-bd72-d4cae7841669",
         "name": "Smart Reply Generator Prompt"
       },
       {
@@ -935,13 +880,13 @@
           },
           "options": {}
         },
-        "id": "7bb05606-4375-4a87-a154-53c40f59b087",
+        "id": "6cd5e1ff-fa27-49af-ad79-882b5a0c32f6",
         "name": "Smart Reply Generator AI Call",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          440,
-          765.5
+          -220,
+          900
         ],
         "credentials": {
           "openAiApi": {
@@ -957,10 +902,10 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          660,
-          765.5
+          0,
+          900
         ],
-        "id": "8f8042ce-a78a-4728-9bd9-f3a12ba8c4f9",
+        "id": "33aab026-8e0c-4f77-abef-4723136dff71",
         "name": "Process Smart Replies"
       },
       {
@@ -970,11 +915,146 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -3220,
-          380
+          -3880,
+          500
         ],
-        "id": "a1623613-1c5c-400f-99bc-61c16df8f484",
+        "id": "8474c68e-81a1-4a3b-8e26-f57d53da3105",
         "name": "Init Course Data All"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Generate Prompt Exercise - Creates targeted prompt exercises\nconst sessionId = $json.sessionId;\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\nif (!session) {\n  throw new Error(`Session ${sessionId} not found in global state`);\n}\n\nconst messages = [\n  {\n    role: \"system\",\n    content: \"You are an expert instructional designer creating prompt engineering exercises for product managers. Create exercises that test practical application of AI concepts in product management contexts.\"\n  },\n  {\n    role: \"user\", \n    content: `Context:\n- Course Topic: ${$json.courseTopic}\n- Current Concept: ${session.currentConcept?.title || 'Unknown'}\n- Concept Summary: ${session.currentConcept?.summary || 'N/A'}\n- Learner Profile: ${$json.learnerProfile.role} at ${$json.learnerProfile.company}\n- Learner Skills: ${$json.learnerProfile.skills.join(', ')}\n\nKnowledge State:\n- Strengths: ${session.knowledgeStrengths?.join(', ') || 'None tracked yet'}\n- Gaps: ${session.knowledgeGaps?.join(', ') || 'None tracked yet'}\n- Recent Assessment Score: ${session.lastAssessmentScore || 'N/A'}/5\n\nPrevious Interactions:\n- Tools Used This Concept: ${session.currentConceptTools.join(', ')}\n- Recent Questions: ${session.recentQuestions?.slice(-2).join('; ') || 'None'}\n\n${session.orchestratorDecision?.exerciseFocus ? \n  `Special Focus: Create an exercise that specifically addresses: \"${session.orchestratorDecision.exerciseFocus}\"` : \n  'Create a prompt exercise that reinforces the current concept.'}\n\nGenerate a prompt exercise that:\n1. Is directly relevant to the current concept\n2. Tests practical application in their role as ${$json.learnerProfile.role}\n3. Addresses any identified knowledge gaps\n4. Builds on their existing strengths\n5. Is appropriately challenging based on their assessment score\n\nReturn JSON:\n{\n  \"task\": \"Clear, specific task description\",\n  \"context\": \"Brief scenario or context for the task\",\n  \"expectedOutcomes\": [\"What a good prompt should achieve\"],\n  \"hints\": [\"2-3 helpful hints without giving away the answer\"],\n  \"evaluationCriteria\": {\n    \"must_include\": [\"Key elements that must be in the prompt\"],\n    \"should_consider\": [\"Important considerations\"],\n    \"avoid\": [\"Common mistakes to avoid\"]\n  },\n  \"difficulty\": \"beginner|intermediate|advanced\",\n  \"targetedSkills\": [\"specific skills being tested\"]\n}`\n  }\n];\n\nreturn {\n  messages,\n  model: \"gpt-4o\",\n  temperature: 0.7,\n  max_tokens: 400,\n  response_format: { type: \"json_object\" },\n  originalData: $json\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1360,
+          1140
+        ],
+        "id": "3c3ab628-9801-4765-8c4b-fd098b817d2a",
+        "name": "Generate Prompt Exercise Prompt"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Process Generated Prompt Exercise\nconst exerciseData = JSON.parse($json.choices[0].message.content);\nconst originalData = $node[\"Generate Prompt Exercise Prompt\"].json.originalData;\nconst sessionId = originalData.sessionId;\n\n// Get session from global\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// Create enhanced prompt task combining base and generated data\nconst enhancedTask = {\n  baseTask: session.currentConcept?.promptTask || exerciseData.task,\n  generatedTask: exerciseData.task,\n  context: exerciseData.context,\n  hints: exerciseData.hints,\n  difficulty: exerciseData.difficulty,\n  targetedSkills: exerciseData.targetedSkills,\n  evaluationCriteria: exerciseData.evaluationCriteria\n};\n\n// Store the enhanced task in session for evaluation later\nsession.currentPromptExercise = enhancedTask;\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Return to prompt exercise handler with enhanced data\nreturn {\n  ...originalData,\n  enhancedPromptTask: enhancedTask,\n  nextAction: 'prompt_exercise'\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -900,
+          1140
+        ],
+        "id": "db9ee068-bfb3-4661-a3aa-815bf147a66e",
+        "name": "Process Generated Exercise"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.myNewField = 1;\n}\n\nreturn $input.all();"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1500,
+          700
+        ],
+        "id": "006d7bee-2046-4aee-8a0f-a1a90ab2d2f5",
+        "name": "Evaluate Prompt Excercise Prompt"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.openai.com/v1/chat/completions",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "openAiApi",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "model",
+                "value": "={{ $json.model }}"
+              },
+              {
+                "name": "messages",
+                "value": "={{ $json.messages }}"
+              },
+              {
+                "name": "temperature",
+                "value": "={{ $json.temperature }}"
+              },
+              {
+                "name": "max_tokens",
+                "value": "={{ $json.max_tokens }}"
+              },
+              {
+                "name": "response_format",
+                "value": "={{ $json.response_format }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "f894d947-7f77-4062-83ac-66b344a9a8c7",
+        "name": "Generate Prompt Exercise Evaluation AI Call",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -1280,
+          700
+        ],
+        "credentials": {
+          "openAiApi": {
+            "id": "UFaW72U0IV5U0Ec5",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.openai.com/v1/chat/completions",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "openAiApi",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "model",
+                "value": "={{ $json.model }}"
+              },
+              {
+                "name": "messages",
+                "value": "={{ $json.messages }}"
+              },
+              {
+                "name": "temperature",
+                "value": "={{ $json.temperature }}"
+              },
+              {
+                "name": "max_tokens",
+                "value": "={{ $json.max_tokens }}"
+              },
+              {
+                "name": "response_format",
+                "value": "={{ $json.response_format }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "8be8dd7a-c805-4fbb-a1b5-c3a66387fc2e",
+        "name": "Generate Prompt Exercise Generate AI Call",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -1120,
+          1140
+        ],
+        "credentials": {
+          "openAiApi": {
+            "id": "UFaW72U0IV5U0Ec5",
+            "name": "OpenAi account"
+          }
+        }
       }
     ],
     "pinData": {},
@@ -1019,7 +1099,7 @@
           ],
           [
             {
-              "node": "Prompt Exercise Handler",
+              "node": "Generate Prompt Exercise Prompt",
               "type": "main",
               "index": 0
             }
@@ -1063,36 +1143,7 @@
         "main": [
           [
             {
-              "node": "Need Evaluation?",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Need Evaluation?": {
-        "main": [
-          [
-            {
-              "node": "Evaluate Prompt",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Smart Reply Generator Prompt",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Evaluate Prompt": {
-        "main": [
-          [
-            {
-              "node": "Process Evaluation",
+              "node": "Evaluate Prompt Excercise Prompt",
               "type": "main",
               "index": 0
             }
@@ -1260,6 +1311,13 @@
               "type": "main",
               "index": 0
             }
+          ],
+          [
+            {
+              "node": "Prompt Exercise Handler",
+              "type": "main",
+              "index": 0
+            }
           ]
         ]
       },
@@ -1422,16 +1480,76 @@
             }
           ]
         ]
+      },
+      "Init Course Data All": {
+        "main": [
+          []
+        ]
+      },
+      "Generate Prompt Exercise Prompt": {
+        "main": [
+          [
+            {
+              "node": "Generate Prompt Exercise Generate AI Call",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Evaluate Prompt Excercise Prompt": {
+        "main": [
+          [
+            {
+              "node": "Generate Prompt Exercise Evaluation AI Call",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Generate Prompt Exercise Generate AI Call": {
+        "main": [
+          [
+            {
+              "node": "Process Generated Exercise",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Generate Prompt Exercise Evaluation AI Call": {
+        "main": [
+          [
+            {
+              "node": "Process Evaluation",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Process Generated Exercise": {
+        "main": [
+          [
+            {
+              "node": "Smart Reply Generator Prompt",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "active": true,
     "settings": {
       "executionOrder": "v1"
     },
-    "versionId": "fab3e6f0-3f1a-4846-91d6-f9ccdb4a2147",
+    "versionId": "b4727c70-ee07-42ce-be1c-1d3888598ca6",
     "meta": {
       "instanceId": "eea8bfa4918320bc469ce323a7b217b8209b639e450c67bc3e6a88bdf340b7de"
     },
-    "id": "KAufRbE2JWWbkbMk",
+    "id": "O6jsZF09QxYggLyr",
     "tags": []
   }

@@ -4,6 +4,7 @@ IMMEDIATE
 a) audit all flow states to make sure they are correct
 b) smart reply generator shoudl take into account all input paths
 c) are knowledge gaps flowing through system
+d) are there other state that can be fully replaced by just looking at the state machine e.g. "waitingForInput" and "lastToolUsed", session.pendingAssessment, session.pendingPromptEvaluation
 
 MID
 ------
@@ -29,9 +30,11 @@ LONG
 SUPER LONG (not for prototype)
 ----------------
 0) exception handling
+1b) exception handling and restoring state machine
 1) race conditions
 2) how to retrieve content
 3) store session state (consider GDPR
 4) learner ability to save state and exit course 
 5) ability to store insight of learner across sessions
 6) LLM decision safety checks in case they make wrong decisions
+7) state machine manager, should manage all transitions, and should handle exception and state fallback

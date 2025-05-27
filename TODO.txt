@@ -1,10 +1,8 @@
 
 IMMEDIATE
 ------
-e) fix promptTask state
 1) add smart replies to UI
 2) add debug data to UI
-6) Change concepts to be longer, should show a lot of data
 5) change UI for learner notes to have one button, not 2
 6) TEST ALL FLOWS
 

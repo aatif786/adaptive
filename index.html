@@ -417,13 +417,27 @@
             color: #666;
             margin-top: 5px;
         }
+
+        .debug-info {
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: monospace;
+            display: none;
+        }
+
+        .debug-info.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.07
+            v0.08
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -447,6 +461,7 @@
                 </div>
                 
                 <button class="btn btn-primary" onclick="startCourse()">Start Course</button>
+                <button class="btn btn-secondary" onclick="toggleDebug()" style="margin-left: 10px;">Toggle Debug</button>
             </div>
 
             <div id="contentArea" style="display: none;">
@@ -461,6 +476,11 @@
             <div class="error-message" id="errorMessage">
                 <strong>Connection Error:</strong> <span id="errorText"></span>
                 <button class="btn btn-secondary" style="float: right; padding: 5px 10px;" onclick="hideError()">Close</button>
+            </div>
+            
+            <div class="debug-info" id="debugInfo">
+                <strong>Debug Info:</strong>
+                <div id="debugContent"></div>
             </div>
         </div>
     </div>
@@ -477,6 +497,8 @@
             waitingForInput: false,
             inputType: ''
         };
+
+        let debugMode = false;
 
         // Generate unique session ID on load
         window.onload = function() {
@@ -495,6 +517,18 @@
             const random = Math.random().toString(36).substring(2, 9);
             currentState.sessionId = `session-${timestamp}-${random}`;
             document.getElementById('sessionInfo').textContent = `Session ID: ${currentState.sessionId}`;
+        }
+
+        function toggleDebug() {
+            debugMode = !debugMode;
+            document.getElementById('debugInfo').classList.toggle('active');
+        }
+
+        function updateDebug(info) {
+            if (debugMode) {
+                const debugContent = document.getElementById('debugContent');
+                debugContent.innerHTML = `<pre>${JSON.stringify(info, null, 2)}</pre>`;
+            }
         }
 
         function startCourse() {
@@ -533,26 +567,24 @@
             const loadingSpinner = document.getElementById('loadingSpinner');
             loadingSpinner.classList.add('active');
             
+            const requestData = {
+                sessionId: currentState.sessionId,
+                userName: currentState.userName,
+                action: action,
+                learnerInput: learnerInput
+            };
+            
             try {
                 console.log('Sending request to:', N8N_WEBHOOK_URL);
-                console.log('Request data:', {
-                    sessionId: currentState.sessionId,
-                    userName: currentState.userName,
-                    action: action,
-                    learnerInput: learnerInput
-                });
+                console.log('Request data:', requestData);
+                updateDebug({ request: requestData });
                 
                 const response = await fetch(N8N_WEBHOOK_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        sessionId: currentState.sessionId,
-                        userName: currentState.userName,
-                        action: action,
-                        learnerInput: learnerInput
-                    })
+                    body: JSON.stringify(requestData)
                 });
 
                 console.log('Response status:', response.status);
@@ -579,9 +611,11 @@
                 }
                 
                 console.log('Parsed response data:', data);
+                updateDebug({ response: data });
                 handleResponse(data);
             } catch (error) {
                 console.error('Detailed error:', error);
+                updateDebug({ error: error.message });
                 
                 // Show more detailed error message
                 let errorMessage = 'Connection Error: ';
@@ -759,7 +793,7 @@
                 html += `
                     <div class="input-area">
                         <label class="input-label">Your answer:</label>
-                        <textarea id="learnerAnswer" placeholder="Type your answer here..."></textarea>
+                        <textarea id="learnerAnswer" placeholder="Type your answer here..." required></textarea>
                         
                         <label class="input-label" style="margin-top: 15px;">Add a note (optional):</label>
                         <textarea id="learnerNote" placeholder="Any questions or clarifications?" style="min-height: 60px;"></textarea>
@@ -850,7 +884,7 @@
                 html += `
                     <div class="input-area">
                         <label class="input-label">Write your prompt:</label>
-                        <textarea id="learnerPrompt" placeholder="Type your prompt here..."></textarea>
+                        <textarea id="learnerPrompt" placeholder="Type your prompt here..." required></textarea>
                         
                         <label class="input-label" style="margin-top: 15px;">Add a note (optional):</label>
                         <textarea id="learnerNote" placeholder="Any questions or thoughts?" style="min-height: 60px;"></textarea>
@@ -957,13 +991,15 @@
             const note = document.getElementById('learnerNote').value;
             
             if (!answer.trim()) {
-                showError('Please provide an answer');
+                showError('Please provide an answer before submitting');
                 return;
             }
             
+            console.log('Submitting assessment with answer:', answer);
+            
             sendRequest('submit_response', { 
-                answer: answer,
-                note: note 
+                answer: answer.trim(),
+                note: note.trim() 
             });
         }
 
@@ -977,13 +1013,13 @@
             const note = document.getElementById('learnerNote').value;
             
             if (!prompt.trim()) {
-                showError('Please write a prompt');
+                showError('Please write a prompt before submitting');
                 return;
             }
             
             sendRequest('submit_response', { 
-                prompt: prompt,
-                note: note 
+                prompt: prompt.trim(),
+                note: note.trim() 
             });
         }
 

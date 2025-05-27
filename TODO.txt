@@ -1,9 +1,6 @@
 
 IMMEDIATE
 ------
-a) fix learner note
-b) fix smart reply generator
-c) is session state by guid correct?
 d) audit all flow states to make sure they are correct
 
 MID
@@ -31,3 +28,6 @@ SUPER LONG (not for prototype)
 0) exception handling
 1) race conditions
 2) how to retrieve content
+3) store session state (consider GDPR
+4) learner ability to save state and exit course 
+5) ability to store insight of learner across sessions

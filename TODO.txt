@@ -12,6 +12,8 @@ IMMEDIATE
 11) fix UI timeout
 12) concept complete is stuck for one iteration? 
 13) remaining core concept is still 10 even though there is only a few
+14) turn off auto advance
+15) skipping doesn't work during assessment?
 
 MID
 ------

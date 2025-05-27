@@ -658,6 +658,10 @@
                 renderCompletionScreen(contentArea, data.toolData);
             } else {
                 switch (data.toolType) {
+                    case 'transition':
+                        renderTransition(contentArea, data.toolData);
+                        // Remove the auto-continue since we want user to click
+                        break;
                     case 'welcome':
                         renderWelcome(contentArea, data.toolData);
                         break;
@@ -980,6 +984,58 @@
                 </div>
             `;
         }
+
+        function renderTransition(container, data) {
+    let html = `
+        <div class="tool-type">
+            <span class="tool-icon">✅</span>
+            Concept Complete
+        </div>
+        <div style="text-align: center; padding: 40px;">
+            <h2 style="color: #0a66c2; margin-bottom: 20px;">
+                ${data.completedConcept} - Complete!
+            </h2>
+            <p style="font-size: 18px; margin-bottom: 30px; color: #555;">
+                ${data.message}
+            </p>
+    `;
+    
+    // Add smart replies if available
+    if (data.smartReplies && data.smartReplies.length > 0) {
+        // Handle the nested array structure
+        const replies = Array.isArray(data.smartReplies[0]) ? data.smartReplies[0] : data.smartReplies;
+        html += `
+            <div class="smart-replies-container" style="margin: 20px auto; max-width: 600px;">
+                <div class="smart-replies-label">Quick replies:</div>
+                <div class="smart-replies">
+        `;
+        replies.forEach(reply => {
+            html += `<button class="smart-reply-chip" onclick="selectSmartReply('transitionNote', '${reply.replace(/'/g, "\\'")}')">${reply}</button>`;
+        });
+        html += `
+                </div>
+            </div>
+        `;
+    }
+    
+    html += `
+        <div class="input-area" style="margin-top: 30px;">
+            <label class="input-label">Add a note or reflection (optional):</label>
+            <textarea id="transitionNote" placeholder="Any thoughts before moving to the next concept?" style="min-height: 80px;"></textarea>
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="continueToNext()">Continue to Next Concept</button>
+            </div>
+        </div>
+    </div>
+    `;
+    
+    container.innerHTML = html;
+}
+
+function continueToNext() {
+    const note = document.getElementById('transitionNote')?.value || '';
+    sendRequest('next', { note: note });
+}
 
         function submitConceptCard() {
             const note = document.getElementById('learnerNote').value;

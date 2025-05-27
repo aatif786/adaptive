@@ -14,7 +14,7 @@
         "typeVersion": 1.1,
         "position": [
           -4180,
-          360
+          450
         ],
         "webhookId": "9ef00e80-0d3e-4fcb-b8ff-e621ee6fc02e"
       },
@@ -28,7 +28,7 @@
         "typeVersion": 2,
         "position": [
           -3740,
-          260
+          350
         ]
       },
       {
@@ -40,7 +40,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          0,
+          -220,
           0
         ]
       },
@@ -53,7 +53,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          0,
+          -220,
           200
         ]
       },
@@ -144,7 +144,7 @@
         "typeVersion": 3.2,
         "position": [
           -1540,
-          980
+          1275
         ]
       },
       {
@@ -157,8 +157,8 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -660,
-          780
+          -880,
+          1075
         ]
       },
       {
@@ -170,8 +170,8 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -660,
-          980
+          -880,
+          1275
         ]
       },
       {
@@ -184,33 +184,20 @@
         "typeVersion": 2,
         "position": [
           -1760,
-          400
+          450
         ]
       },
       {
         "parameters": {
-          "jsCode": "// Enhanced Prompt Exercise Handler\nconst concept = $json.currentConcept;\nconst sessionId = $json.sessionId;\nconst learnerPrompt = $json.learnerInput?.prompt;\nconst learnerNote = $json.learnerInput?.note;\nconst session = $json.sessionState;\n\n// Get enhanced task from session if available\nconst enhancedTask = session.currentPromptExercise || null;\n\n// Update session state\nif (!session.currentConceptTools.includes('prompt_exercise')) {\n  session.currentConceptTools.push('prompt_exercise');\n}\nsession.lastToolUsed = 'prompt_exercise';\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\nconst responseData = {\n  sessionId,\n  toolType: 'prompt_exercise',\n  conceptProgress: {\n    current: session.completedConcepts.length + 1,\n    total: session.remainingCoreConcepts.length + \n           session.completedConcepts.length + \n           session.insertedConcepts.length\n  },\n  toolData: {\n    // Use enhanced task if available, otherwise fall back to concept task\n    task: enhancedTask?.generatedTask || concept.promptTask,\n    context: enhancedTask?.context,\n    hints: enhancedTask?.hints,\n    conceptTitle: concept.title,\n    difficulty: enhancedTask?.difficulty\n  },\n  waitingForInput: !learnerPrompt,\n  inputType: 'prompt',\n  message: 'Practice your prompt engineering skills with this task.'\n};\n\n// If we have a prompt (and possibly a note), route to Adaptive Orchestrator\nif (learnerPrompt) {\n  // Store prompt and note for orchestrator decision\n  session.pendingPromptEvaluation = {\n    prompt: learnerPrompt,\n    note: learnerNote,\n    task: responseData.toolData.task,\n    evaluationCriteria: enhancedTask?.evaluationCriteria\n  };\n  \n  // Save state\n  $getWorkflowStaticData('global').sessions[sessionId] = session;\n  \n  return {\n    ...($json),\n    needsOrchestration: true,\n    responseData\n  };\n}\n\nreturn {\n  ...($json),\n  needsOrchestration: false,\n  responseData\n};"
+          "jsCode": "// Simplified Prompt Exercise Handler - Just presents the exercise\nconst concept = $json.currentConcept;\nconst sessionId = $json.sessionId;\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// Get enhanced task from session if available\nconst enhancedTask = session.currentPromptExercise || null;\n\n// Update session state\nif (!session.currentConceptTools.includes('prompt_exercise')) {\n  session.currentConceptTools.push('prompt_exercise');\n}\nsession.lastToolUsed = 'prompt_exercise';\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\nconst responseData = {\n  sessionId,\n  toolType: 'prompt_exercise',\n  conceptProgress: {\n    current: session.completedConcepts.length + 1,\n    total: session.remainingCoreConcepts.length + \n           session.completedConcepts.length + \n           session.insertedConcepts.length\n  },\n  toolData: {\n    task: enhancedTask?.generatedTask || concept.promptTask,\n    context: enhancedTask?.context,\n    hints: enhancedTask?.hints,\n    conceptTitle: concept.title,\n    difficulty: enhancedTask?.difficulty\n  },\n  waitingForInput: true,\n  inputType: 'prompt',\n  message: 'Practice your prompt engineering skills with this task.'\n};\n\n// Just return the response - no routing logic\nreturn {\n  ...($json),\n  responseData,\n  sessionId,\n  learnerProfile: $json.learnerProfile\n};"
         },
         "id": "8c078252-11f0-45cc-8a78-b9325c7852a0",
         "name": "Prompt Exercise Handler",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -1720,
-          700
-        ]
-      },
-      {
-        "parameters": {
-          "jsCode": "// Enhanced Process Prompt Evaluation with Knowledge Tracking\nconst evaluationResult = JSON.parse($json.choices[0].message.content);\nconst responseData = $node[\"Prompt Exercise Handler\"].json.responseData;\nconst sessionId = $node[\"Prompt Exercise Handler\"].json.sessionId;\n\n// Get session from global\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// Update knowledge state based on evaluation\nif (evaluationResult.knowledgeUpdate) {\n  // Add mastered concepts to strengths\n  evaluationResult.knowledgeUpdate.masteredConcepts.forEach(concept => {\n    if (!session.knowledgeStrengths.includes(concept)) {\n      session.knowledgeStrengths.push(concept);\n    }\n  });\n  \n  // Update gaps - remove mastered ones, add new ones\n  session.knowledgeGaps = session.knowledgeGaps.filter(\n    gap => !evaluationResult.knowledgeUpdate.masteredConcepts.includes(gap)\n  );\n  \n  evaluationResult.knowledgeUpdate.identifiedGaps.forEach(gap => {\n    if (!session.knowledgeGaps.includes(gap)) {\n      session.knowledgeGaps.push(gap);\n    }\n  });\n  \n  // Track in knowledge evolution\n  if (!session.knowledgeEvolution) {\n    session.knowledgeEvolution = [];\n  }\n  \n  session.knowledgeEvolution.push({\n    timestamp: new Date().toISOString(),\n    tool: 'prompt_exercise',\n    concept: session.currentConcept.title,\n    conceptId: session.currentConcept.id,\n    score: evaluationResult.score,\n    mastered: evaluationResult.knowledgeUpdate.masteredConcepts,\n    gaps: evaluationResult.knowledgeUpdate.identifiedGaps,\n    reasoning: evaluationResult.knowledgeUpdate.reasoning\n  });\n}\n\n// Clear pending evaluation\nsession.pendingPromptEvaluation = null;\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Add evaluation to response\nresponseData.toolData.evaluationResult = evaluationResult;\nresponseData.waitingForInput = false;\nresponseData.nextAction = 'Click Next to continue to the next concept.';\n\nreturn {\n  ...($node[\"Prompt Exercise Handler\"].json),\n  evaluationResult,\n  responseData\n};"
-        },
-        "id": "37cee35c-04b1-4afe-a139-6e0ed6fbc136",
-        "name": "Process Evaluation",
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          -1060,
-          700
+          -2200,
+          660
         ]
       },
       {
@@ -224,7 +211,7 @@
         "typeVersion": 2,
         "position": [
           -1760,
-          1080
+          1371
         ]
       },
       {
@@ -236,8 +223,8 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -660,
-          580
+          -880,
+          875
         ]
       },
       {
@@ -249,7 +236,7 @@
         "type": "n8n-nodes-base.merge",
         "typeVersion": 3,
         "position": [
-          220,
+          0,
           200
         ]
       },
@@ -262,7 +249,7 @@
         "type": "n8n-nodes-base.respondToWebhook",
         "typeVersion": 1.1,
         "position": [
-          660,
+          440,
           200
         ]
       },
@@ -278,7 +265,7 @@
         "typeVersion": 1.1,
         "position": [
           -4400,
-          1540
+          1995
         ],
         "webhookId": "594653ea-5a3e-4e99-9a1d-c2ecdf0f5c56"
       },
@@ -292,7 +279,7 @@
         "typeVersion": 2,
         "position": [
           -4180,
-          1540
+          1995
         ]
       },
       {
@@ -305,7 +292,7 @@
         "typeVersion": 1.1,
         "position": [
           -3960,
-          1540
+          1995
         ]
       },
       {
@@ -316,7 +303,7 @@
         "typeVersion": 2,
         "position": [
           -3960,
-          260
+          350
         ],
         "id": "0ca79391-caa9-441e-b45f-97e7ff15274d",
         "name": "Init Course Data"
@@ -329,7 +316,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          440,
+          220,
           200
         ],
         "id": "37069332-1455-4940-b6f6-aafa1043c4c1",
@@ -341,7 +328,7 @@
         "typeVersion": 1,
         "position": [
           -4400,
-          160
+          250
         ],
         "id": "df81d807-4ec5-4d7c-b4ec-522cbdd6fb6c",
         "name": "When clicking 'Test workflow'"
@@ -356,7 +343,7 @@
         "typeVersion": 3.4,
         "position": [
           -4180,
-          160
+          250
         ],
         "id": "90ce120e-03b0-496b-9caf-a2e4866385b9",
         "name": "Edit Fields"
@@ -389,6 +376,31 @@
                 },
                 "renameOutput": true,
                 "outputKey": "gradeAssessment"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "60aca0f7-b783-4e53-a0b2-153342db2528",
+                      "leftValue": "={{ $json.nextAction }}",
+                      "rightValue": "generate_prompt_exercise",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "evaluatePrompt"
               },
               {
                 "conditions": {
@@ -462,31 +474,6 @@
                 },
                 "renameOutput": true,
                 "outputKey": "insertNewConcept"
-              },
-              {
-                "conditions": {
-                  "options": {
-                    "caseSensitive": true,
-                    "leftValue": "",
-                    "typeValidation": "strict",
-                    "version": 2
-                  },
-                  "conditions": [
-                    {
-                      "id": "60aca0f7-b783-4e53-a0b2-153342db2528",
-                      "leftValue": "={{ $json.nextAction }}",
-                      "rightValue": "generate_prompt_exercise",
-                      "operator": {
-                        "type": "string",
-                        "operation": "equals",
-                        "name": "filter.operator.equals"
-                      }
-                    }
-                  ],
-                  "combinator": "and"
-                },
-                "renameOutput": true,
-                "outputKey": "evaluatePrompt"
               }
             ]
           },
@@ -498,7 +485,7 @@
         "typeVersion": 3.2,
         "position": [
           -2420,
-          620
+          833
         ]
       },
       {
@@ -540,7 +527,7 @@
         "typeVersion": 4.2,
         "position": [
           -1980,
-          400
+          450
         ],
         "credentials": {
           "openAiApi": {
@@ -558,7 +545,7 @@
         "typeVersion": 2,
         "position": [
           -2200,
-          400
+          460
         ],
         "id": "f1647970-1dd1-4326-9e8f-998e1221e5e0",
         "name": "Grade Assessment Prompt"
@@ -572,7 +559,7 @@
         "typeVersion": 2,
         "position": [
           -2200,
-          1080
+          1371
         ],
         "id": "9a4c3359-97ba-4835-ae3d-5e3b7f8f9370",
         "name": "Generate New Concept Prompt"
@@ -616,7 +603,7 @@
         "typeVersion": 4.2,
         "position": [
           -1980,
-          1080
+          1371
         ],
         "credentials": {
           "openAiApi": {
@@ -628,13 +615,13 @@
       {
         "parameters": {
           "mode": "runOnceForEachItem",
-          "jsCode": "// Combined Routing & Core Orchestrator - SIMPLIFIED\n// Handles both routing decisions AND simple deterministic transitions\n\nconst sessionId = $json.sessionId;\nconst action = $json.action;\nconst learnerInput = $json.learnerInput;\n\n// Read state directly from global\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\nif (!session) {\n  throw new Error(`Session ${sessionId} not found`);\n}\n\n// Get current state\nconst currentState = session.stateMachine.currentState;\nconst lastToolUsed = session.lastToolUsed;\nconst pendingGrading = session.stateMachine.pendingGrading;\nconst lastAssessmentScore = session.lastAssessmentScore;\nconst currentConcept = session.currentConcept;\n\n// Check if course is complete\nconst allConceptsCompleted = session.remainingCoreConcepts.length === 0;\nconst noPendingDynamicConcepts = session.insertedConcepts.every(\n  conceptId => session.completedConcepts.includes(conceptId)\n);\nconst courseComplete = !currentConcept && allConceptsCompleted && noPendingDynamicConcepts;\n\nconsole.log(`Routing: action=${action}, state=${currentState}`);\n\n// Initialize routing variables\nlet routeTo = null;\nlet updateState = null;\n\n// ROUTING LOGIC - Determine routing\nif (courseComplete) {\n  routeTo = 'show_completion';\n  updateState = 'course_complete';\n}\n// Start of course\nelse if (action === 'start' && currentState === 'uninitialized') {\n  routeTo = 'show_welcome';\n  updateState = 'welcome';\n}\n// Moving from welcome to first concept\nelse if (action === 'next' && currentState === 'welcome') {\n  // Get the first concept and set it as current\n  let nextConcept = null;\n  if (session.remainingCoreConcepts.length > 0) {\n    const nextId = session.remainingCoreConcepts[0];\n    nextConcept = $json.coreConcepts.find(c => c.id === nextId);\n  }\n  \n  if (nextConcept) {\n    session.currentConcept = nextConcept;\n    session.currentConceptTools = [];\n    // CHANGE: Route to Adaptive Orchestrator instead of directly to concept_card\n    routeTo = 'adaptive_orchestrator';\n    updateState = 'first_concept_ready';\n  }\n}\n// Assessment submission\nelse if (action === 'submit_response' && lastToolUsed === 'assessment' && learnerInput?.answer) {\n  // Record the interaction\n  session.interactionHistory.push({\n    concept: session.currentConcept?.title,\n    tool: 'assessment',\n    input: learnerInput,\n    timestamp: new Date().toISOString()\n  });\n  \n  // If there's a note, let Adaptive Orchestrator decide whether to grade\n  if (learnerInput?.note) {\n    session.assessmentPendingDecision = {\n      answer: learnerInput.answer,\n      note: learnerInput.note,\n      question: session.currentConcept?.assessmentQuestion\n    };\n    routeTo = 'adaptive_orchestrator';\n    updateState = 'assessment_with_note_pending';\n  } else {\n    // No note - proceed with normal grading\n    session.stateMachine.pendingGrading = true;\n    routeTo = 'grade_assessment';\n    updateState = 'assessment_submitted';\n  }\n}\n// Concept card note submission\nelse if (action === 'submit_response' && lastToolUsed === 'concept_card' && learnerInput?.note) {\n  // Record the interaction\n  session.interactionHistory.push({\n    concept: session.currentConcept?.title,\n    tool: 'concept_card',\n    input: learnerInput,\n    timestamp: new Date().toISOString()\n  });\n  \n  if (learnerInput.note) {\n    session.recentQuestions.push(learnerInput.note);\n    if (session.recentQuestions.length > 5) {\n      session.recentQuestions.shift();\n    }\n  }\n  \n  routeTo = 'adaptive_orchestrator';\n  updateState = 'concept_note_submitted';\n}\n// Post-grading decision needed\nelse if (pendingGrading && lastAssessmentScore !== null) {\n  routeTo = 'adaptive_orchestrator';\n}\n// General next action\nelse if (action === 'next' && currentConcept) {\n  routeTo = 'adaptive_orchestrator';\n}\n\n// Update state machine if needed\nif (updateState) {\n  session.stateMachine.previousState = currentState;\n  session.stateMachine.currentState = updateState;\n  session.stateMachine.stateHistory.push({\n    from: currentState,\n    to: updateState,\n    action: action,\n    timestamp: new Date().toISOString(),\n    orchestrator: 'core'\n  });\n}\n\n// Save back to global\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// SINGLE RETURN FORMAT\nreturn {\n  sessionId,\n  action,\n  learnerInput,\n  courseTopic: $json.courseTopic,\n  learnerProfile: $json.learnerProfile,\n  coreConcepts: $json.coreConcepts,\n  userName: $json.userName,\n  routeTo: routeTo,\n  courseComplete: courseComplete\n};"
+          "jsCode": "// Combined Routing & Core Orchestrator - SIMPLIFIED\n// Handles both routing decisions AND simple deterministic transitions\n\nconst sessionId = $json.sessionId;\nconst action = $json.action;\nconst learnerInput = $json.learnerInput;\n\n// Read state directly from global\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\nif (!session) {\n  throw new Error(`Session ${sessionId} not found`);\n}\n\n// Get current state\nconst currentState = session.stateMachine.currentState;\nconst lastToolUsed = session.lastToolUsed;\nconst pendingGrading = session.stateMachine.pendingGrading;\nconst lastAssessmentScore = session.lastAssessmentScore;\nconst currentConcept = session.currentConcept;\n\n// Check if course is complete\nconst allConceptsCompleted = session.remainingCoreConcepts.length === 0;\nconst noPendingDynamicConcepts = session.insertedConcepts.every(\n  conceptId => session.completedConcepts.includes(conceptId)\n);\nconst courseComplete = !currentConcept && allConceptsCompleted && noPendingDynamicConcepts;\n\nconsole.log(`Routing: action=${action}, state=${currentState}`);\n\n// Initialize routing variables\nlet routeTo = null;\nlet updateState = null;\n\n// ROUTING LOGIC - Determine routing\nif (courseComplete) {\n  routeTo = 'show_completion';\n  updateState = 'course_complete';\n}\n// Start of course\nelse if (action === 'start' && currentState === 'uninitialized') {\n  routeTo = 'show_welcome';\n  updateState = 'welcome';\n}\n// Moving from welcome to first concept\nelse if (action === 'next' && currentState === 'welcome') {\n  // Get the first concept and set it as current\n  let nextConcept = null;\n  if (session.remainingCoreConcepts.length > 0) {\n    const nextId = session.remainingCoreConcepts[0];\n    nextConcept = $json.coreConcepts.find(c => c.id === nextId);\n  }\n  \n  if (nextConcept) {\n    session.currentConcept = nextConcept;\n    session.currentConceptTools = [];\n    // CHANGE: Route to Adaptive Orchestrator instead of directly to concept_card\n    routeTo = 'adaptive_orchestrator';\n    updateState = 'first_concept_ready';\n  }\n}\n// Assessment submission\nelse if (action === 'submit_response' && lastToolUsed === 'assessment' && learnerInput?.answer) {\n  // Record the interaction\n  session.interactionHistory.push({\n    concept: session.currentConcept?.title,\n    tool: 'assessment',\n    input: learnerInput,\n    timestamp: new Date().toISOString()\n  });\n  \n  // If there's a note, let Adaptive Orchestrator decide whether to grade\n  if (learnerInput?.note) {\n    session.assessmentPendingDecision = {\n      answer: learnerInput.answer,\n      note: learnerInput.note,\n      question: session.currentConcept?.assessmentQuestion\n    };\n    routeTo = 'adaptive_orchestrator';\n    updateState = 'assessment_with_note_pending';\n  } else {\n    // No note - proceed with normal grading\n    session.stateMachine.pendingGrading = true;\n    routeTo = 'grade_assessment';\n    updateState = 'assessment_submitted';\n  }\n}\n// Concept card note submission\nelse if (action === 'submit_response' && lastToolUsed === 'concept_card' && learnerInput?.note) {\n  // Record the interaction\n  session.interactionHistory.push({\n    concept: session.currentConcept?.title,\n    tool: 'concept_card',\n    input: learnerInput,\n    timestamp: new Date().toISOString()\n  });\n  \n  if (learnerInput.note) {\n    session.recentQuestions.push(learnerInput.note);\n    if (session.recentQuestions.length > 5) {\n      session.recentQuestions.shift();\n    }\n  }\n  \n  routeTo = 'adaptive_orchestrator';\n  updateState = 'concept_note_submitted';\n}\n// Prompt exercise submission WITHOUT note - direct to evaluation\nelse if (action === 'submit_response' && lastToolUsed === 'prompt_exercise' && learnerInput?.prompt && !learnerInput?.note) {\n  // Record the interaction\n  session.interactionHistory.push({\n    concept: session.currentConcept?.title,\n    tool: 'prompt_exercise',\n    input: learnerInput,\n    timestamp: new Date().toISOString()\n  });\n  \n  // Store prompt for evaluation\n  session.pendingPromptEvaluation = {\n    prompt: learnerInput.prompt,\n    task: session.currentPromptExercise?.generatedTask || session.currentConcept?.promptTask,\n    evaluationCriteria: session.currentPromptExercise?.evaluationCriteria\n  };\n  \n  routeTo = 'evaluate_prompt';\n  updateState = 'prompt_submitted';\n}\n// Post-grading decision needed\nelse if (pendingGrading && lastAssessmentScore !== null) {\n  routeTo = 'adaptive_orchestrator';\n}\n// General next action\nelse if (action === 'next' && currentConcept) {\n  routeTo = 'adaptive_orchestrator';\n}\n\n// Update state machine if needed\nif (updateState) {\n  session.stateMachine.previousState = currentState;\n  session.stateMachine.currentState = updateState;\n  session.stateMachine.stateHistory.push({\n    from: currentState,\n    to: updateState,\n    action: action,\n    timestamp: new Date().toISOString(),\n    orchestrator: 'core'\n  });\n}\n\n// Save back to global\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// SINGLE RETURN FORMAT\nreturn {\n  sessionId,\n  action,\n  learnerInput,\n  courseTopic: $json.courseTopic,\n  learnerProfile: $json.learnerProfile,\n  coreConcepts: $json.coreConcepts,\n  userName: $json.userName,\n  routeTo: routeTo,\n  courseComplete: courseComplete\n};"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
           -3520,
-          260
+          350
         ],
         "id": "f3863d49-eae1-4d92-ba15-e80f7d67671d",
         "name": "Core Orchestrator"
@@ -727,6 +714,31 @@
                   },
                   "conditions": [
                     {
+                      "id": "2c2549a8-034c-4335-8948-55e84333d21e",
+                      "leftValue": "={{ $json.routeTo }}",
+                      "rightValue": "evaluate_prompt",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "evaluatePrompt"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
                       "id": "4b5e3875-e16a-4855-9817-960a1cce95ab",
                       "leftValue": "={{ $json.routeTo }}",
                       "rightValue": "adaptive_orchestrator",
@@ -753,7 +765,7 @@
         "typeVersion": 3.2,
         "position": [
           -3300,
-          220
+          287
         ],
         "id": "5fca4f59-d2c7-4936-907a-cfa0475f25c4",
         "name": "Core Router"
@@ -767,7 +779,7 @@
         "typeVersion": 2,
         "position": [
           -3080,
-          640
+          875
         ],
         "id": "0b120739-9790-444d-b56a-c130d289fb03",
         "name": "Adaptive Orchestrator Router Prompt"
@@ -811,7 +823,7 @@
         "typeVersion": 4.2,
         "position": [
           -2860,
-          640
+          875
         ],
         "credentials": {
           "openAiApi": {
@@ -831,7 +843,7 @@
         "typeVersion": 2,
         "position": [
           -2640,
-          640
+          875
         ]
       },
       {
@@ -841,8 +853,8 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -440,
-          900
+          -660,
+          996
         ],
         "id": "a446c2ae-3f89-4d49-bd72-d4cae7841669",
         "name": "Smart Reply Generator Prompt"
@@ -885,8 +897,8 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          -220,
-          900
+          -440,
+          996
         ],
         "credentials": {
           "openAiApi": {
@@ -902,8 +914,8 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          0,
-          900
+          -220,
+          996
         ],
         "id": "33aab026-8e0c-4f77-abef-4723136dff71",
         "name": "Process Smart Replies"
@@ -915,8 +927,8 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -3880,
-          500
+          -4400,
+          1735
         ],
         "id": "8474c68e-81a1-4a3b-8e26-f57d53da3105",
         "name": "Init Course Data All"
@@ -928,8 +940,8 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -1360,
-          1140
+          -1320,
+          1475
         ],
         "id": "3c3ab628-9801-4765-8c4b-fd098b817d2a",
         "name": "Generate Prompt Exercise Prompt"
@@ -941,21 +953,21 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -900,
-          1140
+          -880,
+          1475
         ],
         "id": "db9ee068-bfb3-4661-a3aa-815bf147a66e",
         "name": "Process Generated Exercise"
       },
       {
         "parameters": {
-          "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.myNewField = 1;\n}\n\nreturn $input.all();"
+          "jsCode": "// Prepare Prompt Evaluation Request\nconst sessionId = $json.sessionId;\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\nif (!session || !session.pendingPromptEvaluation) {\n  throw new Error('No pending prompt evaluation found');\n}\n\nconst messages = [\n  {\n    role: \"system\",\n    content: \"You are an expert at evaluating AI prompts for product management tasks AND tracking knowledge mastery. Analyze both the prompt quality and what it reveals about the learner's understanding.\"\n  },\n  {\n    role: \"user\",\n    content: `Task: ${session.pendingPromptEvaluation.task}\nLearner's Prompt: ${session.pendingPromptEvaluation.prompt}\nLearner Background: ${$json.learnerProfile.role} with skills in ${$json.learnerProfile.skills.join(', ')}\n\nEvaluation Criteria:\n${JSON.stringify(session.pendingPromptEvaluation.evaluationCriteria || {})}\n\nCurrent Knowledge State:\n- Strengths: ${session.knowledgeStrengths?.join(', ') || 'None'}\n- Gaps: ${session.knowledgeGaps?.join(', ') || 'None'}\n\nEvaluate the prompt and return a JSON object with this exact structure:\n{\n  \"score\": (0-5 number),\n  \"feedback\": \"Constructive feedback on the prompt quality\",\n  \"strengths\": [\"what they did well\"],\n  \"improvements\": [\"specific suggestions\"],\n  \"simulatedAIResponse\": \"What an AI would generate from this prompt\",\n  \"knowledgeUpdate\": {\n    \"masteredConcepts\": [\"concepts demonstrated mastery of\"],\n    \"identifiedGaps\": [\"gaps revealed by the prompt\"],\n    \"reasoning\": \"Brief explanation of knowledge assessment\"\n  }\n}`\n  }\n];\n\nreturn {\n  messages,\n  model: \"gpt-4o\",\n  temperature: 0.3,\n  max_tokens: 400,\n  response_format: { type: \"json_object\" },\n  originalData: {\n    sessionId: $json.sessionId,\n    courseTopic: $json.courseTopic,\n    learnerProfile: $json.learnerProfile,\n    pendingPromptEvaluation: session.pendingPromptEvaluation\n  }\n};"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -1500,
-          700
+          -1980,
+          650
         ],
         "id": "006d7bee-2046-4aee-8a0f-a1a90ab2d2f5",
         "name": "Evaluate Prompt Excercise Prompt"
@@ -998,8 +1010,8 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          -1280,
-          700
+          -1760,
+          650
         ],
         "credentials": {
           "openAiApi": {
@@ -1046,8 +1058,8 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          -1120,
-          1140
+          -1100,
+          1475
         ],
         "credentials": {
           "openAiApi": {
@@ -1055,6 +1067,19 @@
             "name": "OpenAi account"
           }
         }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Enhanced Process Prompt Evaluation with Knowledge Tracking\nconst evaluationResult = JSON.parse($json.choices[0].message.content);\nconst responseData = $node[\"Prompt Exercise Handler\"].json.responseData;\nconst sessionId = $node[\"Prompt Exercise Handler\"].json.sessionId;\n\n// Get session from global\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// Update knowledge state based on evaluation\nif (evaluationResult.knowledgeUpdate) {\n  // Add mastered concepts to strengths\n  evaluationResult.knowledgeUpdate.masteredConcepts.forEach(concept => {\n    if (!session.knowledgeStrengths.includes(concept)) {\n      session.knowledgeStrengths.push(concept);\n    }\n  });\n  \n  // Update gaps - remove mastered ones, add new ones\n  session.knowledgeGaps = session.knowledgeGaps.filter(\n    gap => !evaluationResult.knowledgeUpdate.masteredConcepts.includes(gap)\n  );\n  \n  evaluationResult.knowledgeUpdate.identifiedGaps.forEach(gap => {\n    if (!session.knowledgeGaps.includes(gap)) {\n      session.knowledgeGaps.push(gap);\n    }\n  });\n  \n  // Track in knowledge evolution\n  if (!session.knowledgeEvolution) {\n    session.knowledgeEvolution = [];\n  }\n  \n  session.knowledgeEvolution.push({\n    timestamp: new Date().toISOString(),\n    tool: 'prompt_exercise',\n    concept: session.currentConcept.title,\n    conceptId: session.currentConcept.id,\n    score: evaluationResult.score,\n    mastered: evaluationResult.knowledgeUpdate.masteredConcepts,\n    gaps: evaluationResult.knowledgeUpdate.identifiedGaps,\n    reasoning: evaluationResult.knowledgeUpdate.reasoning\n  });\n}\n\n// Clear pending evaluation\nsession.pendingPromptEvaluation = null;\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Add evaluation to response\nresponseData.toolData.evaluationResult = evaluationResult;\nresponseData.waitingForInput = false;\nresponseData.nextAction = 'Click Next to continue to the next concept.';\n\nreturn {\n  ...($node[\"Prompt Exercise Handler\"].json),\n  evaluationResult,\n  responseData\n};"
+        },
+        "id": "37cee35c-04b1-4afe-a139-6e0ed6fbc136",
+        "name": "Process Prompt Evaluation",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1540,
+          650
+        ]
       }
     ],
     "pinData": {},
@@ -1144,17 +1169,6 @@
           [
             {
               "node": "Evaluate Prompt Excercise Prompt",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Process Evaluation": {
-        "main": [
-          [
-            {
-              "node": "Smart Reply Generator Prompt",
               "type": "main",
               "index": 0
             }
@@ -1293,6 +1307,13 @@
           ],
           [
             {
+              "node": "Prompt Exercise Handler",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
               "node": "Complete Concept",
               "type": "main",
               "index": 0
@@ -1308,13 +1329,6 @@
           [
             {
               "node": "Generate New Concept Prompt",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Prompt Exercise Handler",
               "type": "main",
               "index": 0
             }
@@ -1395,6 +1409,13 @@
           [
             {
               "node": "Grade Assessment Prompt",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Prompt Exercise Handler",
               "type": "main",
               "index": 0
             }
@@ -1523,7 +1544,7 @@
         "main": [
           [
             {
-              "node": "Process Evaluation",
+              "node": "Process Prompt Evaluation",
               "type": "main",
               "index": 0
             }
@@ -1540,13 +1561,24 @@
             }
           ]
         ]
+      },
+      "Process Prompt Evaluation": {
+        "main": [
+          [
+            {
+              "node": "Smart Reply Generator Prompt",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "active": true,
     "settings": {
       "executionOrder": "v1"
     },
-    "versionId": "b4727c70-ee07-42ce-be1c-1d3888598ca6",
+    "versionId": "d752f27f-103a-4d02-9575-2d660fd908ac",
     "meta": {
       "instanceId": "eea8bfa4918320bc469ce323a7b217b8209b639e450c67bc3e6a88bdf340b7de"
     },

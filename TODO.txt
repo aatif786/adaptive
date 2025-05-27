@@ -1,30 +1,26 @@
 
 IMMEDIATE
 ------
-a) audit all flow states to make sure they are correct
-b) smart reply generator shoudl take into account all input paths
-c) are knowledge gaps flowing through system
-d) are there other state that can be fully replaced by just looking at the state machine e.g. "waitingForInput" and "lastToolUsed", session.pendingAssessment, session.pendingPromptEvaluation
+e) fix promptTask state
+1) add smart replies to UI
+2) add debug data to UI
+6) Change concepts to be longer, should show a lot of data
+5) change UI for learner notes to have one button, not 2
+6) TEST ALL FLOWS
 
 MID
 ------
-0) prompt excercise fix
-0) prompt excercise smart reply
-0) prompt excercise adaptive orchestrator 
-1) add smart replies to UI
-2) add debug data to UI
 3) add derivative data to UI
 3b) display expert skills in UI
 4) make prompts smarter
-5) change UI for learner notes to have one button, not 2
-6) Change concepts to be longer, should show a lot of data
 7) Add text to speech to UI
 8) display concept author along with expert tips
+9) Knowledge GapsI suggest that the Orchestrator tries to address these gaps one at time. An assessment or prompt exercise can remove them but only if the LLM determines that the learner has show mastery. So every core concept or dynamic concept or prompt exercise can be targted towards one gap, then the LLM decides from that evaluation whether that gap is cleared.
+
+
 LONG
 -------
 0) Convert to LangChain and Fast API
-
-
 
 
 SUPER LONG (not for prototype)

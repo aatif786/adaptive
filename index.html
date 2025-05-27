@@ -168,6 +168,42 @@
             min-height: auto;
         }
 
+        /* Smart Replies Styling */
+        .smart-replies-container {
+            margin: 20px 0;
+        }
+
+        .smart-replies-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .smart-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .smart-reply-chip {
+            background-color: #e3f2fd;
+            border: 1px solid #0a66c2;
+            color: #0a66c2;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .smart-reply-chip:hover {
+            background-color: #0a66c2;
+            color: white;
+        }
+
         .button-group {
             display: flex;
             gap: 10px;
@@ -227,14 +263,6 @@
             background-color: #fff3cd;
             border-color: #ffeeba;
             color: #856404;
-        }
-
-        .smart-reply {
-            background-color: #e3f2fd;
-            border-left: 4px solid #0a66c2;
-            padding: 15px;
-            margin: 20px 0;
-            font-style: italic;
         }
 
         .loading {
@@ -383,13 +411,19 @@
             background-color: #f0f8ff;
             border-radius: 4px;
         }
+
+        .note-hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.05
+            v0.06
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -603,7 +637,7 @@
                         renderPromptExercise(contentArea, data.toolData);
                         break;
                     case 'transition':
-                        setTimeout(() => sendRequest('next_concept', {}), 1000);
+                        setTimeout(() => sendRequest('next', {}), 1000);
                         break;
                     case 'course_complete':
                         renderCompletionScreen(contentArea, data.toolData);
@@ -613,7 +647,7 @@
             
             // Auto-continue if specified
             if (data.nextAction === 'auto_continue') {
-                setTimeout(() => sendRequest('next_concept', {}), 1500);
+                setTimeout(() => sendRequest('next', {}), 1500);
             }
         }
 
@@ -640,37 +674,38 @@
                 </div>
                 <h2 class="concept-title">${data.title}</h2>
                 <p class="concept-summary">${data.summary}</p>
-                
-                <div class="expert-tips">
-                    <h3>Expert Tips</h3>
-                    <ul>
-                        ${data.expertTips.map(tip => `<li>${tip}</li>`).join('')}
-                    </ul>
-                </div>
             `;
             
-            if (data.smartReply) {
-                html += `<div class="smart-reply">${data.smartReply}</div>`;
+            if (data.expertTips && data.expertTips.length > 0) {
+                html += `
+                    <div class="expert-tips">
+                        <h3>Expert Tips</h3>
+                        <ul>
+                            ${data.expertTips.map(tip => `<li>${tip}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
             }
             
-            if (currentState.waitingForInput) {
-                html += `
-                    <div class="input-area">
-                        <label class="input-label">Add a note or question (optional):</label>
-                        <textarea id="learnerNote" placeholder="Type your thoughts or questions here..."></textarea>
-                        <div class="button-group">
-                            <button class="btn btn-primary" onclick="submitNote()">Submit Note</button>
-                            <button class="btn btn-secondary" onclick="sendRequest('next', {})">Continue</button>
-                        </div>
-                    </div>
-                `;
-            } else {
-                html += `
-                    <div class="button-group">
-                        <button class="btn btn-primary" onclick="sendRequest('next', {})">Continue to Assessment</button>
-                    </div>
-                `;
+            // Input area for notes (optional)
+            html += `
+                <div class="input-area">
+                    <label class="input-label">Add a note or question (optional):</label>
+                    <textarea id="learnerNote" placeholder="Type your thoughts or questions here..."></textarea>
+                    <p class="note-hint">You can add notes at any time during the course</p>
+            `;
+            
+            // Smart replies if available
+            if (data.smartReplies && data.smartReplies.length > 0) {
+                html += renderSmartReplies(data.smartReplies, 'learnerNote');
             }
+            
+            html += `
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="submitConceptCard()">Continue</button>
+                    </div>
+                </div>
+            `;
             
             container.innerHTML = html;
         }
@@ -702,22 +737,42 @@
                         ${data.gradingResult.feedback}
                     </div>
                 `;
-            }
-            
-            if (currentState.waitingForInput) {
+                
+                // After grading, still allow notes
+                html += `
+                    <div class="input-area">
+                        <label class="input-label">Add a note or reflection (optional):</label>
+                        <textarea id="learnerNote" placeholder="Any thoughts or questions about this assessment?"></textarea>
+                `;
+                
+                if (data.smartReplies && data.smartReplies.length > 0) {
+                    html += renderSmartReplies(data.smartReplies, 'learnerNote');
+                }
+                
+                html += `
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="submitAfterGrading()">Continue</button>
+                        </div>
+                    </div>
+                `;
+            } else if (currentState.waitingForInput) {
                 html += `
                     <div class="input-area">
                         <label class="input-label">Your answer:</label>
                         <textarea id="learnerAnswer" placeholder="Type your answer here..."></textarea>
+                        
+                        <label class="input-label" style="margin-top: 15px;">Add a note (optional):</label>
+                        <textarea id="learnerNote" placeholder="Any questions or clarifications?" style="min-height: 60px;"></textarea>
+                `;
+                
+                if (data.smartReplies && data.smartReplies.length > 0) {
+                    html += renderSmartReplies(data.smartReplies, 'learnerNote');
+                }
+                
+                html += `
                         <div class="button-group">
                             <button class="btn btn-primary" onclick="submitAssessment()">Submit Answer</button>
                         </div>
-                    </div>
-                `;
-            } else {
-                html += `
-                    <div class="button-group">
-                        <button class="btn btn-primary" onclick="sendRequest('next', {})">Continue</button>
                     </div>
                 `;
             }
@@ -735,8 +790,20 @@
                 
                 <div class="question-box">
                     <div class="question-text">Task: ${data.task}</div>
+                    ${data.context ? `<p style="margin-top: 10px; font-size: 14px; color: #666;">${data.context}</p>` : ''}
                 </div>
             `;
+            
+            if (data.hints && data.hints.length > 0) {
+                html += `
+                    <div class="expert-tips" style="margin-top: 15px;">
+                        <h3>Hints</h3>
+                        <ul>
+                            ${data.hints.map(hint => `<li>${hint}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
             
             if (data.evaluationResult) {
                 const scoreClass = data.evaluationResult.score >= 4 ? 'feedback-box' : 
@@ -755,33 +822,82 @@
                 
                 if (data.evaluationResult.simulatedAIResponse) {
                     html += `
-                        <div class="smart-reply">
+                        <div class="smart-reply" style="background-color: #e3f2fd; border-left: 4px solid #0a66c2; padding: 15px; margin: 20px 0;">
                             <strong>AI would respond with:</strong><br>
                             ${data.evaluationResult.simulatedAIResponse}
                         </div>
                     `;
                 }
-            }
-            
-            if (currentState.waitingForInput) {
+                
+                // After evaluation, still allow notes
+                html += `
+                    <div class="input-area">
+                        <label class="input-label">Add a note or reflection (optional):</label>
+                        <textarea id="learnerNote" placeholder="Any thoughts about this exercise?"></textarea>
+                `;
+                
+                if (data.smartReplies && data.smartReplies.length > 0) {
+                    html += renderSmartReplies(data.smartReplies, 'learnerNote');
+                }
+                
+                html += `
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="submitAfterEvaluation()">Continue</button>
+                        </div>
+                    </div>
+                `;
+            } else if (currentState.waitingForInput) {
                 html += `
                     <div class="input-area">
                         <label class="input-label">Write your prompt:</label>
                         <textarea id="learnerPrompt" placeholder="Type your prompt here..."></textarea>
+                        
+                        <label class="input-label" style="margin-top: 15px;">Add a note (optional):</label>
+                        <textarea id="learnerNote" placeholder="Any questions or thoughts?" style="min-height: 60px;"></textarea>
+                `;
+                
+                if (data.smartReplies && data.smartReplies.length > 0) {
+                    html += renderSmartReplies(data.smartReplies, 'learnerNote');
+                }
+                
+                html += `
                         <div class="button-group">
                             <button class="btn btn-primary" onclick="submitPrompt()">Submit Prompt</button>
                         </div>
                     </div>
                 `;
-            } else {
-                html += `
-                    <div class="button-group">
-                        <button class="btn btn-primary" onclick="sendRequest('next', {})">Continue to Next Concept</button>
-                    </div>
-                `;
             }
             
             container.innerHTML = html;
+        }
+
+        function renderSmartReplies(replies, targetFieldId) {
+            if (!replies || !Array.isArray(replies) || replies.length === 0) return '';
+            
+            // Handle different reply formats
+            let replyArray = replies;
+            if (replies.replies && Array.isArray(replies.replies)) {
+                replyArray = replies.replies;
+            }
+            
+            return `
+                <div class="smart-replies-container">
+                    <div class="smart-replies-label">Quick replies:</div>
+                    <div class="smart-replies">
+                        ${replyArray.map(reply => 
+                            `<button class="smart-reply-chip" onclick="selectSmartReply('${targetFieldId}', '${reply.replace(/'/g, "\\'")}')">${reply}</button>`
+                        ).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectSmartReply(fieldId, reply) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.value = reply;
+                field.focus();
+            }
         }
 
         function renderCompletionScreen(container, data) {
@@ -813,27 +929,49 @@
             `;
         }
 
-        function submitNote() {
+        function submitConceptCard() {
             const note = document.getElementById('learnerNote').value;
             sendRequest('submit_response', { note: note });
         }
 
         function submitAssessment() {
             const answer = document.getElementById('learnerAnswer').value;
+            const note = document.getElementById('learnerNote').value;
+            
             if (!answer.trim()) {
                 showError('Please provide an answer');
                 return;
             }
-            sendRequest('submit_response', { answer: answer });
+            
+            sendRequest('submit_response', { 
+                answer: answer,
+                note: note 
+            });
+        }
+
+        function submitAfterGrading() {
+            const note = document.getElementById('learnerNote').value;
+            sendRequest('next', { note: note });
         }
 
         function submitPrompt() {
             const prompt = document.getElementById('learnerPrompt').value;
+            const note = document.getElementById('learnerNote').value;
+            
             if (!prompt.trim()) {
                 showError('Please write a prompt');
                 return;
             }
-            sendRequest('submit_response', { prompt: prompt });
+            
+            sendRequest('submit_response', { 
+                prompt: prompt,
+                note: note 
+            });
+        }
+
+        function submitAfterEvaluation() {
+            const note = document.getElementById('learnerNote').value;
+            sendRequest('next', { note: note });
         }
 
         function resetCourse() {

@@ -948,7 +948,7 @@
       },
       {
         "parameters": {
-          "jsCode": "// Process Generated Prompt Exercise\nconst exerciseData = JSON.parse($json.choices[0].message.content);\nconst originalData = $node[\"Generate Prompt Exercise Prompt\"].json.originalData;\nconst sessionId = originalData.sessionId;\n\n// Get session from global\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// Create enhanced prompt task combining base and generated data\nconst enhancedTask = {\n  baseTask: session.currentConcept?.promptTask || exerciseData.task,\n  generatedTask: exerciseData.task,\n  context: exerciseData.context,\n  hints: exerciseData.hints,\n  difficulty: exerciseData.difficulty,\n  targetedSkills: exerciseData.targetedSkills,\n  evaluationCriteria: exerciseData.evaluationCriteria\n};\n\n// Store the enhanced task in session for evaluation later\nsession.currentPromptExercise = enhancedTask;\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Return to prompt exercise handler with enhanced data\nreturn {\n  ...originalData,\n  enhancedPromptTask: enhancedTask,\n  nextAction: 'prompt_exercise'\n};"
+          "jsCode": "// Process Generated Prompt Exercise\nconst exerciseData = JSON.parse($json.choices[0].message.content);\n\n// Get data from the pipeline (from Generate Prompt Exercise Generate AI Call)\nconst originalData = $json.originalData;\nconst sessionId = originalData.sessionId;\n\n// Get session from global\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// Create enhanced prompt task combining base and generated data\nconst enhancedTask = {\n  baseTask: session.currentConcept?.promptTask || exerciseData.task,\n  generatedTask: exerciseData.task,\n  context: exerciseData.context,\n  hints: exerciseData.hints,\n  difficulty: exerciseData.difficulty,\n  targetedSkills: exerciseData.targetedSkills,\n  evaluationCriteria: exerciseData.evaluationCriteria\n};\n\n// Store the enhanced task in session for evaluation later\nsession.currentPromptExercise = enhancedTask;\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Return to prompt exercise handler with enhanced data\nreturn {\n  ...originalData,\n  enhancedPromptTask: enhancedTask,\n  nextAction: 'prompt_exercise'\n};"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
@@ -1578,7 +1578,7 @@
     "settings": {
       "executionOrder": "v1"
     },
-    "versionId": "0200aebd-d334-437e-8873-f0bcbfa499d2",
+    "versionId": "00e29746-5d3a-41b7-b4de-8006a8b8586b",
     "meta": {
       "instanceId": "eea8bfa4918320bc469ce323a7b217b8209b639e450c67bc3e6a88bdf340b7de"
     },

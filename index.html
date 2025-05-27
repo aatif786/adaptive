@@ -872,21 +872,39 @@
         }
 
         function renderSmartReplies(replies, targetFieldId) {
-            if (!replies || !Array.isArray(replies) || replies.length === 0) return '';
+            if (!replies) return '';
             
             // Handle different reply formats
-            let replyArray = replies;
-            if (replies.replies && Array.isArray(replies.replies)) {
+            let replyArray = [];
+            
+            // If replies is already an array, use it
+            if (Array.isArray(replies)) {
+                replyArray = replies;
+            }
+            // If replies has a 'replies' property that's an array, use that
+            else if (replies.replies && Array.isArray(replies.replies)) {
                 replyArray = replies.replies;
             }
+            // If replies is an object with numeric keys (0, 1, 2...), convert to array
+            else if (typeof replies === 'object') {
+                // Try to extract values that look like replies
+                replyArray = Object.values(replies).filter(item => typeof item === 'string');
+            }
+            
+            // If we still don't have valid replies, return empty
+            if (!replyArray.length) return '';
             
             return `
                 <div class="smart-replies-container">
                     <div class="smart-replies-label">Quick replies:</div>
                     <div class="smart-replies">
-                        ${replyArray.map(reply => 
-                            `<button class="smart-reply-chip" onclick="selectSmartReply('${targetFieldId}', '${reply.replace(/'/g, "\\'")}')">${reply}</button>`
-                        ).join('')}
+                        ${replyArray.map(reply => {
+                            // Ensure reply is a string
+                            const replyText = String(reply);
+                            // Escape single quotes for the onclick handler
+                            const escapedReply = replyText.replace(/'/g, "\\'");
+                            return `<button class="smart-reply-chip" onclick="selectSmartReply('${targetFieldId}', '${escapedReply}')">${replyText}</button>`;
+                        }).join('')}
                     </div>
                 </div>
             `;

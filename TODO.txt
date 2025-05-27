@@ -10,6 +10,8 @@ IMMEDIATE
 9) fix welcome message and get rid of 10 number
 10) get rid of first concept
 11) fix UI timeout
+12) concept complete is stuck for one iteration? 
+13) remaining core concept is still 10 even though there is only a few
 
 MID
 ------

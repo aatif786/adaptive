@@ -1,0 +1,33 @@
+
+IMMEDIATE
+------
+a) fix learner note
+b) fix smart reply generator
+c) is session state by guid correct?
+d) audit all flow states to make sure they are correct
+
+MID
+------
+0) prompt excercise fix
+0) prompt excercise smart reply
+0) prompt excercise adaptive orchestrator 
+1) add smart replies to UI
+2) add debug data to UI
+3) add derivative data to UI
+4) make prompts smarter
+5) change UI for learner notes to have one button, not 2
+6) Change concepts to be longer, should show a lot of data
+7) Add text to speech to UI
+8) display concept author along with expert tips
+LONG
+-------
+0) Convert to LangChain and Fast API
+
+
+
+
+SUPER LONG (not for prototype)
+----------------
+0) exception handling
+1) race conditions
+2) how to retrieve content

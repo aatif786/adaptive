@@ -671,7 +671,7 @@
                         renderPromptExercise(contentArea, data.toolData);
                         break;
                     case 'transition':
-                        setTimeout(() => sendRequest('next', {}), 1000);
+                        setTimeout(() => sendRequest('next', {}), 45000);
                         break;
                     case 'course_complete':
                         renderCompletionScreen(contentArea, data.toolData);
@@ -681,7 +681,7 @@
             
             // Auto-continue if specified
             if (data.nextAction === 'auto_continue') {
-                setTimeout(() => sendRequest('next', {}), 1500);
+                setTimeout(() => sendRequest('next', {}), 45000);
             }
         }
 

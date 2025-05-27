@@ -5,6 +5,11 @@ IMMEDIATE
 2) add debug data to UI
 5) change UI for learner notes to have one button, not 2
 6) TEST ALL FLOWS
+7)assessment seems to be truncated
+8) fix smart replu UI
+9) fix welcome message and get rid of 10 number
+10) get rid of first concept
+11) fix UI timeout
 
 MID
 ------

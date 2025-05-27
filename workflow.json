@@ -59,96 +59,6 @@
       },
       {
         "parameters": {
-          "rules": {
-            "values": [
-              {
-                "conditions": {
-                  "options": {
-                    "caseSensitive": true,
-                    "leftValue": "",
-                    "typeValidation": "strict",
-                    "version": 2
-                  },
-                  "conditions": [
-                    {
-                      "leftValue": "={{ ['concept_card', 'insert_concept'].includes($json.nextAction) }}",
-                      "rightValue": "concept_card",
-                      "operator": {
-                        "type": "boolean",
-                        "operation": "true",
-                        "singleValue": true
-                      },
-                      "id": "tool1"
-                    }
-                  ],
-                  "combinator": "and"
-                },
-                "renameOutput": true,
-                "outputKey": "conceptCard"
-              },
-              {
-                "conditions": {
-                  "options": {
-                    "caseSensitive": true,
-                    "leftValue": "",
-                    "typeValidation": "strict",
-                    "version": 2
-                  },
-                  "conditions": [
-                    {
-                      "leftValue": "={{ $json.nextAction }}",
-                      "rightValue": "assessment",
-                      "operator": {
-                        "type": "string",
-                        "operation": "equals"
-                      },
-                      "id": "tool2"
-                    }
-                  ],
-                  "combinator": "and"
-                },
-                "renameOutput": true,
-                "outputKey": "assessment"
-              },
-              {
-                "conditions": {
-                  "options": {
-                    "caseSensitive": true,
-                    "leftValue": "",
-                    "typeValidation": "strict",
-                    "version": 2
-                  },
-                  "conditions": [
-                    {
-                      "leftValue": "={{ $json.nextAction }}",
-                      "rightValue": "prompt_exercise",
-                      "operator": {
-                        "type": "string",
-                        "operation": "equals"
-                      },
-                      "id": "tool3"
-                    }
-                  ],
-                  "combinator": "and"
-                },
-                "renameOutput": true,
-                "outputKey": "promptExercise"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "id": "d596e235-0315-487d-8ba5-afe4f4413533",
-        "name": "Tool Router",
-        "type": "n8n-nodes-base.switch",
-        "typeVersion": 3.2,
-        "position": [
-          -1540,
-          1275
-        ]
-      },
-      {
-        "parameters": {
           "mode": "runOnceForEachItem",
           "jsCode": "// Concept Card Handler - UPDATED to remove smart reply logic\nconst concept = $json.currentConcept;\nconst sessionId = $json.sessionId;\nconst learnerNote = $json.learnerInput?.note;\n\n// Update session state\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\nif (!session.currentConceptTools.includes('concept_card')) {\n  session.currentConceptTools.push('concept_card');\n}\nsession.lastToolUsed = 'concept_card';\n\n// Save updated state\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\nconst responseData = {\n  sessionId,\n  toolType: 'concept_card',\n  conceptProgress: {\n    current: session.completedConcepts.length + 1,\n    total: session.remainingCoreConcepts.length + \n           session.completedConcepts.length + \n           session.insertedConcepts.length\n  },\n  toolData: {\n    title: concept.title,\n    summary: concept.summary,\n    expertTips: concept.expertTips,\n    canSubmitNote: true\n  },\n  waitingForInput: !learnerNote,\n  inputType: 'note',\n  message: 'Read through the concept and feel free to add any notes or questions.'\n};\n\n// Just return the response\nreturn {\n  ...($json),\n  responseData,\n  sessionId,\n  learnerProfile: $json.learnerProfile\n};"
         },
@@ -347,146 +257,6 @@
         ],
         "id": "90ce120e-03b0-496b-9caf-a2e4866385b9",
         "name": "Edit Fields"
-      },
-      {
-        "parameters": {
-          "rules": {
-            "values": [
-              {
-                "conditions": {
-                  "options": {
-                    "caseSensitive": true,
-                    "leftValue": "",
-                    "typeValidation": "strict",
-                    "version": 2
-                  },
-                  "conditions": [
-                    {
-                      "id": "588c31ce-db6d-4b78-9dd0-bc639d4e4553",
-                      "leftValue": "={{ $json.nextAction }}",
-                      "rightValue": "grade_assessment",
-                      "operator": {
-                        "type": "string",
-                        "operation": "equals",
-                        "name": "filter.operator.equals"
-                      }
-                    }
-                  ],
-                  "combinator": "and"
-                },
-                "renameOutput": true,
-                "outputKey": "gradeAssessment"
-              },
-              {
-                "conditions": {
-                  "options": {
-                    "caseSensitive": true,
-                    "leftValue": "",
-                    "typeValidation": "strict",
-                    "version": 2
-                  },
-                  "conditions": [
-                    {
-                      "id": "60aca0f7-b783-4e53-a0b2-153342db2528",
-                      "leftValue": "={{ $json.nextAction }}",
-                      "rightValue": "generate_prompt_exercise",
-                      "operator": {
-                        "type": "string",
-                        "operation": "equals",
-                        "name": "filter.operator.equals"
-                      }
-                    }
-                  ],
-                  "combinator": "and"
-                },
-                "renameOutput": true,
-                "outputKey": "evaluatePrompt"
-              },
-              {
-                "conditions": {
-                  "options": {
-                    "caseSensitive": true,
-                    "leftValue": "",
-                    "typeValidation": "strict",
-                    "version": 2
-                  },
-                  "conditions": [
-                    {
-                      "id": "c41e007c-c9f8-4e01-9c3b-f5416eaa4575",
-                      "leftValue": "={{ $json.nextAction }}",
-                      "rightValue": "=concept_complete",
-                      "operator": {
-                        "type": "string",
-                        "operation": "equals"
-                      }
-                    }
-                  ],
-                  "combinator": "and"
-                },
-                "renameOutput": true,
-                "outputKey": "completeConcept"
-              },
-              {
-                "conditions": {
-                  "options": {
-                    "caseSensitive": true,
-                    "leftValue": "",
-                    "typeValidation": "strict",
-                    "version": 2
-                  },
-                  "conditions": [
-                    {
-                      "leftValue": "={{ ['concept_card', 'assessment', 'prompt_exercise'].includes($json.nextAction) }}",
-                      "rightValue": "={{ true }}",
-                      "operator": {
-                        "type": "boolean",
-                        "operation": "true",
-                        "singleValue": true
-                      },
-                      "id": "252d4b84-cc5a-482b-b966-c78ad46410f5"
-                    }
-                  ],
-                  "combinator": "and"
-                },
-                "renameOutput": true,
-                "outputKey": "routeToTool"
-              },
-              {
-                "conditions": {
-                  "options": {
-                    "caseSensitive": true,
-                    "leftValue": "",
-                    "typeValidation": "strict",
-                    "version": 2
-                  },
-                  "conditions": [
-                    {
-                      "id": "6131214d-57dc-4724-a4ee-daa86b8687ff",
-                      "leftValue": "={{ $json.nextAction }}",
-                      "rightValue": "=insert_concept",
-                      "operator": {
-                        "type": "string",
-                        "operation": "equals"
-                      }
-                    }
-                  ],
-                  "combinator": "and"
-                },
-                "renameOutput": true,
-                "outputKey": "insertNewConcept"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "id": "03bf6fe5-28da-4c5b-a93b-464765047f1a",
-        "name": "Check Next Action",
-        "type": "n8n-nodes-base.switch",
-        "typeVersion": 3.2,
-        "position": [
-          -2420,
-          833
-        ]
       },
       {
         "parameters": {
@@ -807,7 +577,7 @@
       {
         "parameters": {
           "mode": "runOnceForEachItem",
-          "jsCode": "// Process Adaptive Orchestrator Decision - ENHANCED\nconst orchestratorDecision = JSON.parse($json.choices[0].message.content);\n\n// Get data from the pipeline (from Adaptive Orchestrator AI Call)\nconst originalData = $json.originalData;\nconst sessionId = originalData.sessionId;\n\n// Get session directly from global\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// Initialize tracking if needed\nif (!session.gapAttempts) session.gapAttempts = {};\nif (!session.deferredGaps) session.deferredGaps = [];\nif (!session.skippedConcepts) session.skippedConcepts = [];\n\n// HANDLE SKIP GRADING SIGNAL\nif (orchestratorDecision.skipGrading && session.pendingAssessment) {\n  // Clear pending grading state\n  session.stateMachine.pendingGrading = false;\n  \n  // Track that assessment was skipped\n  if (!session.assessmentHistory) session.assessmentHistory = [];\n  session.assessmentHistory.push({\n    concept: session.currentConcept.title,\n    conceptId: session.currentConcept.id,\n    answer: session.pendingAssessment.answer,\n    note: session.pendingAssessment.note,\n    score: null,\n    skipped: true,\n    skipReason: orchestratorDecision.skipReason || 'Based on learner note',\n    timestamp: new Date().toISOString()\n  });\n  \n  // Clear pending assessment\n  session.pendingAssessment = null;\n}\n\n// HANDLE MARK AS COMPLETE SIGNAL (for skipping concepts)\nif (orchestratorDecision.markAsComplete && orchestratorDecision.completionType === 'skipped') {\n  // Track as skipped concept\n  session.skippedConcepts.push({\n    conceptId: session.currentConcept.id,\n    conceptTitle: session.currentConcept.title,\n    reason: orchestratorDecision.skipReason || 'Learner requested skip',\n    toolsCompleted: session.currentConceptTools,\n    hadPendingAssessment: !!session.pendingAssessment,\n    timestamp: new Date().toISOString()\n  });\n  \n  // Clear any pending assessment data\n  session.pendingAssessment = null;\n  session.lastAssessmentScore = null;\n  session.stateMachine.pendingGrading = false;\n  \n  // Override action to concept_complete to move forward\n  orchestratorDecision.nextAction = 'concept_complete';\n}\n\n// EXISTING GAP ATTEMPT LOGIC\n// Check if we're trying to insert a concept for a gap we've already attempted multiple times\nif (orchestratorDecision.nextAction === 'insert_concept' && session.knowledgeGaps.length > 0) {\n  const targetGap = session.knowledgeGaps[0];\n  const attempts = session.gapAttempts[targetGap] || 0;\n  \n  if (attempts >= 2) {\n    // Override the orchestrator's decision\n    orchestratorDecision.nextAction = 'concept_complete';\n    orchestratorDecision.reasoning = `Gap \"${targetGap}\" has been attempted ${attempts} times. Moving forward with core curriculum.`;\n    \n    // Move gap to deferred list\n    session.knowledgeGaps = session.knowledgeGaps.filter(gap => gap !== targetGap);\n    session.deferredGaps.push({"
+          "jsCode": "// Process Adaptive Orchestrator Decision - ENHANCED WITH PROMPT EXERCISE CHECK\nconst orchestratorDecision = JSON.parse($json.choices[0].message.content);\n\n// Get data from the pipeline (from Adaptive Orchestrator AI Call)\nconst originalData = $json.originalData;\nconst sessionId = originalData.sessionId;\n\n// Get session directly from global\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\n// Initialize tracking if needed\nif (!session.gapAttempts) session.gapAttempts = {};\nif (!session.deferredGaps) session.deferredGaps = [];\nif (!session.skippedConcepts) session.skippedConcepts = [];\n\n// PROMPT EXERCISE SAFETY CHECK\nif (orchestratorDecision.nextAction === 'prompt_exercise') {\n  const hasPromptTask = !!session.currentConcept?.promptTask;\n  \n  if (!hasPromptTask) {\n    // Override the decision - no prompt task defined for this concept\n    console.log(`Overriding prompt_exercise decision - no promptTask defined for: ${session.currentConcept?.title}`);\n    \n    // Determine better fallback based on what tools have been used\n    if (!session.currentConceptTools.includes('assessment')) {\n      // Haven't done assessment yet - go there\n      orchestratorDecision.nextAction = 'assessment';\n      orchestratorDecision.reasoning = `No prompt task defined. Proceeding to assessment.`;\n    } else if (session.lastAssessmentScore && session.lastAssessmentScore < 3) {\n      // Assessment done but score was low - consider remediation\n      orchestratorDecision.nextAction = 'insert_concept';\n      orchestratorDecision.reasoning = `No prompt task defined. Low assessment score suggests remediation needed.`;\n      orchestratorDecision.conceptNeeded = {\n        reason: \"Reinforce understanding based on low assessment score\",\n        focus: session.knowledgeGaps[0] || \"Core concept understanding\"\n      };\n    } else {\n      // Assessment done with decent score - safe to complete\n      orchestratorDecision.nextAction = 'concept_complete';\n      orchestratorDecision.reasoning = `No prompt task defined. Assessment completed successfully.`;\n    }\n  }\n}\n\n// HANDLE SKIP GRADING SIGNAL\nif (orchestratorDecision.skipGrading && session.pendingAssessment) {\n  // Clear pending grading state\n  session.stateMachine.pendingGrading = false;\n  \n  // Track that assessment was skipped\n  if (!session.assessmentHistory) session.assessmentHistory = [];\n  session.assessmentHistory.push({\n    concept: session.currentConcept.title,\n    conceptId: session.currentConcept.id,\n    answer: session.pendingAssessment.answer,\n    note: session.pendingAssessment.note,\n    score: null,\n    skipped: true,\n    skipReason: orchestratorDecision.skipReason || 'Based on learner note',\n    timestamp: new Date().toISOString()\n  });\n  \n  // Clear pending assessment\n  session.pendingAssessment = null;\n}\n\n// HANDLE SKIP EVALUATION SIGNAL (for prompt exercises)\nif (orchestratorDecision.skipEvaluation && session.pendingPromptEvaluation) {\n  // Clear pending evaluation state\n  if (!session.promptHistory) session.promptHistory = [];\n  session.promptHistory.push({\n    concept: session.currentConcept.title,\n    conceptId: session.currentConcept.id,\n    prompt: session.pendingPromptEvaluation.prompt,\n    note: session.pendingPromptEvaluation.note,\n    task: session.pendingPromptEvaluation.task,\n    score: null,\n    skipped: true,\n    skipReason: orchestratorDecision.skipReason || 'Based on learner note',\n    timestamp: new Date().toISOString()\n  });\n  \n  // Clear pending evaluation\n  session.pendingPromptEvaluation = null;\n}\n\n// HANDLE MARK AS COMPLETE SIGNAL (for skipping concepts)\nif (orchestratorDecision.markAsComplete && orchestratorDecision.completionType === 'skipped') {\n  // Track as skipped concept\n  session.skippedConcepts.push({\n    conceptId: session.currentConcept.id,\n    conceptTitle: session.currentConcept.title,\n    reason: orchestratorDecision.skipReason || 'Learner requested skip',\n    toolsCompleted: session.currentConceptTools,\n    hadPendingAssessment: !!session.pendingAssessment,\n    hadPendingPromptEvaluation: !!session.pendingPromptEvaluation,\n    timestamp: new Date().toISOString()\n  });\n  \n  // Clear any pending assessment/evaluation data\n  session.pendingAssessment = null;\n  session.pendingPromptEvaluation = null;\n  session.lastAssessmentScore = null;\n  session.stateMachine.pendingGrading = false;\n  \n  // Override action to concept_complete to move forward\n  orchestratorDecision.nextAction = 'concept_complete';\n}\n\n// EXISTING GAP ATTEMPT LOGIC\n// Check if we're trying to insert a concept for a gap we've already attempted multiple times\nif (orchestratorDecision.nextAction === 'insert_concept' && session.knowledgeGaps.length > 0) {\n  const targetGap = session.knowledgeGaps[0];\n  const attempts = session.gapAttempts[targetGap] || 0;\n  \n  if (attempts >= 2) {\n    // Override the orchestrator's decision\n    orchestratorDecision.nextAction = 'concept_complete';\n    orchestratorDecision.reasoning = `Gap \"${targetGap}\" has been attempted ${attempts} times. Moving forward with core curriculum.`;\n    \n    // Move gap to deferred list\n    session.knowledgeGaps = session.knowledgeGaps.filter(gap => gap !== targetGap);\n    session.deferredGaps.push({\n      gap: targetGap,\n      attempts: attempts,\n      deferredAt: new Date().toISOString()\n    });\n  }\n}\n\n// Store orchestrator decision for reference\nsession.lastOrchestratorDecision = {\n  decision: orchestratorDecision,\n  timestamp: new Date().toISOString()\n};\n\n// Store exercise focus if provided\nif (orchestratorDecision.exerciseFocus) {\n  session.currentExerciseFocus = orchestratorDecision.exerciseFocus;\n}\n\n// Save updated state back to global\n$getWorkflowStaticData('global').sessions[sessionId] = session;\n\n// Pass forward with the orchestrator decision\nreturn {\n  ...originalData,\n  orchestratorDecision,\n  sessionState: session,\n  nextAction: orchestratorDecision.nextAction\n};"
         },
         "id": "83218294-be40-429c-b4bb-ee4127a29109",
         "name": "Process Adaptive Orchestrator Decision",
@@ -1057,13 +827,13 @@
       {
         "parameters": {
           "mode": "runOnceForEachItem",
-          "jsCode": "// Adaptive Orchestrator Router Prompt - WITH LEARNER NOTE SUPPORT\n// Get session directly from global\nconst sessionId = $json.sessionId;\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\nif (!session) {\n  throw new Error(`Session ${sessionId} not found in global state`);\n}\n\nconst messages = [\n  {\n    role: \"system\",\n    content: \"You are an adaptive learning orchestrator. Analyze the current learning state and decide the next best action for the learner. When learner notes are provided, carefully analyze them to determine if the learner needs clarification, wants to skip, is ready to progress, or would benefit from additional content. You can also decide whether to grade a pending assessment or skip grading based on the learner's needs.\"\n  },\n  {\n    role: \"user\", \n    content: `Current State Machine:\n- Current State: ${session.stateMachine.currentState}\n- Previous State: ${session.stateMachine.previousState || 'None'}\n- Pending Grading: ${session.stateMachine.pendingGrading}\n${session.stateMachine.currentState === 'first_concept_ready' ? '- Note: This is the first concept after welcome' : ''}\n\nCurrent Learning State:\n- Course Topic: ${$json.courseTopic}\n- Current Concept: ${session.currentConcept?.title || 'None'}\n- Tools Already Used: ${session.currentConceptTools.join(', ') || 'None'}\n- Last Assessment Score: ${session.lastAssessmentScore || 'N/A'}/5\n- Knowledge Gaps: ${session.knowledgeGaps?.join(', ') || 'None'}\n- Gap Attempts: ${JSON.stringify(session.gapAttempts || {})}\n- Recent Questions: ${session.recentQuestions?.join('; ') || 'None'}\n- Completed Concepts: ${session.completedConcepts.length}\n- Remaining Core Concepts: ${session.remainingCoreConcepts.length}\n\n${$json.learnerInput?.note ? `\nIMPORTANT - LEARNER NOTE ANALYSIS REQUIRED:\nThe learner just submitted this note/question with their input:\n\"${$json.learnerInput.note}\"\n\nCurrent Concept Being Studied: ${session.currentConcept?.title}\nConcept Summary: ${session.currentConcept?.summary || 'N/A'}\n\nAnalyze this note carefully to determine:\n1. Is the learner confused or asking for clarification? \n   - Look for: question marks, words like \"confused\", \"don't understand\", \"unclear\", \"help\"\n   - If yes → strongly consider insert_concept to address the confusion\n\n2. Is the learner showing understanding and ready to move on?\n   - Look for: \"I get it\", \"makes sense\", \"understood\", \"ready\"\n   - If yes → proceed to assessment\n\n3. Is the learner making connections or showing deeper thinking?\n   - Look for: relating to their role/experience, asking advanced questions, making analogies\n   - If yes AND prior assessment scores are high → consider prompt_exercise\n\n4. Does the note reveal specific knowledge gaps?\n   - Look for: misconceptions, incorrect assumptions, missing foundational knowledge\n   - If yes → insert_concept with specific focus on the gap\n\n5. Is the learner asking for examples or application to their role?\n   - Look for: \"example\", \"how does this apply\", \"in practice\", \"for ${$json.learnerProfile?.role}\"\n   - If yes → insert_concept with practical examples\n` : ''}\n\n${session.pendingAssessment ? `\nPENDING ASSESSMENT:\n- Answer submitted: \"${session.pendingAssessment.answer}\"\n- Note submitted: \"${session.pendingAssessment.note}\"\n- Question was: \"${session.pendingAssessment.question}\"\n\nYou must decide whether to:\n1. Grade the assessment (nextAction: \"grade_assessment\")\n2. Skip grading and move to something else based on the note content\n` : ''}\n\n${session.pendingPromptEvaluation ? `\nPENDING PROMPT EVALUATION:\n- Prompt submitted: \"${session.pendingPromptEvaluation.prompt}\"\n- Note submitted: \"${session.pendingPromptEvaluation.note}\"\n- Task was: \"${session.pendingPromptEvaluation.task}\"\n\nYou must decide whether to:\n1. Evaluate the prompt (nextAction: \"evaluate_prompt\")\n2. Skip evaluation and do something else based on the note content\n\nDecision Rules for Prompt Exercise:\n1. If learner shows confusion or asks for help with prompting:\n   - Set skipEvaluation: true\n   - Set nextAction: \"insert_concept\" with focus on prompt engineering\n2. If learner wants to skip or says they understand:\n   - Set skipEvaluation: true\n   - Set nextAction: \"concept_complete\"\n3. Otherwise, proceed with evaluation:\n   - Set nextAction: \"evaluate_prompt\"\n` : ''}\n\nDecision Rules:\n1. Always start new concepts with concept_card\n2. If learner explicitly asks to skip (e.g., \"skip this\", \"I know this\", \"move on\"):\n   - Set skipGrading: true (if assessment pending)\n   - Set markAsComplete: true with completionType: \"skipped\"\n   - Set nextAction: \"concept_complete\"\n3. If learner shows severe confusion and has pending assessment:\n   - Set skipGrading: true (grading won't help)\n   - Set nextAction: \"insert_concept\" to address confusion\n4. If learner has pending assessment and asks a clarifying question:\n   - Set nextAction: \"grade_assessment\" to evaluate first\n5. Follow normal progression rules for other cases\n\n${$json.learnerInput?.note ? 'IMPORTANT: The learner note should heavily influence your decision. Prioritize addressing their specific question or concern.' : ''}\n\nReturn JSON:\n{\n  \"nextAction\": \"grade_assessment|concept_card|assessment|prompt_exercise|concept_complete|insert_concept\",\n  \"reasoning\": \"Brief explanation of decision\",\n  \"skipGrading\": true|false (only if assessment is pending),\n  \"markAsComplete\": true|false (if learner wants to skip),\n  \"completionType\": \"normal|skipped\" (if markAsComplete is true),\n  \"skipReason\": \"reason for skipping if applicable\",\n  \"conceptNeeded\": {\n    \"reason\": \"specific gap to address if action is insert_concept\",\n    \"focus\": \"topic area for new concept if inserting\"\n  },\n  \"noteAnalysis\": {\n    \"understanding\": \"low|medium|high\",\n    \"needsClarification\": true|false,\n    \"wantsToSkip\": true|false,\n    \"specificRequest\": \"what they are asking for if clear\",\n    \"sentiment\": \"confused|curious|confident|frustrated|dismissive\"\n  }\n}`\n  }\n];\n\nreturn {\n  messages,\n  model: \"gpt-4o\",\n  temperature: 0.3,\n  max_tokens: 300,\n  response_format: { type: \"json_object\" },\n  // Pass through original data WITHOUT sessionState\n  originalData: {\n    sessionId: $json.sessionId,\n    action: $json.action,\n    learnerInput: $json.learnerInput,\n    courseTopic: $json.courseTopic,\n    learnerProfile: $json.learnerProfile,\n    coreConcepts: $json.coreConcepts,\n    userName: $json.userName,\n    currentConcept: session.currentConcept, // Include current concept for reference\n    stateMachine: {\n      currentState: session.stateMachine.currentState // Only pass minimal state info\n    }\n  }\n};"
+          "jsCode": "// Adaptive Orchestrator Router Prompt - WITH PROMPT EXERCISE INTELLIGENCE\n// Get session directly from global\nconst sessionId = $json.sessionId;\nconst session = $getWorkflowStaticData('global').sessions[sessionId];\n\nif (!session) {\n  throw new Error(`Session ${sessionId} not found in global state`);\n}\n\nconst messages = [\n  {\n    role: \"system\",\n    content: \"You are an adaptive learning orchestrator. Analyze the current learning state and decide the next best action for the learner. When learner notes are provided, carefully analyze them to determine if the learner needs clarification, wants to skip, is ready to progress, or would benefit from additional content. You can also decide whether to grade a pending assessment or skip grading based on the learner's needs. You can also decide whether to evaluate a pending prompt exercise evaluation or skip prompt exercise evaluation based on learner's needs.\"\n  },\n  {\n    role: \"user\", \n    content: `Current State Machine:\n- Current State: ${session.stateMachine.currentState}\n- Previous State: ${session.stateMachine.previousState || 'None'}\n- Pending Grading: ${session.stateMachine.pendingGrading}\n${session.stateMachine.currentState === 'first_concept_ready' ? '- Note: This is the first concept after welcome' : ''}\n\nCurrent Learning State:\n- Course Topic: ${$json.courseTopic}\n- Current Concept: ${session.currentConcept?.title || 'None'}\n- Concept Summary: ${session.currentConcept?.summary || 'N/A'}\n- Tools Already Used: ${session.currentConceptTools.join(', ') || 'None'}\n- Last Assessment Score: ${session.lastAssessmentScore || 'N/A'}/5\n- Knowledge Gaps: ${session.knowledgeGaps?.join(', ') || 'None'}\n- Gap Attempts: ${JSON.stringify(session.gapAttempts || {})}\n- Recent Questions: ${session.recentQuestions?.join('; ') || 'None'}\n- Completed Concepts: ${session.completedConcepts.length}\n- Remaining Core Concepts: ${session.remainingCoreConcepts.length}\n\nPROMPT EXERCISE DECISION RULES:\n${!session.currentConceptTools.includes('prompt_exercise') ? `\n- Current concept title: \"${session.currentConcept?.title}\"\n- Has prompt task defined: ${session.currentConcept?.promptTask ? 'Yes' : 'No'}\n\nShould we use prompt_exercise tool? Consider:\n1. Is the concept about prompting, prompt engineering, or AI interaction?\n   - Look for keywords: \"prompt\", \"AI\", \"GPT\", \"LLM\", \"query\", \"instruction\"\n   - Check if title contains: \"${session.currentConcept?.title}\"\n   \n2. Has the learner already shown good understanding?\n   - Last assessment score: ${session.lastAssessmentScore || 'N/A'}\n   - If score >= 4 AND concept relates to prompting → prompt_exercise\n   \n3. Is practical application important for this concept?\n   - If the concept teaches a skill that requires practice → consider prompt_exercise\n   \n4. Tool progression logic:\n   - If only concept_card used → usually go to assessment\n   - If assessment score is high AND concept is prompt-related → prompt_exercise\n   - If assessment score is low → consider insert_concept instead\n` : 'Prompt exercise already used for this concept'}\n\n${$json.learnerInput?.note ? `\nIMPORTANT - LEARNER NOTE ANALYSIS REQUIRED:\nThe learner just submitted this note/question with their input:\n\"${$json.learnerInput.note}\"\n\nCurrent Concept Being Studied: ${session.currentConcept?.title}\nConcept Summary: ${session.currentConcept?.summary || 'N/A'}\n\nAnalyze this note carefully to determine:\n1. Is the learner confused or asking for clarification? \n   - Look for: question marks, words like \"confused\", \"don't understand\", \"unclear\", \"help\"\n   - If yes → strongly consider insert_concept to address the confusion\n\n2. Is the learner showing understanding and ready to move on?\n   - Look for: \"I get it\", \"makes sense\", \"understood\", \"ready\"\n   - If yes → proceed to assessment\n\n3. Is the learner making connections or showing deeper thinking?\n   - Look for: relating to their role/experience, asking advanced questions, making analogies\n   - If yes AND prior assessment scores are high → consider prompt_exercise\n\n4. Does the note reveal specific knowledge gaps?\n   - Look for: misconceptions, incorrect assumptions, missing foundational knowledge\n   - If yes → insert_concept with specific focus on the gap\n\n5. Is the learner asking for examples or application to their role?\n   - Look for: \"example\", \"how does this apply\", \"in practice\", \"for ${$json.learnerProfile?.role}\"\n   - If yes → insert_concept with practical examples\n` : ''}\n\n${session.pendingAssessment ? `\nPENDING ASSESSMENT:\n- Answer submitted: \"${session.pendingAssessment.answer}\"\n- Note submitted: \"${session.pendingAssessment.note}\"\n- Question was: \"${session.pendingAssessment.question}\"\n\nYou must decide whether to:\n1. Grade the assessment (nextAction: \"grade_assessment\")\n2. Skip grading and move to something else based on the note content\n` : ''}\n\n${session.pendingPromptEvaluation ? `\nPENDING PROMPT EVALUATION:\n- Prompt submitted: \"${session.pendingPromptEvaluation.prompt}\"\n- Note submitted: \"${session.pendingPromptEvaluation.note || 'None'}\"\n- Task was: \"${session.pendingPromptEvaluation.task}\"\n\nYou must decide whether to:\n1. Evaluate the prompt (nextAction: \"evaluate_prompt\")\n2. Skip evaluation and do something else based on the note content\n\nDecision Rules for Prompt Exercise with Notes:\n1. If learner shows confusion or asks for help with prompting:\n   - Set skipEvaluation: true\n   - Set nextAction: \"insert_concept\" with focus on prompt engineering\n2. If learner wants to skip or says they understand:\n   - Set skipEvaluation: true\n   - Set nextAction: \"concept_complete\"\n3. If learner asks for feedback despite note:\n   - Set nextAction: \"evaluate_prompt\" (they want the evaluation)\n4. Otherwise, proceed with evaluation:\n   - Set nextAction: \"evaluate_prompt\"\n` : ''}\n\nDecision Rules:\n1. Always start new concepts with concept_card\n2. After concept_card, if concept is prompt-related (title contains \"prompt\", \"AI\", \"engineering\") AND no assessment yet → consider prompt_exercise before assessment\n3. If learner explicitly asks to skip (e.g., \"skip this\", \"I know this\", \"move on\"):\n   - Set skipGrading: true (if assessment pending)\n   - Set skipEvaluation: true (if prompt evaluation pending)\n   - Set markAsComplete: true with completionType: \"skipped\"\n   - Set nextAction: \"concept_complete\"\n4. If learner shows severe confusion and has pending assessment/prompt:\n   - Set skipGrading/skipEvaluation: true (evaluation won't help)\n   - Set nextAction: \"insert_concept\" to address confusion\n5. Normal progression for NON-prompt concepts:\n   - concept_card → assessment → (if score low: insert_concept, if high: concept_complete)\n6. Normal progression for PROMPT-RELATED concepts:\n   - concept_card → assessment → (if score >= 3: prompt_exercise) → concept_complete\n\n${$json.learnerInput?.note ? 'IMPORTANT: The learner note should heavily influence your decision. Prioritize addressing their specific question or concern.' : ''}\n\nReturn JSON:\n{\n  \"nextAction\": \"grade_assessment|evaluate_prompt|concept_card|assessment|prompt_exercise|concept_complete|insert_concept\",\n  \"reasoning\": \"Brief explanation of decision\",\n  \"skipGrading\": true|false (only if assessment is pending),\n  \"skipEvaluation\": true|false (only if prompt evaluation is pending),\n  \"markAsComplete\": true|false (if learner wants to skip),\n  \"completionType\": \"normal|skipped\" (if markAsComplete is true),\n  \"skipReason\": \"reason for skipping if applicable\",\n  \"exerciseFocus\": \"specific focus for prompt exercise if choosing that tool\",\n  \"conceptNeeded\": {\n    \"reason\": \"specific gap to address if action is insert_concept\",\n    \"focus\": \"topic area for new concept if inserting\"\n  },\n  \"noteAnalysis\": {\n    \"understanding\": \"low|medium|high\",\n    \"needsClarification\": true|false,\n    \"wantsToSkip\": true|false,\n    \"specificRequest\": \"what they are asking for if clear\",\n    \"sentiment\": \"confused|curious|confident|frustrated|dismissive\"\n  }\n}`\n  }\n];\n\nreturn {\n  messages,\n  model: \"gpt-4o\",\n  temperature: 0.3,\n  max_tokens: 300,\n  response_format: { type: \"json_object\" },\n  // Pass through original data WITHOUT sessionState\n  originalData: {\n    sessionId: $json.sessionId,\n    action: $json.action,\n    learnerInput: $json.learnerInput,\n    courseTopic: $json.courseTopic,\n    learnerProfile: $json.learnerProfile,\n    coreConcepts: $json.coreConcepts,\n    userName: $json.userName,\n    currentConcept: session.currentConcept, // Include current concept for reference\n    stateMachine: {\n      currentState: session.stateMachine.currentState // Only pass minimal state info\n    }\n  }\n};"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
           -3080,
-          875
+          880
         ],
         "id": "0b120739-9790-444d-b56a-c130d289fb03",
         "name": "Generate Adaptive Orchestrator Router Prompt"
@@ -1080,6 +850,236 @@
         ],
         "id": "006d7bee-2046-4aee-8a0f-a1a90ab2d2f5",
         "name": "Generate Evaluate Prompt Excercise Prompt"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "588c31ce-db6d-4b78-9dd0-bc639d4e4553",
+                      "leftValue": "={{ $json.nextAction }}",
+                      "rightValue": "grade_assessment",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "gradeAssessment"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "60aca0f7-b783-4e53-a0b2-153342db2528",
+                      "leftValue": "={{ $json.nextAction }}",
+                      "rightValue": "generate_prompt_exercise",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "evaluatePrompt"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "c41e007c-c9f8-4e01-9c3b-f5416eaa4575",
+                      "leftValue": "={{ $json.nextAction }}",
+                      "rightValue": "=concept_complete",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "completeConcept"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ ['concept_card', 'assessment', 'prompt_exercise'].includes($json.nextAction) }}",
+                      "rightValue": "={{ true }}",
+                      "operator": {
+                        "type": "boolean",
+                        "operation": "true",
+                        "singleValue": true
+                      },
+                      "id": "252d4b84-cc5a-482b-b966-c78ad46410f5"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "coreToolRouter"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "6131214d-57dc-4724-a4ee-daa86b8687ff",
+                      "leftValue": "={{ $json.nextAction }}",
+                      "rightValue": "=insert_concept",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "insertNewConcept"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "03bf6fe5-28da-4c5b-a93b-464765047f1a",
+        "name": "Adaptive Tool Router",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          -2420,
+          833
+        ]
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ ['concept_card', 'insert_concept'].includes($json.nextAction) }}",
+                      "rightValue": "concept_card",
+                      "operator": {
+                        "type": "boolean",
+                        "operation": "true",
+                        "singleValue": true
+                      },
+                      "id": "tool1"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "conceptCard"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.nextAction }}",
+                      "rightValue": "assessment",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "tool2"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "assessment"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.nextAction }}",
+                      "rightValue": "prompt_exercise",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "tool3"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "promptExercise"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "d596e235-0315-487d-8ba5-afe4f4413533",
+        "name": "Core Tool Router",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          -1540,
+          1275
+        ]
       }
     ],
     "pinData": {},
@@ -1100,31 +1100,6 @@
           [
             {
               "node": "Core Orchestrator",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Tool Router": {
-        "main": [
-          [
-            {
-              "node": "Concept Card Handler",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Assessment Handler",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Prompt Exercise Handler",
               "type": "main",
               "index": 0
             }
@@ -1179,7 +1154,7 @@
         "main": [
           [
             {
-              "node": "Tool Router",
+              "node": "Core Tool Router",
               "type": "main",
               "index": 0
             }
@@ -1296,45 +1271,6 @@
           ]
         ]
       },
-      "Check Next Action": {
-        "main": [
-          [
-            {
-              "node": "Generate Assessment Grading Prompt",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Generate Evaluate Prompt Excercise Prompt",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Complete Concept",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Tool Router",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Generate New Concept Prompt",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Grade Assessment AI Call": {
         "main": [
           [
@@ -1440,7 +1376,7 @@
         "main": [
           [
             {
-              "node": "Check Next Action",
+              "node": "Adaptive Tool Router",
               "type": "main",
               "index": 0
             }
@@ -1572,13 +1508,77 @@
             }
           ]
         ]
+      },
+      "Adaptive Tool Router": {
+        "main": [
+          [
+            {
+              "node": "Generate Assessment Grading Prompt",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Generate Evaluate Prompt Excercise Prompt",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Complete Concept",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Core Tool Router",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Generate New Concept Prompt",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Core Tool Router": {
+        "main": [
+          [
+            {
+              "node": "Concept Card Handler",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Assessment Handler",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Prompt Exercise Handler",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "active": true,
     "settings": {
       "executionOrder": "v1"
     },
-    "versionId": "6b5cba2c-05f5-41b7-aafb-4b357b130f99",
+    "versionId": "ea6883fc-7d19-4e98-899a-1cde7707ec15",
     "meta": {
       "instanceId": "eea8bfa4918320bc469ce323a7b217b8209b639e450c67bc3e6a88bdf340b7de"
     },

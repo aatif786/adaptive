@@ -3,6 +3,7 @@ IMMEDIATE
 ------
 a) audit all flow states to make sure they are correct
 b) smart reply generator shoudl take into account all input paths
+c) are knowledge gaps flowing through system
 
 MID
 ------
@@ -33,3 +34,4 @@ SUPER LONG (not for prototype)
 3) store session state (consider GDPR
 4) learner ability to save state and exit course 
 5) ability to store insight of learner across sessions
+6) LLM decision safety checks in case they make wrong decisions

@@ -533,13 +533,51 @@
         .collapsible-header.active .collapse-icon {
             transform: rotate(180deg);
         }
+
+        /* Markdown content styling */
+        .feedback-box p,
+        .collapsible-content p {
+            margin-bottom: 10px;
+        }
+
+        .feedback-box ul,
+        .feedback-box ol,
+        .collapsible-content ul,
+        .collapsible-content ol {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .feedback-box code,
+        .collapsible-content code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+
+        .feedback-box pre,
+        .collapsible-content pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin-bottom: 10px;
+        }
+
+        .feedback-box pre code,
+        .collapsible-content pre code {
+            background-color: transparent;
+            padding: 0;
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.15
+            v0.16
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -611,6 +649,21 @@
 
         let debugMode = false;
         let stateDisplayMode = false;
+
+        // Configure marked for safe markdown rendering
+        marked.setOptions({
+            breaks: true,
+            gfm: true,
+            sanitize: false // We'll handle sanitization separately
+        });
+
+        // Function to safely render markdown
+        function renderMarkdown(text) {
+            if (!text) return '';
+            // Basic XSS prevention - escape script tags
+            const sanitized = text.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
+            return marked.parse(sanitized);
+        }
 
         // Generate unique session ID on load
         window.onload = function() {
@@ -951,7 +1004,7 @@
                         <div class="score-label">Your Score</div>
                     </div>
                     <div class="${scoreClass}">
-                        ${data.gradingResult.feedback}
+                        ${renderMarkdown(data.gradingResult.feedback)}
                     </div>
                 `;
                 
@@ -1051,7 +1104,7 @@
                 // Add feedback (not collapsed)
                 html += `
                     <div class="${scoreClass}" style="margin-top: 15px;">
-                        <strong>Feedback:</strong> ${data.evaluationResult.feedback}
+                        <strong>Feedback:</strong> ${renderMarkdown(data.evaluationResult.feedback)}
                     </div>
                 `;
                 
@@ -1064,7 +1117,7 @@
                                 <span class="collapse-icon">▼</span>
                             </div>
                             <div class="collapsible-content">
-                                <p style="white-space: pre-wrap;">${data.evaluationResult.simulatedAIResponse}</p>
+                                <div>${renderMarkdown(data.evaluationResult.simulatedAIResponse)}</div>
                             </div>
                         </div>
                     `;

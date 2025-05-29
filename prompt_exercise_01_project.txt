@@ -1,0 +1,193 @@
+Frame the Objective for the AI
+Decompose the Scope with AI
+Define and Sequence Milestones
+Allocate Resources and Ownership
+Risk Identification + Mitigation
+Iterate for Realism
+Finalize & Format
+
+---------------------
+
+a structured prompt mastery loop with:
+
+    A rich scenario
+
+    Clear but hidden success criteria
+
+    An Adaptive Agent that reveals one missing criterion per iteration
+
+    A setup where experts succeed quickly, but novices learn progressively
+
+---------------------
+
+✅ Prompt Mastery Scenario: Plan the Launch of a New Internal Employee Portal
+🧠 Prompt Task (what the learner sees):
+
+    You are leading the launch of a new internal employee portal for your 300-person company.
+    The portal will serve as a central hub for:
+
+        HR policies
+
+        IT support links
+
+        Company announcements
+
+        Employee resource groups
+
+You have been asked to:
+
+    Prompt an AI assistant to generate a full 6-week project plan for launching this portal, including:
+
+        Tasks
+
+        Owners
+
+        Milestones
+
+        Risks
+
+You will be working with a cross-functional team from HR, IT, and Communications.
+You cannot hire additional help. The deadline is fixed, and executive stakeholders expect a smooth, polished rollout.
+
+    💡 Prompt the AI as if you're sending it to a professional project planner.
+    You’ll refine your prompt until the output is something you’d confidently present to leadership.
+
+---------------------
+
+## 🧠 Concept Card: Crafting High-Impact Prompts for Project Plans
+
+### Scenario
+You're leading the **launch of an internal employee portal** for a 300-person company. The portal will include HR documents, IT support links, and company announcements. You're working with HR, IT, and Comms teams, and need a **6-week project plan** from an AI assistant.
+
+But: 
+- You have **no extra hiring capacity**
+- The **timeline is fixed**
+- Stakeholders expect a **risk-mitigated, role-assigned plan**
+- The final output must be **clear, presentable, and executive-ready**
+
+### Why Strong Prompting Matters
+AI-generated project plans are only as good as your prompt. If your prompt is vague, you’ll get:
+- Generic tasks
+- No task ownership
+- No risk planning
+- No clear structure
+
+Great prompts make your AI assistant feel like a seasoned project manager. They reflect real-world constraints, multiple teams, and presentable output formats.
+
+### Techniques You’ll Practice
+| Technique               | What It Looks Like in This Task                           |
+|------------------------|------------------------------------------------------------|
+| **Context Framing**     | "You are a professional internal project planner..."       |
+| **Constraint Injection**| "No new hires; timeline is fixed"                          |
+| **Decomposition**       | Include HR, IT, and Comms tasks                            |
+| **Structural Instruction**| "Return the output as a markdown table with columns..." |
+| **Prompt Iteration**    | Improve prompt until risks, owners, and milestones appear  |
+
+### Expert Tip 💡
+A strong prompt often reads like a well-written project brief.
+
+
+
+
+------------------------
+Criterion #	Prompt Requirement	Prompting Technique Taught
+1	Frame the AI’s role (e.g., “You are a professional internal project planner…”)	Context Framing
+2	Mention all stakeholders: HR, IT, Comms, Executives	Decomposition / Coverage
+3	Include known constraints (6-week deadline, no new hires, internal use only)	Constraint Injection
+4	Ask for milestone-based breakdown (weekly or phase-based)	Structural Instruction
+5	Include risk planning and mitigation for key functions	Prompt Depth / Stress Testing
+6	Ask for ownership assignment by role or function	Prompt Refinement & Realism
+7 (bonus)	Specify format: return as markdown table with columns: Week, Task, Owner, Notes	Format Control / Clarity
+
+
+
+🔍 The Missing Layer: Strategic Prompting + Evaluation
+Here's what’s currently missing:
+
+    Prompt Strategy: How do you prompt AI effectively to uncover risks that aren’t obvious?
+
+    Evaluation Skills: How do you critically assess the AI’s risk suggestions and improve them?
+
+    Iteration & Framing: How do you frame follow-up prompts to improve depth, specificity, and actionability?
+
+
+
+
+🧠 High-Level Workflow: AI-Accelerated Project Planning
+✅ 1. Frame the Objective for the AI
+
+    “What are we asking the AI to help with?”
+
+    Define the goal clearly: Launch an in-app onboarding experience for enterprise users in 8 weeks.
+
+    List constraints: Time (8 weeks), team composition, no extra hiring, tight budget.
+
+    Specify expected output format: Tasks, milestones, timeline, owners.
+
+Prompt Example:
+
+    “You are a senior product manager. Generate a detailed 8-week project plan to launch an in-app onboarding experience for enterprise customers. Assume collaboration across product, design, eng, legal, and support. Include weekly milestones and key dependencies.”
+
+🔍 2. Decompose the Scope with AI
+
+    “Break it down: what does this project involve?”
+
+    Ask AI to suggest core workstreams: e.g., design, backend, frontend, content, QA, compliance.
+
+    Ask follow-ups to clarify hidden steps (e.g., “what are common legal blockers in onboarding flows?”)
+
+    Use this to uncover tasks you may have missed.
+
+🧩 3. Define and Sequence Milestones
+
+    “What has to happen by when?”
+
+    Use AI to create weekly or phase-based milestones.
+
+    Ask AI to reason about dependencies: “Can content writing and frontend happen in parallel?”
+
+    Refine to avoid bottlenecks.
+
+📈 4. Allocate Resources and Ownership
+
+    “Who does what?”
+
+    Ask AI to suggest task owners by function.
+
+    If the org structure is known, prompt with roles: PM, 1 designer, 3 engineers, 1 QA, 1 legal POC.
+
+    Consider handoffs, approvals, and decision gates.
+
+🚨 5. Risk Identification + Mitigation
+
+    “What could go wrong?”
+
+    Prompt AI to surface top 5 risks given the constraints.
+
+    Ask for mitigation strategies or backup plans.
+
+    Optionally, simulate: “What happens if the legal review slips by 1 week?”
+
+🔁 6. Iterate for Realism
+
+    “Is this plan actually doable?”
+
+    Ask AI to simplify or compress: “Can we do this in 6 weeks if needed?”
+
+    Or expand: “Add buffer weeks and pre-mortem tasks.”
+
+    Compare AI-generated plans to past examples for calibration.
+
+📝 7. Finalize & Format
+
+    “How do I package this for others?”
+
+    Ask AI to convert into:
+
+        Markdown checklist
+
+        Gantt-style breakdown
+
+        Table with task/owner/week
+
+        Shareable doc or Slack-ready summary

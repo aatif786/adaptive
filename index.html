@@ -500,7 +500,7 @@
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.11
+            v0.12
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -541,16 +541,16 @@
                 <button class="btn btn-secondary" style="float: right; padding: 5px 10px;" onclick="hideError()">Close</button>
             </div>
             
-            <div class="debug-info" id="debugInfo">
-                <strong>Debug Info:</strong>
-                <div id="debugContent"></div>
-            </div>
-            
             <div class="state-display" id="stateDisplay">
-                <h3>🔍 Global State</h3>
+                <h3>🔍 Session State</h3>
                 <div class="state-grid" id="stateGrid">
                     <!-- State items will be dynamically inserted here -->
                 </div>
+            </div>
+            
+            <div class="debug-info" id="debugInfo">
+                <strong>Debug Info:</strong>
+                <div id="debugContent"></div>
             </div>
         </div>
     </div>
@@ -595,7 +595,8 @@
 
         function toggleDebug() {
             debugMode = !debugMode;
-            document.getElementById('debugInfo').classList.toggle('active');
+            // Don't toggle debug info visibility here - it's controlled by toggleStateDisplay
+            // Just set the debug mode flag
         }
 
         function updateDebug(info) {
@@ -608,9 +609,11 @@
         function toggleStateDisplay() {
             stateDisplayMode = !stateDisplayMode;
             const stateDisplay = document.getElementById('stateDisplay');
+            const debugInfo = document.getElementById('debugInfo');
             const toggleBtn = document.querySelector('.state-toggle-btn');
             
             stateDisplay.classList.toggle('active');
+            debugInfo.classList.toggle('active');
             toggleBtn.textContent = stateDisplayMode ? 'Hide State' : 'Show State';
             
             if (stateDisplayMode && currentState.globalState) {

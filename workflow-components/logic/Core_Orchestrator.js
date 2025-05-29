@@ -46,8 +46,8 @@ function determineDefaultNextAction(session, action) {
   if (!session.currentConcept) {
     if (session.remainingCoreConcepts.length > 0) {
       return {
-        action: 'load_next_concept',
-        reason: 'No current concept, loading next from queue'
+        action: 'concept_card',
+        reason: 'No current concept, need to show next concept card'
       };
     } else {
       return {

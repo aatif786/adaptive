@@ -494,13 +494,52 @@
         .state-toggle-btn:hover {
             background-color: #5a6268;
         }
+
+        .collapsible-section {
+            margin: 15px 0;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .collapsible-header {
+            padding: 15px;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        .collapsible-header:hover {
+            background-color: #e9ecef;
+        }
+
+        .collapsible-content {
+            padding: 15px;
+            display: none;
+            background-color: white;
+        }
+
+        .collapsible-content.active {
+            display: block;
+        }
+
+        .collapse-icon {
+            transition: transform 0.3s;
+        }
+
+        .collapsible-header.active .collapse-icon {
+            transform: rotate(180deg);
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.13
+            v0.14
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -993,16 +1032,40 @@
                         <div class="score-number">${data.evaluationResult.score}/5</div>
                         <div class="score-label">Prompt Quality</div>
                     </div>
-                    <div class="${scoreClass}">
+                `;
+                
+                // Add collapsible section for learner's prompt (collapsed by default)
+                const learnerPrompt = currentState.lastSubmittedPrompt || data.evaluationResult.prompt || 'Your prompt';
+                html += `
+                    <div class="collapsible-section">
+                        <div class="collapsible-header" id="promptHeader" onclick="toggleCollapsible('promptHeader')">
+                            <span>Your Original Prompt</span>
+                            <span class="collapse-icon">▼</span>
+                        </div>
+                        <div class="collapsible-content">
+                            <p style="white-space: pre-wrap;">${learnerPrompt}</p>
+                        </div>
+                    </div>
+                `;
+                
+                // Add feedback (not collapsed)
+                html += `
+                    <div class="${scoreClass}" style="margin-top: 15px;">
                         <strong>Feedback:</strong> ${data.evaluationResult.feedback}
                     </div>
                 `;
                 
+                // Add AI response in collapsible section (collapsed by default)
                 if (data.evaluationResult.simulatedAIResponse) {
                     html += `
-                        <div class="smart-reply" style="background-color: #e3f2fd; border-left: 4px solid #0a66c2; padding: 15px; margin: 20px 0;">
-                            <strong>AI would respond with:</strong><br>
-                            ${data.evaluationResult.simulatedAIResponse}
+                        <div class="collapsible-section">
+                            <div class="collapsible-header" id="aiResponseHeader" onclick="toggleCollapsible('aiResponseHeader')">
+                                <span>AI Response Preview</span>
+                                <span class="collapse-icon">▼</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p style="white-space: pre-wrap;">${data.evaluationResult.simulatedAIResponse}</p>
+                            </div>
                         </div>
                     `;
                 }
@@ -1055,9 +1118,18 @@
             // Handle different reply formats
             let replyArray = [];
             
+            // If replies is a string (possibly comma-delimited), split it
+            if (typeof replies === 'string') {
+                replyArray = replies.split(',').map(r => r.trim()).filter(r => r.length > 0);
+            }
             // If replies is already an array, use it
-            if (Array.isArray(replies)) {
-                replyArray = replies;
+            else if (Array.isArray(replies)) {
+                // Check if first element is a comma-delimited string
+                if (replies.length === 1 && typeof replies[0] === 'string' && replies[0].includes(',')) {
+                    replyArray = replies[0].split(',').map(r => r.trim()).filter(r => r.length > 0);
+                } else {
+                    replyArray = replies;
+                }
             }
             // If replies has a 'replies' property that's an array, use that
             else if (replies.replies && Array.isArray(replies.replies)) {
@@ -1094,6 +1166,13 @@
                 field.value = reply;
                 field.focus();
             }
+        }
+
+        function toggleCollapsible(headerId) {
+            const header = document.getElementById(headerId);
+            const content = header.nextElementSibling;
+            header.classList.toggle('active');
+            content.classList.toggle('active');
         }
 
         function renderCompletionScreen(container, data) {
@@ -1212,6 +1291,9 @@ function continueToNext() {
                 showError('Please write a prompt before submitting');
                 return;
             }
+            
+            // Store the prompt for display after evaluation
+            currentState.lastSubmittedPrompt = prompt.trim();
             
             sendRequest('submit_response', { 
                 prompt: prompt.trim(),

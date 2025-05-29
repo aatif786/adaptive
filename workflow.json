@@ -181,7 +181,7 @@
     {
       "parameters": {
         "mode": "runOnceForEachItem",
-        "jsCode": "// Extract Response Data\nconst responseData = $json.responseData;\n\nif (!responseData) {\n  throw new Error('No responseData found in input');\n}\n\nreturn responseData;"
+        "jsCode": "// Node: Limit Data\n// Node ID: ddb6f37f-de10-4755-bcb2-322171d87022\n\n// Extract Response Data\nconst responseData = $json.responseData;\n\nif (!responseData) {\n  throw new Error('No responseData found in input');\n}\n\n// Check if debug mode is enabled (passed from frontend request)\nconst debugMode = $json.debugMode || $json.learnerInput?.debugMode || false;\n\nif (debugMode) {\n  // Get the session ID from the data\n  const sessionId = $json.sessionId || responseData.sessionId;\n  \n  // Access the global state directly\n  const globalState = $getWorkflowStaticData('global');\n  const session = globalState.sessions?.[sessionId];\n  \n  // Return full data structure including debug information and global state\n  return {\n    ...responseData,\n    debug: {\n      // Session-level debug data\n      sessionId: sessionId,\n      currentSession: session ? {\n        stateMachine: session.stateMachine,\n        currentConceptIndex: session.currentConceptIndex,\n        completedConcepts: session.completedConcepts,\n        remainingCoreConcepts: session.remainingCoreConcepts,\n        insertedConcepts: session.insertedConcepts,\n        currentConcept: session.currentConcept,\n        currentConceptTools: session.currentConceptTools,\n        lastToolUsed: session.lastToolUsed,\n        lastAssessmentScore: session.lastAssessmentScore,\n        knowledgeGaps: session.knowledgeGaps,\n        knowledgeStrengths: session.knowledgeStrengths,\n        knowledgeEvolution: session.knowledgeEvolution,\n        assessmentHistory: session.assessmentHistory,\n        interactionHistory: session.interactionHistory,\n        recentQuestions: session.recentQuestions,\n        orchestratorOverrides: session.orchestratorOverrides,\n        learnerNoteHistory: session.learnerNoteHistory,\n        gapAttempts: session.gapAttempts,\n        deferredGaps: session.deferredGaps,\n        skippedConcepts: session.skippedConcepts,\n        completionMetadata: session.completionMetadata,\n        promptExerciseShowCount: session.promptExerciseShowCount,\n        createdAt: session.createdAt,\n        lastUpdated: session.lastUpdated\n      } : null,\n      \n      // Data from the current pipeline\n      lastAction: $json.action,\n      learnerInput: $json.learnerInput,\n      learnerProfile: $json.learnerProfile,\n      gradingResult: $json.gradingResult,\n      evaluationResult: $json.evaluationResult,\n      orchestratorDecision: $json.orchestratorDecision,\n      defaultNextAction: $json.defaultNextAction,\n      decisionTracking: $json.decisionTracking,\n      \n      // Raw pipeline data\n      rawPipelineData: $json\n    }\n  };\n}\n\n// Normal mode - return only responseData\nreturn responseData;"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1560,7 +1560,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "5cb512fc-7183-4666-9245-3be007fbd2d6",
+  "versionId": "1aac2615-d911-4fcd-a0ca-a01bdf13dee1",
   "meta": {
     "instanceId": "eea8bfa4918320bc469ce323a7b217b8209b639e450c67bc3e6a88bdf340b7de"
   },

@@ -3,7 +3,7 @@
 ## Summary
 - Total Nodes: 39
 - Code Blocks: 23
-- Potential Prompts: 21
+- Potential Prompts: 22
 
 ## Node Types
 - n8n-nodes-base.webhook: 2 nodes
@@ -93,15 +93,15 @@ return {
   userName: webhookData.userName...
 
 ### Limit Data
-- Length: 164 chars
-- Preview: // Extract Response Data
+- Length: 2659 chars
+- Preview: // Node: Limit Data
+// Node ID: ddb6f37f-de10-4755-bcb2-322171d87022
+
+// Extract Response Data
 const responseData = $json.responseData;
 
 if (!responseData) {
-  throw new Error('No responseData found in input');
-}
-
-return responseData;...
+  throw new Error('No responseData found i...
 
 ### Generate New Concept Prompt
 - Length: 1695 chars
@@ -112,20 +112,20 @@ const messages = [
     content: "Generate a new mini-concept to address a specific learning gap....
 
 ### Core Orchestrator
-- Length: 9922 chars
-- Preview: // Combined Routing & Core Orchestrator - FIXED
-// Handles both routing decisions AND simple deterministic transitions
+- Length: 10737 chars
+- Preview: // Enhanced Core Orchestrator - Handles deterministic flow logic
+// This replaces the existing Core Orchestrator node code
 
 const sessionId = $json.sessionId;
 const action = $json.action;
-const learnerInp...
+const learne...
 
 ### Process Adaptive Orchestrator Decision
-- Length: 9653 chars
-- Preview: // Process Adaptive Orchestrator Decision - ENHANCED WITH CONCEPT LOADING
+- Length: 12690 chars
+- Preview: // Process Adaptive Orchestrator Decision - UPDATED FOR NEW FORMAT
 const orchestratorDecision = JSON.parse($json.choices[0].message.content);
 
-const sessionId = $('Generate Adaptive Orchestrato...
+const sessionId = $('Generate Adaptive Orchestrator Route...
 
 ### Smart Reply Generator Prompt
 - Length: 8102 chars
@@ -179,11 +179,13 @@ const exerciseData = JSON.parse($json.choices[0].message.content);
 const sessionId = $('Generate Prompt Exercise Prompt').fi...
 
 ### Generate Adaptive Orchestrator Router Prompt
-- Length: 8611 chars
-- Preview: // Adaptive Orchestrator Router Prompt - WITH PROMPT EXERCISE INTELLIGENCE
-// Get session directly from global
+- Length: 7498 chars
+- Preview: // Simplified Generate Adaptive Orchestrator Router Prompt
+// This focuses on learner notes and pedagogical overrides
+
+// Get session from the input JSON
 const sessionId = $json.sessionId;
-const session = $getWorkflowStaticData('global').sessi...
+const sessi...
 
 ### Generate Evaluate Prompt Excercise Prompt
 - Length: 2924 chars
@@ -266,6 +268,15 @@ const result = JSON.parse($json.choices[0].messag...
 - Preview: // Extract webhook data from the first item in the array
 const webhookData = $input.first().json.bod...
 
+### Limit Data
+- Path: parameters.jsCode
+- Length: 2659 chars
+- Preview: // Node: Limit Data
+// Node ID: ddb6f37f-de10-4755-bcb2-322171d87022
+
+// Extract Response Data
+const...
+
 ### Generate New Concept Prompt
 - Path: parameters.jsCode
 - Length: 1695 chars
@@ -275,21 +286,14 @@ const messages = [
 
 ### Core Orchestrator
 - Path: parameters.jsCode
-- Length: 9922 chars
-- Preview: // Combined Routing & Core Orchestrator - FIXED
-// Handles both routing decisions AND simple determi...
+- Length: 10737 chars
+- Preview: // Enhanced Core Orchestrator - Handles deterministic flow logic
+// This replaces the existing Core ...
 
 ### Process Adaptive Orchestrator Decision
 - Path: parameters.jsCode
-- Length: 9653 chars
-- Preview: // Process Adaptive Orchestrator Decision - ENHANCED WITH CONCEPT LOADING
-const orchestratorDecision...
+- Length: 12690 chars
+- Preview: // Process Adaptive Orchestrator Decision - UPDATED FOR NEW FORMAT
+const orchestratorDecision = JSON...
 
-### Smart Reply Generator Prompt
-- Path: parameters.jsCode
-- Length: 8102 chars
-- Preview: // Smart Reply Generator for 6 Input Handlers
-const toolType = $json.responseData?.toolType;
-const t...
-
-... and 11 more prompts
+... and 12 more prompts

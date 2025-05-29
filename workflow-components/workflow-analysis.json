@@ -162,7 +162,7 @@
       "name": "Limit Data",
       "type": "n8n-nodes-base.code",
       "hasCode": true,
-      "hasPrompt": false,
+      "hasPrompt": true,
       "position": [
         440,
         200
@@ -521,8 +521,8 @@
     {
       "nodeName": "Limit Data",
       "nodeId": "ddb6f37f-de10-4755-bcb2-322171d87022",
-      "codeLength": 164,
-      "preview": "// Extract Response Data\nconst responseData = $json.responseData;\n\nif (!responseData) {\n  throw new Error('No responseData found in input');\n}\n\nreturn responseData;..."
+      "codeLength": 2659,
+      "preview": "// Node: Limit Data\n// Node ID: ddb6f37f-de10-4755-bcb2-322171d87022\n\n// Extract Response Data\nconst responseData = $json.responseData;\n\nif (!responseData) {\n  throw new Error('No responseData found i..."
     },
     {
       "nodeName": "Generate New Concept Prompt",
@@ -533,14 +533,14 @@
     {
       "nodeName": "Core Orchestrator",
       "nodeId": "85da8ca4-5e62-49bf-8073-ca187e12d49a",
-      "codeLength": 9922,
-      "preview": "// Combined Routing & Core Orchestrator - FIXED\n// Handles both routing decisions AND simple deterministic transitions\n\nconst sessionId = $json.sessionId;\nconst action = $json.action;\nconst learnerInp..."
+      "codeLength": 10737,
+      "preview": "// Enhanced Core Orchestrator - Handles deterministic flow logic\n// This replaces the existing Core Orchestrator node code\n\nconst sessionId = $json.sessionId;\nconst action = $json.action;\nconst learne..."
     },
     {
       "nodeName": "Process Adaptive Orchestrator Decision",
       "nodeId": "2420d12f-4baf-487b-946f-1ee34c25f512",
-      "codeLength": 9653,
-      "preview": "// Process Adaptive Orchestrator Decision - ENHANCED WITH CONCEPT LOADING\nconst orchestratorDecision = JSON.parse($json.choices[0].message.content);\n\nconst sessionId = $('Generate Adaptive Orchestrato..."
+      "codeLength": 12690,
+      "preview": "// Process Adaptive Orchestrator Decision - UPDATED FOR NEW FORMAT\nconst orchestratorDecision = JSON.parse($json.choices[0].message.content);\n\nconst sessionId = $('Generate Adaptive Orchestrator Route..."
     },
     {
       "nodeName": "Smart Reply Generator Prompt",
@@ -581,8 +581,8 @@
     {
       "nodeName": "Generate Adaptive Orchestrator Router Prompt",
       "nodeId": "09b3fb2e-a46c-4a40-aab2-af9903280fe0",
-      "codeLength": 8611,
-      "preview": "// Adaptive Orchestrator Router Prompt - WITH PROMPT EXERCISE INTELLIGENCE\n// Get session directly from global\nconst sessionId = $json.sessionId;\nconst session = $getWorkflowStaticData('global').sessi..."
+      "codeLength": 7498,
+      "preview": "// Simplified Generate Adaptive Orchestrator Router Prompt\n// This focuses on learner notes and pedagogical overrides\n\n// Get session from the input JSON\nconst sessionId = $json.sessionId;\nconst sessi..."
     },
     {
       "nodeName": "Generate Evaluate Prompt Excercise Prompt",
@@ -653,6 +653,13 @@
       "fullLength": 6013
     },
     {
+      "nodeName": "Limit Data",
+      "nodeId": "ddb6f37f-de10-4755-bcb2-322171d87022",
+      "path": "parameters.jsCode",
+      "preview": "// Node: Limit Data\n// Node ID: ddb6f37f-de10-4755-bcb2-322171d87022\n\n// Extract Response Data\nconst...",
+      "fullLength": 2659
+    },
+    {
       "nodeName": "Generate New Concept Prompt",
       "nodeId": "be6c4756-8d39-4edd-a4d1-ac8a09a1d37b",
       "path": "parameters.jsCode",
@@ -663,15 +670,15 @@
       "nodeName": "Core Orchestrator",
       "nodeId": "85da8ca4-5e62-49bf-8073-ca187e12d49a",
       "path": "parameters.jsCode",
-      "preview": "// Combined Routing & Core Orchestrator - FIXED\n// Handles both routing decisions AND simple determi...",
-      "fullLength": 9922
+      "preview": "// Enhanced Core Orchestrator - Handles deterministic flow logic\n// This replaces the existing Core ...",
+      "fullLength": 10737
     },
     {
       "nodeName": "Process Adaptive Orchestrator Decision",
       "nodeId": "2420d12f-4baf-487b-946f-1ee34c25f512",
       "path": "parameters.jsCode",
-      "preview": "// Process Adaptive Orchestrator Decision - ENHANCED WITH CONCEPT LOADING\nconst orchestratorDecision...",
-      "fullLength": 9653
+      "preview": "// Process Adaptive Orchestrator Decision - UPDATED FOR NEW FORMAT\nconst orchestratorDecision = JSON...",
+      "fullLength": 12690
     },
     {
       "nodeName": "Smart Reply Generator Prompt",
@@ -712,8 +719,8 @@
       "nodeName": "Generate Adaptive Orchestrator Router Prompt",
       "nodeId": "09b3fb2e-a46c-4a40-aab2-af9903280fe0",
       "path": "parameters.jsCode",
-      "preview": "// Adaptive Orchestrator Router Prompt - WITH PROMPT EXERCISE INTELLIGENCE\n// Get session directly f...",
-      "fullLength": 8611
+      "preview": "// Simplified Generate Adaptive Orchestrator Router Prompt\n// This focuses on learner notes and peda...",
+      "fullLength": 7498
     },
     {
       "nodeName": "Generate Evaluate Prompt Excercise Prompt",

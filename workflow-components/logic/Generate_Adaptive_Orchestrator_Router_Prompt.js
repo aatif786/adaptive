@@ -1,8 +1,10 @@
 // Node: Generate Adaptive Orchestrator Router Prompt
 // Node ID: 09b3fb2e-a46c-4a40-aab2-af9903280fe0
 
-// Adaptive Orchestrator Router Prompt - WITH PROMPT EXERCISE INTELLIGENCE
-// Get session directly from global
+// Simplified Generate Adaptive Orchestrator Router Prompt
+// This focuses on learner notes and pedagogical overrides
+
+// Get session from the input JSON
 const sessionId = $json.sessionId;
 const session = $getWorkflowStaticData('global').sessions[sessionId];
 
@@ -13,153 +15,160 @@ if (!session) {
 const messages = [
   {
     role: "system",
-    content: "You are an adaptive learning orchestrator. Analyze the current learning state and decide the next best action for the learner. When learner notes are provided, carefully analyze them to determine if the learner needs clarification, wants to skip, is ready to progress, or would benefit from additional content. You can also decide whether to grade a pending assessment or skip grading based on the learner's needs. You can also decide whether to evaluate a pending prompt exercise evaluation or skip prompt exercise evaluation based on learner's needs."
+    content: `You are an adaptive learning orchestrator that adds INTELLIGENCE to the learning flow. The Core Orchestrator has already determined the DEFAULT next action based on standard progression rules. Your job is to:
+
+1. PRIORITIZE learner notes and questions - this is where you add the most value
+2. Override the default ONLY when there's a strong pedagogical reason
+3. Insert remedial concepts when knowledge gaps are detected
+4. Skip content when learners demonstrate mastery or explicitly request it
+
+You are the "human touch" that makes the system adaptive and responsive to individual needs.`
   },
   {
     role: "user", 
-    content: `Current State Machine:
-- Current State: ${session.stateMachine.currentState}
-- Previous State: ${session.stateMachine.previousState || 'None'}
-- Pending Grading: ${session.stateMachine.currentState === 'assessment_submitted'}
-${session.stateMachine.currentState === 'welcome' && session.currentConcept ? '- Note: This is the first concept after welcome' : ''}
+    content: `📋 DEFAULT NEXT ACTION (from Core Orchestrator):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Action: "${$json.defaultNextAction?.action}"
+Reason: "${$json.defaultNextAction?.reason}"
+${$json.defaultNextAction?.isRequired ? '⚠️ This is a REQUIRED step in the flow' : ''}
+${$json.defaultNextAction?.isOptional ? 'ℹ️ This is optional and can be skipped' : ''}
+${$json.defaultNextAction?.suggestRemediation ? '💡 Low score - consider remediation' : ''}
 
-Current Learning State:
-- Course Topic: ${$json.courseTopic}
+📊 CURRENT CONTEXT:
+━━━━━━━━━━━━━━━
 - Current Concept: ${session.currentConcept?.title || 'None'}
-- Concept Summary: ${session.currentConcept?.summary || 'N/A'}
-- Tools Already Used: ${session.currentConceptTools.join(', ') || 'None'}
-- Last Assessment Score: ${session.lastAssessmentScore || 'N/A'}/5
-- Knowledge Gaps: ${session.knowledgeGaps?.join(', ') || 'None'}
-- Gap Attempts: ${JSON.stringify(session.gapAttempts || {})}
-- Recent Questions: ${session.recentQuestions?.join('; ') || 'None'}
-- Completed Concepts: ${session.completedConcepts.length}
-- Remaining Core Concepts: ${session.remainingCoreConcepts.length}
+- Tools Completed: [${$json.orchestratorContext.currentProgress.toolsCompleted.join(', ')}]
+- Assessment Score: ${$json.orchestratorContext.currentProgress.assessmentScore || 'Not assessed yet'}
+- Knowledge Gaps: ${$json.orchestratorContext.learnerContext.knowledgeGaps?.join(', ') || 'None identified'}
+- Knowledge Strengths: ${$json.orchestratorContext.learnerContext.knowledgeStrengths?.join(', ') || 'None identified'}
 
-PROMPT EXERCISE DECISION RULES:
-${!session.currentConceptTools.includes('prompt_exercise') ? `
-- Current concept title: "${session.currentConcept?.title}"
-- Has prompt task defined: ${session.currentConcept?.shouldHavePromptTask ? 'Yes' : 'No'}
+${$json.orchestratorContext.learnerContext.hasNote ? `
+🎯 LEARNER NOTE (HIGHEST PRIORITY):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+"${$json.orchestratorContext.learnerContext.noteContent}"
 
-Should we use prompt_exercise tool? Consider:
-1. Is the concept about prompting, prompt engineering, or AI interaction?
-   - Look for keywords: "prompt", "AI", "GPT", "LLM", "query", "instruction"
-   - Check if title contains: "${session.currentConcept?.title}"
-   
-2. Has the learner already shown good understanding?
-   - Last assessment score: ${session.lastAssessmentScore || 'N/A'}
-   - If score >= 4 AND concept relates to prompting → prompt_exercise
-   
-3. Is practical application important for this concept?
-   - If the concept teaches a skill that requires practice → consider prompt_exercise
-   
-4. Tool progression logic:
-   - If only concept_card used → usually go to assessment
-   - If assessment score is high AND concept is prompt-related → prompt_exercise
-   - If assessment score is low → consider insert_concept instead
-` : 'Prompt exercise already used for this concept'}
+ANALYZE THIS NOTE FOR:
+1. 🤔 Confusion/Questions → Consider insert_concept to clarify
+2. 🎓 Mastery signals ("I know this", "too easy") → Consider skipping
+3. 🔄 Requests ("show example", "more practice") → Address directly
+4. 😕 Frustration → Slow down, provide support
+5. 💡 Connections to their role → Enhance with examples
+6. ⏭️ Skip requests → Honor them (set markAsComplete: true)
 
-${$json.learnerInput?.note ? `
-IMPORTANT - LEARNER NOTE ANALYSIS REQUIRED:
-The learner just submitted this note/question with their input:
-"${$json.learnerInput.note}"
-
-Current Concept Being Studied: ${session.currentConcept?.title}
-Concept Summary: ${session.currentConcept?.summary || 'N/A'}
-
-Analyze this note carefully to determine:
-1. Is the learner confused or asking for clarification? 
-   - Look for: question marks, words like "confused", "don't understand", "unclear", "help"
-   - If yes → strongly consider insert_concept to address the confusion
-
-2. Is the learner showing understanding and ready to move on?
-   - Look for: "I get it", "makes sense", "understood", "ready"
-   - If yes → proceed to assessment
-
-3. Is the learner making connections or showing deeper thinking?
-   - Look for: relating to their role/experience, asking advanced questions, making analogies
-   - If yes AND prior assessment scores are high → consider prompt_exercise
-
-4. Does the note reveal specific knowledge gaps?
-   - Look for: misconceptions, incorrect assumptions, missing foundational knowledge
-   - If yes → insert_concept with specific focus on the gap
-
-5. Is the learner asking for examples or application to their role?
-   - Look for: "example", "how does this apply", "in practice", "for ${$json.learnerProfile?.role}"
-   - If yes → insert_concept with practical examples
+Recent questions from learner: ${$json.orchestratorContext.learnerContext.recentQuestions?.join('; ') || 'None'}
 ` : ''}
 
-${session.pendingAssessment ? `
-PENDING ASSESSMENT:
-- Answer submitted: "${session.pendingAssessment.answer}"
-- Note submitted: "${session.pendingAssessment.note}"
-- Question was: "${session.pendingAssessment.question}"
+🤖 YOUR DECISION FRAMEWORK:
+━━━━━━━━━━━━━━━━━━━━━━━
 
-You must decide whether to:
-1. Grade the assessment (nextAction: "grade_assessment")
-2. Skip grading and move to something else based on the note content
+WHEN TO OVERRIDE THE DEFAULT:
+1. ✅ Learner note indicates confusion → insert_concept
+2. ✅ Learner demonstrates mastery → skip to concept_complete  
+3. ✅ Knowledge gaps + low score → insert_concept for remediation
+4. ✅ Explicit skip request → concept_complete with skip flags
+5. ✅ Request for examples/practice → insert_concept with specific focus
+
+WHEN TO KEEP THE DEFAULT:
+1. ✅ No learner note AND standard progression makes sense
+2. ✅ Default is a required step (like assessment after concept_card)
+3. ✅ Learner is progressing normally without issues
+
+${session.pendingAssessment ? `
+📝 PENDING ASSESSMENT DECISION:
+- Answer: "${session.pendingAssessment.answer}"
+- Note: "${session.pendingAssessment.note}"
+- Default would be: grade_assessment
+
+Should we grade this or skip based on the note?
 ` : ''}
 
 ${session.pendingPromptEvaluation ? `
-PENDING PROMPT EVALUATION:
-- Prompt submitted: "${session.pendingPromptEvaluation.prompt}"
-- Note submitted: "${session.pendingPromptEvaluation.note || 'None'}"
-- Task was: "${session.pendingPromptEvaluation.task}"
+💡 PENDING PROMPT EVALUATION:
+- Prompt: "${session.pendingPromptEvaluation.prompt}"
+- Note: "${session.pendingPromptEvaluation.note || 'None'}"
+- Default would be: evaluate_prompt
 
-You must decide whether to:
-1. Evaluate the prompt (nextAction: "evaluate_prompt")
-2. Skip evaluation and do something else based on the note content
-
-Decision Rules for Prompt Exercise with Notes:
-1. If learner shows confusion or asks for help with prompting:
-   - Set skipEvaluation: true
-   - Set nextAction: "insert_concept" with focus on prompt engineering
-2. If learner wants to skip or says they understand:
-   - Set skipEvaluation: true
-   - Set nextAction: "concept_complete"
-3. If learner asks for feedback despite note:
-   - Set nextAction: "evaluate_prompt" (they want the evaluation)
-4. Otherwise, proceed with evaluation:
-   - Set nextAction: "evaluate_prompt"
+Should we evaluate this or skip based on the note?
 ` : ''}
 
-Decision Rules:
-1. Always start new concepts with concept_card
-2. After concept_card, if concept is prompt-related (title contains "prompt", "AI", "engineering") AND no assessment yet → consider prompt_exercise before assessment
-3. If learner explicitly asks to skip (e.g., "skip this", "I know this", "move on"):
-   - Set skipGrading: true (if assessment pending)
-   - Set skipEvaluation: true (if prompt evaluation pending)
-   - Set markAsComplete: true with completionType: "skipped"
-   - Set nextAction: "concept_complete"
-4. If learner shows severe confusion and has pending assessment/prompt:
-   - Set skipGrading/skipEvaluation: true (evaluation won't help)
-   - Set nextAction: "insert_concept" to address confusion
-5. Normal progression for NON-prompt concepts:
-   - concept_card → assessment → (if score low: insert_concept, if high: concept_complete)
-6. Normal progression for PROMPT-RELATED concepts:
-   - concept_card → assessment → (if score >= 3: prompt_exercise) → concept_complete
+REMEMBER: You add value by being responsive to the learner's individual needs. The default action is just a suggestion - override it when the learner would benefit from a different path.
 
-${$json.learnerInput?.note ? 'IMPORTANT: The learner note should heavily influence your decision. Prioritize addressing their specific question or concern.' : ''}
-
-Return JSON:
+Return JSON with EXACTLY this format:
 {
   "nextAction": "grade_assessment|evaluate_prompt|concept_card|assessment|prompt_exercise|concept_complete|insert_concept",
-  "reasoning": "Brief explanation of decision",
-  "skipGrading": true|false (only if assessment is pending),
-  "skipEvaluation": true|false (only if prompt evaluation is pending),
-  "markAsComplete": true|false (if learner wants to skip),
-  "completionType": "normal|skipped" (if markAsComplete is true),
-  "skipReason": "reason for skipping if applicable",
-  "exerciseFocus": "specific focus for prompt exercise if choosing that tool",
+  "reasoning": "Brief explanation of decision (mention if following default or overriding)",
+  "followingDefault": true|false,
+  "overrideReason": "Only if followingDefault is false, explain the pedagogical reason",
+  
+  // ONLY include these if applicable:
+  "skipGrading": true|false, // Only if assessment is pending and should be skipped
+  "skipEvaluation": true|false, // Only if prompt evaluation is pending and should be skipped
+  "markAsComplete": true|false, // Only if learner wants to skip the concept
+  "completionType": "normal|skipped", // Only if markAsComplete is true
+  "skipReason": "reason for skipping", // Only if skipping something
+  
+  // Only if nextAction is "prompt_exercise":
+  "exerciseFocus": "specific focus for the prompt exercise",
+  
+  // Only if nextAction is "insert_concept":
   "conceptNeeded": {
-    "reason": "specific gap to address if action is insert_concept",
-    "focus": "topic area for new concept if inserting"
+    "reason": "specific gap or confusion to address",
+    "focus": "topic area for the new concept"
   },
+  
+  // Always include note analysis if there was a learner note:
   "noteAnalysis": {
     "understanding": "low|medium|high",
     "needsClarification": true|false,
     "wantsToSkip": true|false,
-    "specificRequest": "what they are asking for if clear",
+    "specificRequest": "what they're asking for if clear",
     "sentiment": "confused|curious|confident|frustrated|dismissive"
+  }
+}
+
+EXAMPLES:
+
+1. Following default (no issues):
+{
+  "nextAction": "assessment",
+  "reasoning": "Following default progression - assessment comes after concept card",
+  "followingDefault": true
+}
+
+2. Overriding due to confusion:
+{
+  "nextAction": "insert_concept",
+  "reasoning": "Overriding default (assessment) because learner expressed confusion about AI tool categories",
+  "followingDefault": false,
+  "overrideReason": "Learner needs clarification before assessment would be meaningful",
+  "conceptNeeded": {
+    "reason": "Learner confused about difference between chat-based vs integrated AI tools",
+    "focus": "AI tool categories and use cases"
+  },
+  "noteAnalysis": {
+    "understanding": "low",
+    "needsClarification": true,
+    "wantsToSkip": false,
+    "specificRequest": "wants examples of different AI tool types",
+    "sentiment": "confused"
+  }
+}
+
+3. Honoring skip request:
+{
+  "nextAction": "concept_complete",
+  "reasoning": "Learner indicates they already know this material well",
+  "followingDefault": false,
+  "overrideReason": "Learner demonstrates existing mastery",
+  "markAsComplete": true,
+  "completionType": "skipped",
+  "skipReason": "Learner already familiar with concept",
+  "noteAnalysis": {
+    "understanding": "high",
+    "needsClarification": false,
+    "wantsToSkip": true,
+    "specificRequest": "skip to next topic",
+    "sentiment": "confident"
   }
 }`
   }
@@ -171,7 +180,7 @@ return {
   temperature: 0.3,
   max_tokens: 500,
   response_format: { type: "json_object" },
-  // Pass through original data WITHOUT sessionState
+  // Pass through original data
   originalData: {
     sessionId: $json.sessionId,
     action: $json.action,
@@ -180,9 +189,11 @@ return {
     learnerProfile: $json.learnerProfile,
     coreConcepts: $json.coreConcepts,
     userName: $json.userName,
-    currentConcept: session.currentConcept, // Include current concept for reference
+    currentConcept: session.currentConcept,
+    defaultNextAction: $json.defaultNextAction,
+    orchestratorContext: $json.orchestratorContext,
     stateMachine: {
-      currentState: session.stateMachine.currentState // Only pass minimal state info
+      currentState: session.stateMachine.currentState
     }
   }
 };

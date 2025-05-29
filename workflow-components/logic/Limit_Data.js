@@ -8,4 +8,11 @@ if (!responseData) {
   throw new Error('No responseData found in input');
 }
 
-return responseData;
+// Always include global state for state display
+const sessionId = $json.sessionId || responseData.sessionId;
+const globalState = $getWorkflowStaticData('global');
+
+return {
+  ...responseData,
+  globalState: globalState
+};

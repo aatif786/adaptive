@@ -500,7 +500,7 @@
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.12
+            v0.13
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -524,7 +524,6 @@
                 </div>
                 
                 <button class="btn btn-primary" onclick="startCourse()">Start Course</button>
-                <button class="btn btn-secondary" onclick="toggleDebug()" style="margin-left: 10px;">Toggle Debug</button>
             </div>
 
             <div id="contentArea" style="display: none;">
@@ -593,11 +592,6 @@
             document.getElementById('sessionInfo').textContent = `Session ID: ${currentState.sessionId}`;
         }
 
-        function toggleDebug() {
-            debugMode = !debugMode;
-            // Don't toggle debug info visibility here - it's controlled by toggleStateDisplay
-            // Just set the debug mode flag
-        }
 
         function updateDebug(info) {
             if (debugMode) {
@@ -608,6 +602,8 @@
 
         function toggleStateDisplay() {
             stateDisplayMode = !stateDisplayMode;
+            debugMode = stateDisplayMode; // Toggle debug mode along with state display
+            
             const stateDisplay = document.getElementById('stateDisplay');
             const debugInfo = document.getElementById('debugInfo');
             const toggleBtn = document.querySelector('.state-toggle-btn');

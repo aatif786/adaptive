@@ -14,6 +14,7 @@ IMMEDIATE
 13) remaining core concept is still 10 even though there is only a few
 14) turn off auto advance
 15) skipping doesn't work during assessment?
+16) while waiting, a concept card should be shown 
 
 MID
 ------

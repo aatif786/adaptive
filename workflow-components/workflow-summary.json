@@ -1,0 +1,501 @@
+{
+  "totalNodes": 39,
+  "nodeTypes": {
+    "n8n-nodes-base.webhook": 2,
+    "n8n-nodes-base.code": 23,
+    "n8n-nodes-base.merge": 1,
+    "n8n-nodes-base.respondToWebhook": 2,
+    "n8n-nodes-base.manualTrigger": 1,
+    "n8n-nodes-base.set": 1,
+    "n8n-nodes-base.httpRequest": 6,
+    "n8n-nodes-base.switch": 3
+  },
+  "connections": {
+    "Main Webhook": {
+      "main": [
+        [
+          {
+            "node": "Init Course Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Session State Manager": {
+      "main": [
+        [
+          {
+            "node": "Core Orchestrator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Concept Card Handler": {
+      "main": [
+        [
+          {
+            "node": "Smart Reply Generator Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assessment Handler": {
+      "main": [
+        [
+          {
+            "node": "Smart Reply Generator Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Grading": {
+      "main": [
+        [
+          {
+            "node": "Smart Reply Generator Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prompt Exercise Handler": {
+      "main": [
+        [
+          {
+            "node": "Generate Prompt Exercise Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Course Completion": {
+      "main": [
+        [
+          {
+            "node": "Merge Responses",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Responses": {
+      "main": [
+        [
+          {
+            "node": "Limit Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reset Session Webhook": {
+      "main": [
+        [
+          {
+            "node": "Reset Session",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reset Session": {
+      "main": [
+        [
+          {
+            "node": "Reset Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Init Course Data": {
+      "main": [
+        [
+          {
+            "node": "Session State Manager",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit Data": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking 'Test workflow'": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Init Course Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Grade Assessment AI Call": {
+      "main": [
+        [
+          {
+            "node": "Process Grading",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate New Concept Prompt": {
+      "main": [
+        [
+          {
+            "node": "Generate New Concept AI Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate New Concept AI Call": {
+      "main": [
+        [
+          {
+            "node": "Insert Concept Handler",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Core Orchestrator": {
+      "main": [
+        [
+          {
+            "node": "Core Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Core Router": {
+      "main": [
+        [
+          {
+            "node": "Course Completion",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Welcome Message Handler",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate Assessment Grading Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate Evaluate Prompt Excercise Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate Adaptive Orchestrator Router Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate Adaptive Orchestrator Router Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Adaptive Orchestrator AI Call": {
+      "main": [
+        [
+          {
+            "node": "Process Adaptive Orchestrator Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Adaptive Orchestrator Decision": {
+      "main": [
+        [
+          {
+            "node": "Adaptive Tool Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Smart Reply Generator Prompt": {
+      "main": [
+        [
+          {
+            "node": "Smart Reply Generator AI Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Smart Reply Generator AI Call": {
+      "main": [
+        [
+          {
+            "node": "Process Smart Replies",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Smart Replies": {
+      "main": [
+        [
+          {
+            "node": "Merge Responses",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Generate Prompt Exercise Prompt": {
+      "main": [
+        [
+          {
+            "node": "Generate Prompt Exercise Generate AI Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Prompt Exercise Generate AI Call": {
+      "main": [
+        [
+          {
+            "node": "Process Generated Prompt Exercise",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Prompt Exercise Evaluation AI Call": {
+      "main": [
+        [
+          {
+            "node": "Process Prompt Evaluation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Prompt Evaluation": {
+      "main": [
+        [
+          {
+            "node": "Smart Reply Generator Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Assessment Grading Prompt": {
+      "main": [
+        [
+          {
+            "node": "Grade Assessment AI Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Generated Prompt Exercise": {
+      "main": [
+        [
+          {
+            "node": "Smart Reply Generator Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Adaptive Orchestrator Router Prompt": {
+      "main": [
+        [
+          {
+            "node": "Adaptive Orchestrator AI Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Evaluate Prompt Excercise Prompt": {
+      "main": [
+        [
+          {
+            "node": "Generate Prompt Exercise Evaluation AI Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Adaptive Tool Router": {
+      "main": [
+        [
+          {
+            "node": "Generate Assessment Grading Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate Evaluate Prompt Excercise Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Complete Concept Handler",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Core Tool Router",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate New Concept Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Core Tool Router": {
+      "main": [
+        [
+          {
+            "node": "Concept Card Handler",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Assessment Handler",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prompt Exercise Handler",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Welcome Message Handler": {
+      "main": [
+        [
+          {
+            "node": "Merge Responses",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Complete Concept Handler": {
+      "main": [
+        [
+          {
+            "node": "Smart Reply Generator Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Concept Handler": {
+      "main": [
+        [
+          {
+            "node": "Core Tool Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "promptCount": 0,
+  "codeNodeCount": 23
+}

@@ -1,9 +1,17 @@
 
 IMMEDIATE
 ------
-1) add smart replies to UI
+0) lets beef up knowledge gaps and add drilling
+--knowledge mastery goals
+--knowledge gaps
+--track with ids and mark complete
+-- Knowledge GapsI suggest that the Orchestrator tries to address these gaps one at time. 
+-- An assessment or prompt exercise can remove them but only if the LLM determines that the learner has show mastery. 
+-- So every core concept or dynamic concept or prompt exercise can be targted towards one gap, 
+-- then the LLM decides from that evaluation whether that gap is cleared.
+1) create a capstone project to help them
+0) add multiple choice to assessment
 2) add debug data to UI
-5) change UI for learner notes to have one button, not 2
 6) TEST ALL FLOWS
 7)assessment seems to be truncated
 8) fix smart replu UI
@@ -23,7 +31,6 @@ MID
 4) make prompts smarter
 7) Add text to speech to UI
 8) display concept author along with expert tips
-9) Knowledge GapsI suggest that the Orchestrator tries to address these gaps one at time. An assessment or prompt exercise can remove them but only if the LLM determines that the learner has show mastery. So every core concept or dynamic concept or prompt exercise can be targted towards one gap, then the LLM decides from that evaluation whether that gap is cleared.
 
 
 LONG
@@ -42,3 +49,4 @@ SUPER LONG (not for prototype)
 5) ability to store insight of learner across sessions
 6) LLM decision safety checks in case they make wrong decisions
 7) state machine manager, should manage all transitions, and should handle exception and state fallback
+8) we probably need some sort of locking to ensure that we don't corrupt the state machine

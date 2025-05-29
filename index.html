@@ -539,7 +539,7 @@
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.14
+            v0.15
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -1115,6 +1115,8 @@
         function renderSmartReplies(replies, targetFieldId) {
             if (!replies) return '';
             
+            console.log('Smart replies input:', replies);
+            
             // Handle different reply formats
             let replyArray = [];
             
@@ -1124,11 +1126,22 @@
             }
             // If replies is already an array, use it
             else if (Array.isArray(replies)) {
-                // Check if first element is a comma-delimited string
-                if (replies.length === 1 && typeof replies[0] === 'string' && replies[0].includes(',')) {
-                    replyArray = replies[0].split(',').map(r => r.trim()).filter(r => r.length > 0);
-                } else {
-                    replyArray = replies;
+                // Flatten nested arrays
+                replies = replies.flat();
+                
+                // Check if any element is a comma-delimited string
+                replyArray = [];
+                replies.forEach(reply => {
+                    if (typeof reply === 'string' && reply.includes(',')) {
+                        replyArray.push(...reply.split(',').map(r => r.trim()).filter(r => r.length > 0));
+                    } else if (typeof reply === 'string') {
+                        replyArray.push(reply.trim());
+                    }
+                });
+                
+                // If no comma-delimited strings were found, use the array as is
+                if (replyArray.length === 0) {
+                    replyArray = replies.filter(r => typeof r === 'string').map(r => r.trim());
                 }
             }
             // If replies has a 'replies' property that's an array, use that
@@ -1141,20 +1154,27 @@
                 replyArray = Object.values(replies).filter(item => typeof item === 'string');
             }
             
+            console.log('Processed reply array:', replyArray);
+            
             // If we still don't have valid replies, return empty
             if (!replyArray.length) return '';
+            
+            // Generate individual buttons
+            const buttons = replyArray.map(reply => {
+                // Ensure reply is a string
+                const replyText = String(reply).trim();
+                // Escape quotes for the onclick handler
+                const escapedReply = replyText.replace(/'/g, "\\'").replace(/"/g, '\\"');
+                return `<button class="smart-reply-chip" onclick="selectSmartReply('${targetFieldId}', '${escapedReply}')">${replyText}</button>`;
+            });
+            
+            console.log('Generated buttons:', buttons);
             
             return `
                 <div class="smart-replies-container">
                     <div class="smart-replies-label">Quick replies:</div>
                     <div class="smart-replies">
-                        ${replyArray.map(reply => {
-                            // Ensure reply is a string
-                            const replyText = String(reply);
-                            // Escape single quotes for the onclick handler
-                            const escapedReply = replyText.replace(/'/g, "\\'");
-                            return `<button class="smart-reply-chip" onclick="selectSmartReply('${targetFieldId}', '${escapedReply}')">${replyText}</button>`;
-                        }).join('')}
+                        ${buttons.join('\n')}
                     </div>
                 </div>
             `;

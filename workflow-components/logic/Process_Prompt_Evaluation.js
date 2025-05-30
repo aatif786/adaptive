@@ -5,14 +5,33 @@
 
 const evaluationResult = JSON.parse($json.choices[0].message.content);
 
-// Get data from the pipeline (from Generate Prompt Exercise Evaluation AI Call)
-const originalData = $('Generate Evaluate Prompt Excercise Prompt').first().json.originalData;
-const sessionId = originalData.sessionId;
-const responseData = originalData.responseData;
-const isRefining = originalData.isRefining;
+// After OpenAI call, we need to get data from global session - not from previous nodes
+// First, we need to find the sessionId from the global sessions
+const globalState = $getWorkflowStaticData('global');
+const sessionEntries = Object.entries(globalState.sessions || {});
 
-// Get session from global
-const session = $getWorkflowStaticData('global').sessions[sessionId];
+if (sessionEntries.length === 0) {
+  throw new Error('No active sessions found in global state');
+}
+
+// Find the session with pending prompt evaluation
+let sessionId = null;
+let session = null;
+
+for (const [id, sessionData] of sessionEntries) {
+  if (sessionData.pendingPromptEvaluation) {
+    sessionId = id;
+    session = sessionData;
+    break;
+  }
+}
+
+if (!sessionId || !session) {
+  throw new Error('No session with pending prompt evaluation found');
+}
+
+// Check if we're in criteria-based refinement mode
+const isRefining = session.promptRefinementState?.isRefining || false;
 
 // Check if we're in criteria-based refinement mode
 if (isRefining && session.promptRefinementState) {
@@ -74,12 +93,21 @@ if (isRefining && session.promptRefinementState) {
   // Save updated state
   $getWorkflowStaticData('global').sessions[sessionId] = session;
   
-  // Create response for refinement mode
+  // Create response for refinement mode (built from session data)
   const refinementResponseData = {
-    ...responseData,
+    sessionId,
     toolType: nextAction === 'refinement_complete' ? 'refinement_success' : 'prompt_exercise',
+    conceptProgress: {
+      current: session.completedConcepts.length + 1,
+      total: session.remainingCoreConcepts.length + 
+             session.completedConcepts.length + 
+             session.insertedConcepts.length
+    },
     toolData: {
-      ...responseData.toolData,
+      task: session.currentPromptExercise?.task || session.pendingPromptEvaluation?.task,
+      context: session.currentPromptExercise?.context,
+      hints: session.currentPromptExercise?.hints || [],
+      conceptTitle: session.currentConcept?.title,
       evaluationResult: evaluationResult,
       isRefining: nextAction !== 'refinement_complete',
       currentCriteria: nextAction === 'refinement_complete' ? refinementState.criteriaStatus : currentCriteria,
@@ -90,8 +118,7 @@ if (isRefining && session.promptRefinementState) {
         total: refinementState.criteriaStatus.length,
         met: refinementState.criteriaStatus.filter(c => c.met).length
       },
-      allCriteriaMet: nextAction === 'refinement_complete',
-      conceptTitle: session.currentConcept?.title
+      allCriteriaMet: nextAction === 'refinement_complete'
     },
     waitingForInput: nextAction !== 'refinement_complete',
     nextAction: nextAction,
@@ -99,12 +126,10 @@ if (isRefining && session.promptRefinementState) {
   };
   
   return {
-    ...originalData,
     evaluationResult,
     responseData: refinementResponseData,
     sessionId,
-    routeTo: routeTo,
-    learnerProfile: originalData.learnerProfile
+    routeTo: routeTo
   };
 } else {
   // Original evaluation mode (non-refinement)
@@ -165,11 +190,21 @@ if (isRefining && session.promptRefinementState) {
   // Save updated state
   $getWorkflowStaticData('global').sessions[sessionId] = session;
 
-  // Create updated response data with evaluation results
+  // Create updated response data with evaluation results (built from session data)
   const updatedResponseData = {
-    ...responseData,
+    sessionId,
+    toolType: 'prompt_exercise',
+    conceptProgress: {
+      current: session.completedConcepts.length + 1,
+      total: session.remainingCoreConcepts.length + 
+             session.completedConcepts.length + 
+             session.insertedConcepts.length
+    },
     toolData: {
-      ...responseData.toolData,
+      task: session.currentPromptExercise?.task || session.pendingPromptEvaluation?.task,
+      context: session.currentPromptExercise?.context,
+      hints: session.currentPromptExercise?.hints || [],
+      conceptTitle: session.currentConcept?.title,
       evaluationResult: evaluationResult
     },
     waitingForInput: false,
@@ -178,10 +213,8 @@ if (isRefining && session.promptRefinementState) {
 
   // Pass all necessary data forward in the pipeline
   return {
-    ...originalData,
     evaluationResult,
     responseData: updatedResponseData,
-    sessionId,
-    learnerProfile: originalData.learnerProfile
+    sessionId
   };
 }

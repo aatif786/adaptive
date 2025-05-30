@@ -37,7 +37,7 @@ function determineDefaultNextAction(session, action) {
   // Special case: Moving from welcome
   if (action === 'next' && currentState === 'welcome') {
     return {
-      action: 'load_first_concept',
+      action: 'concept_card',
       reason: 'Moving from welcome to first concept'
     };
   }

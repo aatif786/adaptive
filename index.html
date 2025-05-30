@@ -96,6 +96,25 @@
             font-size: 16px;
             margin-bottom: 20px;
             color: #555;
+            line-height: 1.6;
+        }
+        
+        .concept-summary h3 {
+            font-size: 18px;
+            margin: 15px 0 10px 0;
+            color: #0a66c2;
+        }
+        
+        .concept-summary ul {
+            margin: 10px 0 10px 20px;
+        }
+        
+        .concept-summary strong {
+            color: #333;
+        }
+        
+        .concept-summary em {
+            font-style: italic;
         }
 
         .expert-tips {
@@ -595,7 +614,7 @@
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.17
+            v0.18
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -961,7 +980,7 @@
                     Concept Card
                 </div>
                 <h2 class="concept-title">${data.title}</h2>
-                <p class="concept-summary">${data.summary}</p>
+                <div class="concept-summary">${renderMarkdown(data.summary)}</div>
             `;
             
             if (data.expertTips && data.expertTips.length > 0) {

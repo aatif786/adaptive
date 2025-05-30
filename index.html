@@ -614,7 +614,7 @@
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.18
+            v0.19
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -929,7 +929,6 @@
                 switch (data.toolType) {
                     case 'transition':
                         renderTransition(contentArea, data.toolData);
-                        // Remove the auto-continue since we want user to click
                         break;
                     case 'welcome':
                         renderWelcome(contentArea, data.toolData);
@@ -943,18 +942,10 @@
                     case 'prompt_exercise':
                         renderPromptExercise(contentArea, data.toolData);
                         break;
-                    case 'transition':
-                        setTimeout(() => sendRequest('next', {}), 45000);
-                        break;
                     case 'course_complete':
                         renderCompletionScreen(contentArea, data.toolData);
                         break;
                 }
-            }
-            
-            // Auto-continue if specified
-            if (data.nextAction === 'auto_continue') {
-                setTimeout(() => sendRequest('next', {}), 45000);
             }
         }
 

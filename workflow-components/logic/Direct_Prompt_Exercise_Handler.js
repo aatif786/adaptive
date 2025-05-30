@@ -26,11 +26,49 @@ session.currentPromptExercise = {
   hints: [], // Direct prompts don't have hints by default
   conceptTitle: concept.title,
   conceptId: concept.id,
-  isDirect: true // Flag to indicate this was not generated
+  isDirect: true, // Flag to indicate this was not generated
+  promptCriteria: concept.promptCriteria || [] // Include criteria if available
 };
+
+// Initialize prompt refinement state if criteria exist
+if (concept.promptCriteria && concept.promptCriteria.length > 0) {
+  // Check if we're continuing refinement or starting fresh
+  if (!session.promptRefinementState.isRefining) {
+    // Starting fresh - initialize criteria status
+    session.promptRefinementState = {
+      currentCriteriaIndex: 0,
+      criteriaStatus: concept.promptCriteria.map(c => ({
+        name: c.name,
+        description: c.description,
+        evaluationHint: c.evaluationHint,
+        met: false,
+        attempts: 0,
+        feedback: "",
+        example: ""
+      })),
+      promptHistory: [],
+      currentPrompt: "",
+      feedbackHistory: [],
+      isRefining: true
+    };
+  }
+}
 
 // Save session
 $getWorkflowStaticData('global').sessions[sessionId] = session;
+
+// Check if we're in refinement mode
+const refinementState = session.promptRefinementState;
+const isRefining = refinementState.isRefining && refinementState.criteriaStatus.length > 0;
+
+// Get current criteria if refining
+let currentCriteria = null;
+let refinementMessage = 'Practice your prompt engineering skills with this task.';
+if (isRefining) {
+  currentCriteria = refinementState.criteriaStatus[refinementState.currentCriteriaIndex];
+  const unmetCount = refinementState.criteriaStatus.filter(c => !c.met).length;
+  refinementMessage = `Focus on: **${currentCriteria.name}** (${unmetCount} criteria remaining)`;
+}
 
 // Build response that matches Process Generated Prompt Exercise
 const responseData = {
@@ -46,11 +84,20 @@ const responseData = {
     task: promptData.task,
     context: promptData.context || null,
     hints: [], // No hints for direct prompts
-    conceptTitle: concept.title
+    conceptTitle: concept.title,
+    // Add refinement data if in refinement mode
+    isRefining: isRefining,
+    currentCriteria: currentCriteria,
+    previousPrompt: refinementState.currentPrompt || "",
+    previousFeedback: currentCriteria?.feedback || "",
+    criteriaProgress: isRefining ? {
+      total: refinementState.criteriaStatus.length,
+      met: refinementState.criteriaStatus.filter(c => c.met).length
+    } : null
   },
   waitingForInput: true,
   inputType: 'prompt',
-  message: 'Practice your prompt engineering skills with this task.'
+  message: refinementMessage
 };
 
 // Pass the response forward with all original data

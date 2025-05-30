@@ -945,8 +945,47 @@
                     case 'course_complete':
                         renderCompletionScreen(contentArea, data.toolData);
                         break;
+                    case 'refinement_success':
+                        renderRefinementSuccess(contentArea, data.toolData);
+                        break;
                 }
             }
+        }
+        
+        function renderRefinementSuccess(container, data) {
+            container.innerHTML = `
+                <div class="tool-type">
+                    <span class="tool-icon">🎉</span>
+                    Refinement Complete!
+                </div>
+                <h2 class="concept-title">Excellent Work!</h2>
+                
+                <div class="feedback-box" style="background-color: #d4edda; border-color: #c3e6cb; color: #155724;">
+                    <h3>All Criteria Met!</h3>
+                    <p>You successfully refined your prompt to meet all ${data.criteriaProgress.total} criteria.</p>
+                </div>
+                
+                <div class="expert-tips">
+                    <h3>What You Mastered:</h3>
+                    <ul>
+                        ${data.allCriteriaMet ? data.currentCriteria.map(c => `<li><strong>${c.name}:</strong> ${c.description}</li>`).join('') : ''}
+                    </ul>
+                </div>
+                
+                <div class="collapsible-section">
+                    <div class="collapsible-header active" id="finalPromptHeader" onclick="toggleCollapsible('finalPromptHeader')">
+                        <span>Your Final Prompt</span>
+                        <span class="collapse-icon">▼</span>
+                    </div>
+                    <div class="collapsible-content active">
+                        <p style="white-space: pre-wrap; background-color: #f8f9fa; padding: 15px; border-radius: 4px;">${data.previousPrompt}</p>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="sendRequest('next', {})">Continue to Assessment</button>
+                </div>
+            `;
         }
 
         function renderWelcome(container, data) {
@@ -1169,10 +1208,55 @@
                     </div>
                 `;
             } else if (currentState.waitingForInput) {
+                // Check if we're in refinement mode
+                if (data.isRefining && data.currentCriteria) {
+                    // Refinement mode - show criteria progress and feedback
+                    html += `
+                        <div class="feedback-box" style="margin-bottom: 20px;">
+                            <h4>Current Focus: ${data.currentCriteria.name}</h4>
+                            <p>${data.currentCriteria.description}</p>
+                            <p style="font-size: 14px; color: #666; margin-top: 10px;">
+                                <strong>Hint:</strong> ${data.currentCriteria.evaluationHint}
+                            </p>
+                        </div>
+                    `;
+                    
+                    if (data.criteriaProgress) {
+                        html += `
+                            <div class="score-display" style="margin-bottom: 20px;">
+                                <div class="score-number">${data.criteriaProgress.met}/${data.criteriaProgress.total}</div>
+                                <div class="score-label">Criteria Met</div>
+                            </div>
+                        `;
+                    }
+                    
+                    if (data.previousFeedback) {
+                        html += `
+                            <div class="feedback-box warning" style="margin-bottom: 20px;">
+                                <strong>Previous Feedback:</strong> ${data.previousFeedback}
+                            </div>
+                        `;
+                    }
+                    
+                    if (data.example) {
+                        html += `
+                            <div class="collapsible-section" style="margin-bottom: 20px;">
+                                <div class="collapsible-header" id="exampleHeader" onclick="toggleCollapsible('exampleHeader')">
+                                    <span>Show Example</span>
+                                    <span class="collapse-icon">▼</span>
+                                </div>
+                                <div class="collapsible-content">
+                                    <p style="white-space: pre-wrap;">${data.example}</p>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+                
                 html += `
                     <div class="input-area">
-                        <label class="input-label">Write your prompt:</label>
-                        <textarea id="learnerPrompt" placeholder="Type your prompt here..." required></textarea>
+                        <label class="input-label">${data.isRefining ? 'Refine your prompt:' : 'Write your prompt:'}</label>
+                        <textarea id="learnerPrompt" placeholder="Type your prompt here..." required>${data.previousPrompt || ''}</textarea>
                         
                         <label class="input-label" style="margin-top: 15px;">Add a note (optional):</label>
                         <textarea id="learnerNote" placeholder="Any questions or thoughts?" style="min-height: 60px;"></textarea>
@@ -1184,7 +1268,7 @@
                 
                 html += `
                         <div class="button-group">
-                            <button class="btn btn-primary" onclick="submitPrompt()">Submit Prompt</button>
+                            <button class="btn btn-primary" onclick="submitPrompt()">Submit ${data.isRefining ? 'Refined' : ''} Prompt</button>
                         </div>
                     </div>
                 `;

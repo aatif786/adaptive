@@ -33,7 +33,29 @@ return {
       "prompt": {
         "task": "### 🧠 Prompt Task:\n\nYou are leading the launch of a new internal employee portal for your 300-person company.  \nThe portal will serve as a central hub for:\n\n- HR policies  \n- IT support links  \n- Company announcements  \n- Employee resource groups  \n\nYou have been asked to:\n\nPrompt an AI assistant to generate a full **6-week project plan** for launching this portal, including:\n\n- Tasks  \n- Owners  \n- Milestones  \n- Risks","context": "You will be working with a cross-functional team from **HR, IT, and Communications**.  \nYou **cannot hire additional help**. The **deadline is fixed**, and executive stakeholders expect a **smooth, polished rollout**.\n\n*You’ll create and refine your prompt until the output is something you’d confidently present to leadership.*",
         "conceptTitle": "Prompt Mastery Scenario: Plan the Launch of a New Internal Employee Portal"
-      }
+      },
+      "promptCriteria": [
+        {
+          "name": "Context Framing",
+          "description": "The prompt frames the AI's role or identity clearly (e.g., 'You are a professional internal project planner').",
+          "evaluationHint": "Look for a role or persona assigned to the AI in the prompt."
+        },
+        {
+          "name": "Constraint Injection",
+          "description": "The prompt includes real-world constraints (e.g., 'No new hires', 'Timeline is fixed').",
+          "evaluationHint": "Look for references to limits on time, resources, scope, or staffing."
+        },
+        {
+          "name": "Decomposition",
+          "description": "The prompt specifies the different functions or teams involved (e.g., HR, IT, Comms).",
+          "evaluationHint": "Check whether the learner included all relevant stakeholders or workstreams."
+        },
+        {
+          "name": "Structural Instruction",
+          "description": "The prompt specifies the desired output format (e.g., 'Return as a markdown table with columns: Week, Task, Owner').",
+          "evaluationHint": "Does the prompt explicitly define how the output should be formatted?"
+        }
+      ]
     },
     {
       "id": 2,

@@ -40,6 +40,16 @@ if (!globalState.sessions[sessionId] || action === 'start') {
     pendingAssessment: null,
     recentQuestions: [],
     
+    // Prompt refinement tracking
+    promptRefinementState: {
+      currentCriteriaIndex: 0,
+      criteriaStatus: [], // [{name: "Context Framing", met: false, attempts: 0, feedback: ""}]
+      promptHistory: [], // All versions of the prompt
+      currentPrompt: "", // Latest prompt version
+      feedbackHistory: [], // Feedback for each attempt
+      isRefining: false // Flag to indicate we're in refinement mode
+    },
+    
     // State Machine (isolated in global)
     stateMachine: {
       currentState: 'uninitialized',

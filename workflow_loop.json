@@ -838,7 +838,7 @@
                 "conditions": [
                   {
                     "id": "60aca0f7-b783-4e53-a0b2-153342db2528",
-                    "leftValue": "={{ ['prompt_exercise', 'generate_prompt_exercise'].includes($json.nextAction) }}",
+                    "leftValue": "={{ ['evaluate_prompt'].includes($json.nextAction) }}",
                     "rightValue": "generate_prompt_exercise",
                     "operator": {
                       "type": "boolean",
@@ -886,7 +886,7 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ ['concept_card', 'assessment'].includes($json.nextAction) }}",
+                    "leftValue": "={{ ['concept_card', 'prompt_exercise', 'assessment'].includes($json.nextAction) }}",
                     "rightValue": "={{ true }}",
                     "operator": {
                       "type": "boolean",
@@ -1095,30 +1095,6 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "{{ $json.routeTo }}",
-                    "rightValue": "direct_prompt_exercise",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    },
-                    "id": "c6583314-0af9-4bc2-86cf-278f8b0fd7c8"
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "directPrompt"
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
                     "id": "bbaac94b-d0e9-4a0e-bb0f-12c516bf37bb",
                     "leftValue": "={{ $json.routeTo }}",
                     "rightValue": "generate_prompt_exercise",
@@ -1133,6 +1109,30 @@
               },
               "renameOutput": true,
               "outputKey": "generatePrompt"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.routeTo }}",
+                    "rightValue": "direct_prompt_exercise",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "c6583314-0af9-4bc2-86cf-278f8b0fd7c8"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "directPrompt"
             }
           ]
         },
@@ -1668,7 +1668,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "499889b3-3d3a-414b-bc6d-02c507767b15",
+  "versionId": "dce4a678-cd46-4a34-a89f-e019ea829bc5",
   "meta": {
     "instanceId": "eea8bfa4918320bc469ce323a7b217b8209b639e450c67bc3e6a88bdf340b7de"
   },

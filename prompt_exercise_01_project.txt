@@ -82,7 +82,32 @@ Great prompts make your AI assistant feel like a seasoned project manager. They 
 A strong prompt often reads like a well-written project brief.
 
 
+-----------
 
+{
+  "promptCriteria": [
+    {
+      "name": "Context Framing",
+      "description": "The prompt frames the AI's role or identity clearly (e.g., 'You are a professional internal project planner').",
+      "evaluationHint": "Look for a role or persona assigned to the AI in the prompt."
+    },
+    {
+      "name": "Constraint Injection",
+      "description": "The prompt includes real-world constraints (e.g., 'No new hires', 'Timeline is fixed').",
+      "evaluationHint": "Look for references to limits on time, resources, scope, or staffing."
+    },
+    {
+      "name": "Decomposition",
+      "description": "The prompt specifies the different functions or teams involved (e.g., HR, IT, Comms).",
+      "evaluationHint": "Check whether the learner included all relevant stakeholders or workstreams."
+    },
+    {
+      "name": "Structural Instruction",
+      "description": "The prompt specifies the desired output format (e.g., 'Return as a markdown table with columns: Week, Task, Owner').",
+      "evaluationHint": "Does the prompt explicitly define how the output should be formatted?"
+    }
+  ]
+}
 
 ------------------------
 Criterion #	Prompt Requirement	Prompting Technique Taught

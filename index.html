@@ -614,7 +614,7 @@
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.08
+            v0.09
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -1321,14 +1321,16 @@
                     
                     if (data.example) {
                         html += `
-                            <div class="collapsible-section" style="margin-bottom: 20px;">
-                                <div class="collapsible-header" id="exampleHeader" onclick="toggleCollapsible('exampleHeader')">
-                                    <span>Show Example</span>
-                                    <span class="collapse-icon">▼</span>
-                                </div>
-                                <div class="collapsible-content">
-                                    <p style="white-space: pre-wrap;">${data.example}</p>
-                                </div>
+                            <div class="feedback-box" style="background-color: #e3f2fd; border-color: #bbdefb; color: #0d47a1; margin-bottom: 20px;">
+                                <strong>💡 Example:</strong> ${renderMarkdown(data.example)}
+                            </div>
+                        `;
+                    }
+                    
+                    if (data.encouragement) {
+                        html += `
+                            <div class="feedback-box" style="background-color: #f3e5f5; border-color: #ce93d8; color: #4a148c; margin-bottom: 20px;">
+                                <strong>🌟 Encouragement:</strong> ${renderMarkdown(data.encouragement)}
                             </div>
                         `;
                     }

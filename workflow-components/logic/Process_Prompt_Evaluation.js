@@ -57,13 +57,25 @@ if (isRefining && session.promptRefinementState) {
   
   if (evaluationResult.criteriaMet) {
     // Current criteria met - process any additional criteria that were also evaluated
+    let nextUnmetFeedback = null;
+    let nextUnmetExample = null;
+    let nextUnmetEncouragement = null;
+    
     if (evaluationResult.additionalCriteriaMet && evaluationResult.additionalCriteriaMet.length > 0) {
       evaluationResult.additionalCriteriaMet.forEach(additionalResult => {
         const criteriaIndex = refinementState.criteriaStatus.findIndex(c => c.name === additionalResult.name);
-        if (criteriaIndex !== -1 && additionalResult.met) {
-          refinementState.criteriaStatus[criteriaIndex].met = true;
+        if (criteriaIndex !== -1) {
+          refinementState.criteriaStatus[criteriaIndex].met = additionalResult.met;
           refinementState.criteriaStatus[criteriaIndex].attempts = 1;
-          refinementState.criteriaStatus[criteriaIndex].feedback = "Met through refinement";
+          refinementState.criteriaStatus[criteriaIndex].feedback = additionalResult.feedback;
+          refinementState.criteriaStatus[criteriaIndex].example = additionalResult.example || "";
+          
+          // Store the feedback for the first unmet criteria if any
+          if (!additionalResult.met && !nextUnmetFeedback) {
+            nextUnmetFeedback = additionalResult.feedback;
+            nextUnmetExample = additionalResult.example;
+            nextUnmetEncouragement = additionalResult.encouragement;
+          }
         }
       });
     }
@@ -76,6 +88,14 @@ if (isRefining && session.promptRefinementState) {
       refinementState.currentCriteriaIndex = refinementState.criteriaStatus.findIndex(c => !c.met);
       // Update currentCriteria to point to the next unmet criteria
       currentCriteria = refinementState.criteriaStatus[refinementState.currentCriteriaIndex];
+      
+      // If we have feedback from the additional criteria evaluation, use it
+      if (nextUnmetFeedback && currentCriteria.name === refinementState.criteriaStatus.find(c => !c.met).name) {
+        evaluationResult.feedback = nextUnmetFeedback;
+        evaluationResult.example = nextUnmetExample;
+        evaluationResult.encouragement = nextUnmetEncouragement;
+      }
+      
       nextAction = 'prompt_exercise'; // Show prompt exercise again for next criteria
       routeTo = 'prompt_exercise';
     } else {
@@ -131,6 +151,7 @@ if (isRefining && session.promptRefinementState) {
       previousPrompt: refinementState.currentPrompt,
       previousFeedback: nextAction === 'refinement_complete' ? "" : evaluationResult.feedback,
       example: nextAction === 'refinement_complete' ? "" : evaluationResult.example,
+      encouragement: nextAction === 'refinement_complete' ? "" : evaluationResult.encouragement,
       criteriaProgress: {
         total: refinementState.criteriaStatus.length,
         met: refinementState.criteriaStatus.filter(c => c.met).length

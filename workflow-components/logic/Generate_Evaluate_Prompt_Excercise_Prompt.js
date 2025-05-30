@@ -59,7 +59,9 @@ Return a JSON object:
     {
       "name": "criteria name",
       "met": true/false,
-      "feedback": "brief feedback if not met"
+      "feedback": "detailed feedback about why this criteria is or isn't met",
+      "example": "if not met, provide a concrete example of how to meet this criteria",
+      "encouragement": "brief encouraging message for this criteria"
     }
   ] (only include if primary criteria is met and additional criteria exist)
 }`

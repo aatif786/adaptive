@@ -614,7 +614,7 @@
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.05
+            v0.06
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -1155,6 +1155,9 @@
                                  data.evaluationResult.score >= 2 ? 'feedback-box warning' : 
                                  'feedback-box error';
                 
+                // Special handling for refinement mode with unmet criteria
+                const isRefinementWithUnmetCriteria = data.isRefining && !data.evaluationResult.criteriaMet;
+                
                 // Show criteria progress if in refinement mode, otherwise show score
                 if (data.isRefining && data.criteriaProgress) {
                     const criteriaClass = data.evaluationResult.criteriaMet ? 'feedback-box' : 'feedback-box error';
@@ -1241,8 +1244,8 @@
                     html += renderSmartReplies(data.smartReplies, 'learnerNote');
                 }
                 
-                // Only show continue button if NOT in refinement mode or criteria is met
-                if (!data.isRefining || data.evaluationResult.criteriaMet || !data.waitingForInput) {
+                // Only show continue button if NOT in refinement mode with unmet criteria
+                if (!isRefinementWithUnmetCriteria) {
                     html += `
                             <div class="button-group">
                                 <button class="btn btn-primary" onclick="submitAfterEvaluation()">Continue</button>
@@ -1250,8 +1253,12 @@
                         </div>
                     `;
                 }
-                // If in refinement mode with unmet criteria, add the input directly here
+                // If in refinement mode with unmet criteria, show prompt input
                 else {
+                    // Close the note area div first
+                    html += `</div>`;
+                    
+                    // Add the prompt refinement input
                     html += `
                         <div class="input-area" style="margin-top: 20px;">
                             <label class="input-label">Refine your prompt based on the feedback:</label>

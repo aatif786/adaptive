@@ -83,9 +83,11 @@ if (!session.currentConcept && orchestratorDecision.nextAction === 'concept_card
 
 // PROMPT EXERCISE SAFETY CHECK - Now also checks if this was an override
 if (orchestratorDecision.nextAction === 'prompt_exercise') {
-  const shouldGeneratePromptTask = !!session.currentConcept?.shouldGeneratePromptTask;
+  // Check if concept has prompt task (either needs generation or has direct prompt)
+  const hasPromptTask = !!session.currentConcept?.shouldGeneratePromptTask || 
+                       !!(session.currentConcept?.prompt && session.currentConcept?.prompt.task);
   
-  if (!shouldGeneratePromptTask) {
+  if (!hasPromptTask) {
     // Log that we're overriding an override
     console.log(`Safety check: Overriding prompt_exercise decision - no shouldGeneratePromptTask defined for: ${session.currentConcept?.title}`);
     

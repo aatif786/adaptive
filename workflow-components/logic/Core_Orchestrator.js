@@ -70,8 +70,18 @@ function determineDefaultNextAction(session, action) {
   
   // Step 2: After concept_card, check if prompt exercise should come first
   if (toolsUsed.includes('concept_card') && !toolsUsed.includes('prompt_exercise') && !toolsUsed.includes('assessment')) {
-    // If concept has prompt task, do it before assessment
-    if (session.currentConcept?.shouldGeneratePromptTask) {
+    // Check if concept has prompt task (either needs generation or has direct prompt)
+    const hasPromptTask = session.currentConcept?.shouldGeneratePromptTask || 
+                         (session.currentConcept?.prompt && session.currentConcept?.prompt.task);
+    
+    console.log('Checking for prompt task:', {
+      shouldGeneratePromptTask: session.currentConcept?.shouldGeneratePromptTask,
+      hasDirectPrompt: !!(session.currentConcept?.prompt && session.currentConcept?.prompt.task),
+      promptData: session.currentConcept?.prompt,
+      hasPromptTask: hasPromptTask
+    });
+    
+    if (hasPromptTask) {
       return {
         action: 'prompt_exercise',
         reason: 'Prompt exercise comes after concept card',

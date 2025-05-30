@@ -16,11 +16,14 @@ if (!globalState.sessions) {
 
 // Initialize new session ONLY if it doesn't exist or action is 'start'
 if (!globalState.sessions[sessionId] || action === 'start') {
+  // Get actual concept IDs from course data
+  const conceptIds = $json.coreConcepts ? $json.coreConcepts.map(c => c.id) : [];
+  
   globalState.sessions[sessionId] = {
     // Learning state
     currentConceptIndex: 0,
     completedConcepts: [],
-    remainingCoreConcepts: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    remainingCoreConcepts: conceptIds,
     insertedConcepts: [],
     interactionHistory: [],
     currentConcept: null,

@@ -36,7 +36,7 @@ const isRefining = session.promptRefinementState?.isRefining || false;
 // Check if we're in criteria-based refinement mode
 if (isRefining && session.promptRefinementState) {
   const refinementState = session.promptRefinementState;
-  const currentCriteria = refinementState.criteriaStatus[refinementState.currentCriteriaIndex];
+  let currentCriteria = refinementState.criteriaStatus[refinementState.currentCriteriaIndex];
   
   // Update current criteria status
   currentCriteria.attempts++;
@@ -74,6 +74,8 @@ if (isRefining && session.promptRefinementState) {
     if (remainingUnmetCriteria.length > 0) {
       // Find the first unmet criteria
       refinementState.currentCriteriaIndex = refinementState.criteriaStatus.findIndex(c => !c.met);
+      // Update currentCriteria to point to the next unmet criteria
+      currentCriteria = refinementState.criteriaStatus[refinementState.currentCriteriaIndex];
       nextAction = 'prompt_exercise'; // Show prompt exercise again for next criteria
       routeTo = 'prompt_exercise';
     } else {

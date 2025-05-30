@@ -614,7 +614,7 @@
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.07
+            v0.08
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -1155,8 +1155,9 @@
                                  data.evaluationResult.score >= 2 ? 'feedback-box warning' : 
                                  'feedback-box error';
                 
-                // Special handling for refinement mode with unmet criteria
+                // Special handling for refinement mode
                 const isRefinementWithUnmetCriteria = data.isRefining && !data.evaluationResult.criteriaMet;
+                const isRefinementContinuing = data.isRefining && data.evaluationResult.criteriaMet && !data.allCriteriaMet;
                 
                 // Show criteria progress if in refinement mode, otherwise show score
                 if (data.isRefining && data.criteriaProgress) {
@@ -1233,8 +1234,8 @@
                     `;
                 }
                 
-                // Only show note field and continue button if NOT in refinement mode with unmet criteria
-                if (!isRefinementWithUnmetCriteria) {
+                // Only show note field and continue button if NOT in refinement mode or if all criteria are met
+                if (!isRefinementWithUnmetCriteria && !isRefinementContinuing) {
                     html += `
                         <div class="input-area">
                             <label class="input-label">Add a note or reflection (optional):</label>
@@ -1251,8 +1252,17 @@
                         </div>
                     `;
                 }
-                // If in refinement mode with unmet criteria, show prompt input
+                // If in refinement mode and need to continue (either current criteria not met or moving to next criteria)
                 else {
+                    // Add success message if current criteria was met
+                    if (data.evaluationResult.criteriaMet) {
+                        html += `
+                            <div class="feedback-box" style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; margin-bottom: 15px;">
+                                <strong>✅ ${data.criteriaProgress.met}/${data.criteriaProgress.total} Criteria Met!</strong> 
+                                Let's work on the next criteria: <strong>${data.currentCriteria.name}</strong>
+                            </div>
+                        `;
+                    }
                     // Add the prompt refinement input
                     html += `
                         <div class="input-area" style="margin-top: 20px;">

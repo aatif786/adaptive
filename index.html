@@ -614,7 +614,7 @@
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.24
+            v0.25
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -1251,7 +1251,7 @@
                     `;
                 }
                 // If in refinement mode with unmet criteria, add the input directly here
-                else if (data.isRefining && !data.evaluationResult.criteriaMet && data.waitingForInput) {
+                else if (data.isRefining && !data.evaluationResult.criteriaMet) {
                     html += `
                         <div class="input-area" style="margin-top: 20px;">
                             <label class="input-label">Refine your prompt based on the feedback:</label>

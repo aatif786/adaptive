@@ -614,7 +614,7 @@
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.06
+            v0.07
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -1233,19 +1233,17 @@
                     `;
                 }
                 
-                // After evaluation, still allow notes
-                html += `
-                    <div class="input-area">
-                        <label class="input-label">Add a note or reflection (optional):</label>
-                        <textarea id="learnerNote" placeholder="Any thoughts about this exercise?"></textarea>
-                `;
-                
-                if (data.smartReplies && data.smartReplies.length > 0) {
-                    html += renderSmartReplies(data.smartReplies, 'learnerNote');
-                }
-                
-                // Only show continue button if NOT in refinement mode with unmet criteria
+                // Only show note field and continue button if NOT in refinement mode with unmet criteria
                 if (!isRefinementWithUnmetCriteria) {
+                    html += `
+                        <div class="input-area">
+                            <label class="input-label">Add a note or reflection (optional):</label>
+                            <textarea id="learnerNote" placeholder="Any thoughts about this exercise?"></textarea>
+                    `;
+                    
+                    if (data.smartReplies && data.smartReplies.length > 0) {
+                        html += renderSmartReplies(data.smartReplies, 'learnerNote');
+                    }
                     html += `
                             <div class="button-group">
                                 <button class="btn btn-primary" onclick="submitAfterEvaluation()">Continue</button>
@@ -1255,9 +1253,6 @@
                 }
                 // If in refinement mode with unmet criteria, show prompt input
                 else {
-                    // Close the note area div first
-                    html += `</div>`;
-                    
                     // Add the prompt refinement input
                     html += `
                         <div class="input-area" style="margin-top: 20px;">

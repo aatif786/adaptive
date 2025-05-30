@@ -20,11 +20,12 @@ let messages = [];
 if (isRefining) {
   // Criteria-based evaluation mode
   const currentCriteria = refinementState.criteriaStatus[refinementState.currentCriteriaIndex];
+  const remainingUnmetCriteria = refinementState.criteriaStatus.filter((c, idx) => !c.met && idx > refinementState.currentCriteriaIndex);
   
   messages = [
     {
       role: "system",
-      content: "You are an expert at evaluating prompts based on specific criteria. Focus ONLY on the current criteria being evaluated. Be encouraging but precise."
+      content: "You are an expert at evaluating prompts based on specific criteria. Be encouraging but precise."
     },
     {
       role: "user",
@@ -32,19 +33,35 @@ if (isRefining) {
 
 Learner's Prompt: ${session.pendingPromptEvaluation.prompt}
 
-Current Criteria to Evaluate:
+Primary Criteria to Evaluate:
 Name: ${currentCriteria.name}
 Description: ${currentCriteria.description}
 Evaluation Hint: ${currentCriteria.evaluationHint}
-
 Previous Attempts: ${currentCriteria.attempts}
 
-Evaluate ONLY whether this specific criteria is met. Return a JSON object:
+${remainingUnmetCriteria.length > 0 ? `
+Additional Criteria to Check (only if primary criteria is met):
+${remainingUnmetCriteria.map(c => `- ${c.name}: ${c.description}`).join('\n')}
+` : ''}
+
+Instructions:
+1. First, evaluate if the primary criteria is met
+2. If primary criteria is NOT met, return feedback only for that criteria
+3. If primary criteria IS met and there are additional criteria, evaluate those as well
+
+Return a JSON object:
 {
-  "criteriaMet": true/false,
-  "feedback": "Specific feedback about this criteria only",
-  "example": "If not met, provide a concrete example of how to meet this criteria",
-  "encouragement": "Brief encouraging message"
+  "criteriaMet": true/false (for primary criteria),
+  "feedback": "Specific feedback about the primary criteria",
+  "example": "If primary not met, provide example for primary criteria",
+  "encouragement": "Brief encouraging message",
+  "additionalCriteriaMet": [
+    {
+      "name": "criteria name",
+      "met": true/false,
+      "feedback": "brief feedback if not met"
+    }
+  ] (only include if primary criteria is met and additional criteria exist)
 }`
     }
   ];

@@ -56,12 +56,24 @@ if (isRefining && session.promptRefinementState) {
   let routeTo = null;
   
   if (evaluationResult.criteriaMet) {
-    // Current criteria met - check if there are more
-    const unmetCriteria = refinementState.criteriaStatus.filter((c, idx) => !c.met && idx > refinementState.currentCriteriaIndex);
+    // Current criteria met - process any additional criteria that were also evaluated
+    if (evaluationResult.additionalCriteriaMet && evaluationResult.additionalCriteriaMet.length > 0) {
+      evaluationResult.additionalCriteriaMet.forEach(additionalResult => {
+        const criteriaIndex = refinementState.criteriaStatus.findIndex(c => c.name === additionalResult.name);
+        if (criteriaIndex !== -1 && additionalResult.met) {
+          refinementState.criteriaStatus[criteriaIndex].met = true;
+          refinementState.criteriaStatus[criteriaIndex].attempts = 1;
+          refinementState.criteriaStatus[criteriaIndex].feedback = "Met through refinement";
+        }
+      });
+    }
     
-    if (unmetCriteria.length > 0) {
-      // Move to next unmet criteria
-      refinementState.currentCriteriaIndex = refinementState.criteriaStatus.findIndex((c, idx) => !c.met && idx > refinementState.currentCriteriaIndex);
+    // Now check if there are any remaining unmet criteria
+    const remainingUnmetCriteria = refinementState.criteriaStatus.filter(c => !c.met);
+    
+    if (remainingUnmetCriteria.length > 0) {
+      // Find the first unmet criteria
+      refinementState.currentCriteriaIndex = refinementState.criteriaStatus.findIndex(c => !c.met);
       nextAction = 'prompt_exercise'; // Show prompt exercise again for next criteria
       routeTo = 'prompt_exercise';
     } else {

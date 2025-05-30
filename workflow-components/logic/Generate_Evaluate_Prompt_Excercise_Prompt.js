@@ -18,9 +18,8 @@ const isRefining = refinementState?.isRefining && refinementState?.criteriaStatu
 let messages = [];
 
 if (isRefining) {
-  // Criteria-based evaluation mode
-  const currentCriteria = refinementState.criteriaStatus[refinementState.currentCriteriaIndex];
-  const remainingUnmetCriteria = refinementState.criteriaStatus.filter((c, idx) => !c.met && idx > refinementState.currentCriteriaIndex);
+  // Criteria-based evaluation mode - evaluate ALL criteria every time
+  const allCriteria = refinementState.criteriaStatus;
   
   messages = [
     {
@@ -33,37 +32,36 @@ if (isRefining) {
 
 Learner's Prompt: ${session.pendingPromptEvaluation.prompt}
 
-Primary Criteria to Evaluate:
-Name: ${currentCriteria.name}
-Description: ${currentCriteria.description}
-Evaluation Hint: ${currentCriteria.evaluationHint}
-Previous Attempts: ${currentCriteria.attempts}
-
-${remainingUnmetCriteria.length > 0 ? `
-Additional Criteria to Check (only if primary criteria is met):
-${remainingUnmetCriteria.map(c => `- ${c.name}: ${c.description}`).join('\n')}
-` : ''}
+Evaluate ALL of the following criteria based on the current prompt only:
+${allCriteria.map((c, idx) => `
+${idx + 1}. ${c.name}
+   Description: ${c.description}
+   Evaluation Hint: ${c.evaluationHint}`).join('\n')}
 
 Instructions:
-1. First, evaluate if the primary criteria is met
-2. If primary criteria is NOT met, return feedback only for that criteria
-3. If primary criteria IS met and there are additional criteria, evaluate those as well
+1. Evaluate each criteria independently
+2. For each criteria, determine if it's met in the current prompt
+3. Provide specific feedback for improvement where needed
+4. Include examples for criteria that aren't met
 
 Return a JSON object:
 {
-  "criteriaMet": true/false (for primary criteria),
-  "feedback": "Specific feedback about the primary criteria",
-  "example": "If primary not met, provide example for primary criteria",
-  "encouragement": "Brief encouraging message",
-  "additionalCriteriaMet": [
+  "criteriaResults": [
     {
       "name": "criteria name",
       "met": true/false,
-      "feedback": "detailed feedback about why this criteria is or isn't met",
-      "example": "if not met, provide a concrete example of how to meet this criteria",
-      "encouragement": "brief encouraging message for this criteria"
+      "feedback": "specific feedback about this criteria",
+      "example": "if not met, provide a concrete example",
+      "encouragement": "brief encouraging message"
     }
-  ] (only include if primary criteria is met and additional criteria exist)
+  ],
+  "overallProgress": {
+    "totalMet": number,
+    "totalCriteria": number,
+    "allMet": true/false
+  },
+  "simulatedAIResponse": "What an AI would actually generate from this prompt (keep it realistic but brief)",
+  "finalAIOutput": "If all criteria are met, provide a comprehensive, well-formatted markdown response that demonstrates the full potential of this high-quality prompt. Only include this field if overallProgress.allMet is true."
 }`
     }
   ];
@@ -136,7 +134,7 @@ return {
   messages,
   model: "gpt-4o",
   temperature: 0.3,
-  max_tokens: isRefining ? 400 : 600,
+  max_tokens: isRefining ? 1200 : 600,
   response_format: { type: "json_object" },
   originalData
 };

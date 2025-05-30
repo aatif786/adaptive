@@ -36,90 +36,89 @@ const isRefining = session.promptRefinementState?.isRefining || false;
 // Check if we're in criteria-based refinement mode
 if (isRefining && session.promptRefinementState) {
   const refinementState = session.promptRefinementState;
-  let currentCriteria = refinementState.criteriaStatus[refinementState.currentCriteriaIndex];
-  
-  // Update current criteria status
-  currentCriteria.attempts++;
-  currentCriteria.met = evaluationResult.criteriaMet;
-  currentCriteria.feedback = evaluationResult.feedback;
-  currentCriteria.example = evaluationResult.example || "";
-  
-  // Add a score for UI display (1 if not met, 5 if met)
-  evaluationResult.score = evaluationResult.criteriaMet ? 5 : 1;
   
   // Store the prompt in history
   refinementState.promptHistory.push(session.pendingPromptEvaluation.prompt);
   refinementState.currentPrompt = session.pendingPromptEvaluation.prompt;
   
+  // Process the new evaluation format (all criteria at once)
+  let firstUnmetCriteria = null;
+  let firstUnmetFeedback = null;
+  let firstUnmetExample = null;
+  let firstUnmetEncouragement = null;
+  
+  if (evaluationResult.criteriaResults) {
+    // Reset all criteria based on current evaluation results
+    evaluationResult.criteriaResults.forEach(result => {
+      const criteriaIndex = refinementState.criteriaStatus.findIndex(c => c.name === result.name);
+      if (criteriaIndex !== -1) {
+        const criteria = refinementState.criteriaStatus[criteriaIndex];
+        
+        // Increment attempts for this evaluation round
+        criteria.attempts++;
+        
+        // Reset status based on current evaluation (don't preserve previous state)
+        criteria.met = result.met;
+        criteria.feedback = result.feedback;
+        criteria.example = result.example || "";
+        
+        // Store the first unmet criteria for display
+        if (!result.met && !firstUnmetCriteria) {
+          firstUnmetCriteria = criteria;
+          firstUnmetFeedback = result.feedback;
+          firstUnmetExample = result.example;
+          firstUnmetEncouragement = result.encouragement;
+        }
+      }
+    });
+    
+    // Set the overall progress for UI display
+    evaluationResult.score = evaluationResult.overallProgress ? 
+      Math.round((evaluationResult.overallProgress.totalMet / evaluationResult.overallProgress.totalCriteria) * 5) : 3;
+  }
+  
   // Determine next action
   let nextAction = null;
   let routeTo = null;
+  let currentCriteria = firstUnmetCriteria;
   
-  if (evaluationResult.criteriaMet) {
-    // Current criteria met - process any additional criteria that were also evaluated
-    let nextUnmetFeedback = null;
-    let nextUnmetExample = null;
-    let nextUnmetEncouragement = null;
+  // Check if all criteria are met
+  const allCriteriaMet = evaluationResult.overallProgress?.allMet || 
+                        refinementState.criteriaStatus.every(c => c.met);
+  
+  if (allCriteriaMet) {
     
-    if (evaluationResult.additionalCriteriaMet && evaluationResult.additionalCriteriaMet.length > 0) {
-      evaluationResult.additionalCriteriaMet.forEach(additionalResult => {
-        const criteriaIndex = refinementState.criteriaStatus.findIndex(c => c.name === additionalResult.name);
-        if (criteriaIndex !== -1) {
-          refinementState.criteriaStatus[criteriaIndex].met = additionalResult.met;
-          refinementState.criteriaStatus[criteriaIndex].attempts = 1;
-          refinementState.criteriaStatus[criteriaIndex].feedback = additionalResult.feedback;
-          refinementState.criteriaStatus[criteriaIndex].example = additionalResult.example || "";
-          
-          // Store the feedback for the first unmet criteria if any
-          if (!additionalResult.met && !nextUnmetFeedback) {
-            nextUnmetFeedback = additionalResult.feedback;
-            nextUnmetExample = additionalResult.example;
-            nextUnmetEncouragement = additionalResult.encouragement;
-          }
-        }
-      });
-    }
+    // All criteria met!
+    refinementState.isRefining = false;
     
-    // Now check if there are any remaining unmet criteria
-    const remainingUnmetCriteria = refinementState.criteriaStatus.filter(c => !c.met);
+    // Update state machine for completion
+    session.stateMachine.previousState = session.stateMachine.currentState;
+    session.stateMachine.currentState = 'refinement_complete';
+    session.stateMachine.stateHistory.push({
+      from: session.stateMachine.previousState,
+      to: 'refinement_complete',
+      action: 'refinement_success',
+      timestamp: new Date().toISOString(),
+      conceptId: session.currentConcept?.id,
+      conceptTitle: session.currentConcept?.title,
+      criteriaMetCount: refinementState.criteriaStatus.filter(c => c.met).length
+    });
     
-    if (remainingUnmetCriteria.length > 0) {
-      // Find the first unmet criteria
-      refinementState.currentCriteriaIndex = refinementState.criteriaStatus.findIndex(c => !c.met);
-      // Update currentCriteria to point to the next unmet criteria
-      currentCriteria = refinementState.criteriaStatus[refinementState.currentCriteriaIndex];
-      
-      // If we have feedback from the additional criteria evaluation, use it
-      if (nextUnmetFeedback && currentCriteria.name === refinementState.criteriaStatus.find(c => !c.met).name) {
-        evaluationResult.feedback = nextUnmetFeedback;
-        evaluationResult.example = nextUnmetExample;
-        evaluationResult.encouragement = nextUnmetEncouragement;
-      }
-      
-      nextAction = 'prompt_exercise'; // Show prompt exercise again for next criteria
-      routeTo = 'prompt_exercise';
-    } else {
-      // All criteria met!
-      refinementState.isRefining = false;
-      
-      // Update state machine for completion
-      session.stateMachine.previousState = session.stateMachine.currentState;
-      session.stateMachine.currentState = 'refinement_complete';
-      session.stateMachine.stateHistory.push({
-        from: session.stateMachine.previousState,
-        to: 'refinement_complete',
-        action: 'refinement_success',
-        timestamp: new Date().toISOString(),
-        conceptId: session.currentConcept?.id,
-        conceptTitle: session.currentConcept?.title,
-        criteriaMetCount: refinementState.criteriaStatus.filter(c => c.met).length
-      });
-      
-      nextAction = 'refinement_complete';
-      routeTo = 'smart_reply_generator'; // Go to smart reply generator, not separate handler
-    }
+    nextAction = 'refinement_complete';
+    routeTo = 'smart_reply_generator'; // Go to smart reply generator, not separate handler
   } else {
-    // Criteria not met - loop back to prompt exercise
+    // Not all criteria met - continue refinement
+    // Find the first unmet criteria index
+    refinementState.currentCriteriaIndex = refinementState.criteriaStatus.findIndex(c => !c.met);
+    
+    // Set the feedback for display
+    if (firstUnmetCriteria) {
+      evaluationResult.feedback = firstUnmetFeedback;
+      evaluationResult.example = firstUnmetExample;
+      evaluationResult.encouragement = firstUnmetEncouragement;
+      evaluationResult.criteriaMet = false; // For UI compatibility
+    }
+    
     nextAction = 'prompt_exercise';
     routeTo = 'prompt_exercise';
   }

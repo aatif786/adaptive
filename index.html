@@ -614,7 +614,7 @@
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.09
+            v0.10
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -984,6 +984,23 @@
                         <p style="white-space: pre-wrap; background-color: #f8f9fa; padding: 15px; border-radius: 4px;">${data.previousPrompt}</p>
                     </div>
                 </div>
+                
+                ${data.evaluationResult?.finalAIOutput ? `
+                    <div class="collapsible-section">
+                        <div class="collapsible-header active" id="finalOutputHeader" onclick="toggleCollapsible('finalOutputHeader')">
+                            <span>🚀 What Your Prompt Produces</span>
+                            <span class="collapse-icon">▼</span>
+                        </div>
+                        <div class="collapsible-content active">
+                            <div style="background-color: #fff; border: 1px solid #ddd; padding: 20px; border-radius: 4px;">
+                                ${renderMarkdown(data.evaluationResult.finalAIOutput)}
+                            </div>
+                            <p style="font-size: 12px; color: #666; margin-top: 10px; font-style: italic;">
+                                This is what an AI would generate from your well-crafted prompt!
+                            </p>
+                        </div>
+                    </div>
+                ` : ''}
                 
                 <div class="button-group">
                     <button class="btn btn-primary" onclick="sendRequest('next', {})">Continue to Assessment</button>

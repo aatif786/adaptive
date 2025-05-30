@@ -1149,7 +1149,7 @@
                 `;
             }
             
-            // Handle evaluation results with refinement mode
+            // Handle evaluation results
             if (data.evaluationResult) {
                 const scoreClass = data.evaluationResult.score >= 4 ? 'feedback-box' : 
                                  data.evaluationResult.score >= 2 ? 'feedback-box warning' : 
@@ -1251,7 +1251,7 @@
                     `;
                 }
                 // If in refinement mode with unmet criteria, add the input directly here
-                else if (data.isRefining && data.evaluationResult && !data.evaluationResult.criteriaMet) {
+                else {
                     html += `
                         <div class="input-area" style="margin-top: 20px;">
                             <label class="input-label">Refine your prompt based on the feedback:</label>

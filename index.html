@@ -614,7 +614,7 @@
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.20
+            v0.21
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -723,7 +723,7 @@
 
 
         function updateDebug(info) {
-            if (debugMode) {
+            if (debugMode || stateDisplayMode) {
                 const debugContent = document.getElementById('debugContent');
                 debugContent.innerHTML = `<pre>${JSON.stringify(info, null, 2)}</pre>`;
             }
@@ -1147,12 +1147,26 @@
                                  data.evaluationResult.score >= 2 ? 'feedback-box warning' : 
                                  'feedback-box error';
                 
-                html += `
-                    <div class="score-display">
-                        <div class="score-number">${data.evaluationResult.score}/5</div>
-                        <div class="score-label">Prompt Quality</div>
-                    </div>
-                `;
+                // Show criteria progress if in refinement mode, otherwise show score
+                if (data.isRefining && data.criteriaProgress) {
+                    const criteriaClass = data.evaluationResult.criteriaMet ? 'feedback-box' : 'feedback-box error';
+                    html += `
+                        <div class="score-display">
+                            <div class="score-number">${data.criteriaProgress.met}/${data.criteriaProgress.total}</div>
+                            <div class="score-label">Criteria Met</div>
+                        </div>
+                        <div class="${criteriaClass}" style="margin-bottom: 15px;">
+                            <strong>${data.evaluationResult.criteriaMet ? '✅ Criteria Met!' : '❌ Criteria Not Met'}</strong>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="score-display">
+                            <div class="score-number">${data.evaluationResult.score || 'N/A'}/5</div>
+                            <div class="score-label">Prompt Quality</div>
+                        </div>
+                    `;
+                }
                 
                 // Add collapsible section for learner's prompt (collapsed by default)
                 const learnerPrompt = currentState.lastSubmittedPrompt || data.evaluationResult.prompt || 'Your prompt';

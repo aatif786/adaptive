@@ -44,6 +44,9 @@ if (isRefining && session.promptRefinementState) {
   currentCriteria.feedback = evaluationResult.feedback;
   currentCriteria.example = evaluationResult.example || "";
   
+  // Add a score for UI display (1 if not met, 5 if met)
+  evaluationResult.score = evaluationResult.criteriaMet ? 5 : 1;
+  
   // Store the prompt in history
   refinementState.promptHistory.push(session.pendingPromptEvaluation.prompt);
   refinementState.currentPrompt = session.pendingPromptEvaluation.prompt;

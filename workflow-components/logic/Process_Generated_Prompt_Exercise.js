@@ -31,8 +31,7 @@ const responseData = {
     task: exerciseData.task,  // Use the actual generated task
     context: exerciseData.context,
     hints: exerciseData.hints,
-    conceptTitle: session.currentConcept?.title,
-    difficulty: exerciseData.difficulty
+    conceptTitle: session.currentConcept?.title
   },
   waitingForInput: true,
   inputType: 'prompt',

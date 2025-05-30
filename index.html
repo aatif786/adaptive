@@ -137,9 +137,27 @@
         }
 
         .question-text {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .question-box h3 {
             font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 15px;
+            margin: 15px 0 10px 0;
+            color: #0a66c2;
+        }
+        
+        .question-box ul {
+            margin: 10px 0 10px 20px;
+        }
+        
+        .question-box strong {
+            color: #333;
+        }
+        
+        .question-box em {
+            color: #666;
+            font-style: italic;
         }
 
         .input-area {
@@ -577,7 +595,7 @@
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.16
+            v0.17
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -1059,8 +1077,8 @@
                 <h2 class="concept-title">${data.conceptTitle} - Practice</h2>
                 
                 <div class="question-box">
-                    <div class="question-text">Task: ${data.task}</div>
-                    ${data.context ? `<p style="margin-top: 10px; font-size: 14px; color: #666;">${data.context}</p>` : ''}
+                    <div class="question-text">${renderMarkdown(data.task)}</div>
+                    ${data.context ? `<div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee;">${renderMarkdown(data.context)}</div>` : ''}
                 </div>
             `;
             

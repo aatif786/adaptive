@@ -99,20 +99,18 @@ Generate 5 smart reply options for score ${promptScore}/5:
     
   case 'process_generated_prompt':
     // Input 5: Process Generated Prompt Exercise - seeing the enhanced exercise
-    const difficulty = toolData.difficulty || 'unknown';
     contextPrompt = `Tool: Prompt Exercise (Enhanced Task Display)
 Task: ${toolData.task}
 Context: ${toolData.context || 'None'}
 Hints Available: ${toolData.hints?.length || 0}
-Difficulty: ${difficulty}
 Learner Role: ${$json.learnerProfile?.role || 'Product Manager'}
 Status: Viewing prompt exercise task
 
-Generate 5 smart reply options for task difficulty "${difficulty}":
-- ${difficulty === 'advanced' ? 'This looks challenging' : 'I can handle this'}
+Generate 5 smart reply options:
+- I can handle this
 - ${toolData.hints?.length ? 'Show me a hint' : 'Need more context'}
 - Ask about evaluation criteria
-- ${difficulty === 'beginner' ? 'Too easy for me' : 'Request simpler version'}
+- Request simpler version
 - Connect to their ${$json.learnerProfile?.role} role`;
     break;
     

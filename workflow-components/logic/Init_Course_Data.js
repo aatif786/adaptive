@@ -19,6 +19,24 @@ return {
   "coreConcepts": [
     {
       "id": 1,
+      "title": "Crafting High-Impact Prompts for Project Plans",
+      "summary": "✅ **Prompt Mastery Scenario: Plan the Launch of a New Internal Employee Portal**\n\n### 🧠 Prompt Task (what the learner sees):\n\nYou are leading the launch of a new internal employee portal for your 300-person company.  \nThe portal will serve as a central hub for:\n\n- HR policies  \n- IT support links  \n- Company announcements  \n- Employee resource groups  \n\nYou have been asked to:\n\nPrompt an AI assistant to generate a full **6-week project plan** for launching this portal, including:\n\n- Tasks  \n- Owners  \n- Milestones  \n- Risks  \n\nYou will be working with a cross-functional team from **HR, IT, and Communications**.  \nYou **cannot hire additional help**. The **deadline is fixed**, and executive stakeholders expect a **smooth, polished rollout**.\n\n💡 *Prompt the AI as if you're sending it to a professional project planner.*  \n*You’ll refine your prompt until the output is something you’d confidently present to leadership.*",
+      "expertTips": [
+        "A strong prompt often reads like a well-written project brief—clear, complete, and outcome-driven.",
+        "If you can imagine delegating the task to a real teammate, your prompt is probably detailed enough for AI.",
+        "Don't just ask what you want—explain how it should be structured and what it should account for.",
+        "Use role context (e.g., “You are a professional project planner…”) to shape the AI’s tone and thinking."
+      ],
+      "assessmentQuestion": "If you want ChatGPT to return a project plan in a table, what should you include in your prompt?",
+      "correctAnswer": "Ask it to format the output as a table.",
+      "shouldGeneratePromptTask": false,
+      "prompt": {
+        "task": "### 🧠 Prompt Task:\n\nYou are leading the launch of a new internal employee portal for your 300-person company.  \nThe portal will serve as a central hub for:\n\n- HR policies  \n- IT support links  \n- Company announcements  \n- Employee resource groups  \n\nYou have been asked to:\n\nPrompt an AI assistant to generate a full **6-week project plan** for launching this portal, including:\n\n- Tasks  \n- Owners  \n- Milestones  \n- Risks","context": "You will be working with a cross-functional team from **HR, IT, and Communications**.  \nYou **cannot hire additional help**. The **deadline is fixed**, and executive stakeholders expect a **smooth, polished rollout**.\n\n*You’ll create and refine your prompt until the output is something you’d confidently present to leadership.*",
+        "conceptTitle": "Prompt Mastery Scenario: Plan the Launch of a New Internal Employee Portal"
+      }
+    },
+    {
+      "id": 2,
       "title": "Prompt Engineering Essentials",
       "summary": "Prompt engineering is the skill of writing clear, structured inputs that guide AI tools to produce high-quality, relevant outputs. It’s not just about asking a question—it’s about communicating with precision, providing context, and defining the role, tone, or format you want. This module helps project managers master this foundational skill so they can make AI tools like ChatGPT work for them across a range of tasks. Good prompting starts by defining the outcome: Are you asking for a summary, a message, a task list, or a risk forecast? Then, you refine the input by adding necessary context—what project, what audience, what constraints. Including tone, format (like bullet points or CSV), and role (e.g., 'you are a project coordinator') helps tailor results. This level of clarity minimizes ambiguity and reduces the need for follow-up corrections. Learners will also explore techniques like using delimiters for structured inputs, applying personas, and iterating based on AI outputs. The goal is to reduce guesswork and enable precise, repeatable results—whether drafting communications, outlining plans, or analyzing decisions. Prompting is a superpower for modern PMs: it lets you turn AI into a strategic assistant. This skill transforms vague requests into clear, actionable outputs that can immediately feed into your project tools and workflows.",
       "expertTips": [
@@ -28,28 +46,7 @@ return {
       ],
       "assessmentQuestion": "What is the most important technique to apply when writing a prompt to ChatGPT for best results?",
       "correctAnswer": "Include detailed instructions and context for the task",
-      "shouldHavePromptTask": true
+      "shouldGeneratePromptTask": true,
     },
-        {
-      "id": 2,
-      "title": "Project Management AI Foundations",
-      "summary": "To unlock AI’s full potential as a project manager, you need to understand where and how it integrates into the project lifecycle. AI tools are particularly strong at augmenting core PM activities such as scheduling, forecasting, risk identification, stakeholder communication, and report generation. This module introduces foundational AI use cases across project stages and helps learners map tools to workflows. For example, task decomposition and milestone creation can be accelerated by tools like ChatGPT when paired with a strong prompt. Risk modeling can benefit from AI simulations that explore different 'what-if' scenarios. Communication updates and meeting summaries can be generated more efficiently, freeing PMs to focus on strategy. Learners will gain clarity on the difference between automation (repetitive task execution) and augmentation (strategic insight generation), and how AI supports each. AI foundations also include an understanding of tool categories—chat-based assistants, integrated copilots in platforms like Microsoft Teams or Notion, and no-code AI builders. Once you understand where these tools fit, you can begin evaluating your own workflows for inefficiencies and AI opportunities. This knowledge also helps PMs articulate the ROI of AI to stakeholders—making it easier to champion new tools within the organization.",
-      "expertTips": [
-        "Ask ChatGPT to ask you questions when you're missing context.",
-        "Enable custom instructions for faster, context-aware prompt responses across recurring tasks."
-      ],
-      "assessmentQuestion": "Which of the following is the best example of using AI to augment project management activities?",
-      "correctAnswer": "Using ChatGPT to identify risks in a draft project plan and summarize key concerns",
-      "shouldHavePromptTask": true
-    },
-    {
-      "id": 3,
-      "title": "Smarter Planning with AI",
-      "summary": "AI excels at turning goals into structured plans—when guided correctly. In this module, learners will explore how to use AI to generate project roadmaps, create task hierarchies, define dependencies, and sequence milestones. Planning with AI begins by inputting a clear objective or deliverable and adding constraints like deadlines, resources, or blockers. The AI can then propose a draft plan, which the project manager reviews and refines. The real power lies in iteration—adjusting prompts to tweak scope, task order, or effort level. AI also supports reverse planning, where you start from a fixed deadline and ask it to work backwards. Project managers will also learn how to test and validate AI-generated plans: Does the dependency order make sense? Are key milestones too dense or too sparse? Is effort distribution realistic? Learners will practice identifying flaws and giving corrective instructions, reinforcing that AI is a collaborator, not a replacement. The module encourages hands-on testing with tools like ChatGPT or Copilot embedded in planning tools. Learners who complete this module will be able to use AI to jumpstart planning sessions, unblock ambiguity, and refine their timelines with greater speed and clarity.",
-      "expertTips": [],
-      "assessmentQuestion": "When reviewing an AI-generated project plan, what is a good follow-up action?",
-      "correctAnswer": "Check for inaccurate task dependencies and revise the prompt to fix the logic",
-      "shouldHavePromptTask": true
-    }
   ]
 };

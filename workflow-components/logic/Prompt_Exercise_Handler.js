@@ -41,8 +41,9 @@ session.promptExerciseShowCount = (session.promptExerciseShowCount || 0) + 1;
 // Save updated state
 $getWorkflowStaticData('global').sessions[sessionId] = session;
 
-// Use enhanced task if available, otherwise show basic
+// Use enhanced task if available, otherwise use concept's prompt data
 const taskToShow = enhancedTask?.task || 
+                  concept.prompt?.task ||
                   (concept.promptTask || 'Generate a prompt for this concept');
 
 const responseData = {
@@ -56,20 +57,24 @@ const responseData = {
   },
   toolData: {
     task: taskToShow,
-    context: enhancedTask?.context || null,
+    context: enhancedTask?.context || concept.prompt?.context || null,
     hints: enhancedTask?.hints || [],
-    conceptTitle: concept.title,
-    difficulty: enhancedTask?.difficulty || 'intermediate'
+    conceptTitle: concept.title
   },
   waitingForInput: true,
   inputType: 'prompt',
   message: 'Practice your prompt engineering skills with this task.'
 };
 
-// Return the response
+// Determine routing based on whether concept has direct prompt
+const hasDirectPrompt = !!(concept.prompt && concept.prompt.task);
+const routeTo = hasDirectPrompt ? 'direct_prompt_exercise' : 'generate_prompt_exercise';
+
+// Return the response with routing information
 return {
   ...($json),
   responseData,
   sessionId,
-  learnerProfile: $json.learnerProfile
+  learnerProfile: $json.learnerProfile,
+  routeTo: routeTo
 };

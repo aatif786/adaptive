@@ -24,9 +24,7 @@ const messages = [
 - Learner Skills: ${$json.learnerProfile.skills.join(', ')}
 
 Knowledge State:
-- Strengths: ${session.knowledgeStrengths?.join(', ') || 'None tracked yet'}
 - Gaps: ${session.knowledgeGaps?.join(', ') || 'None tracked yet'}
-- Recent Assessment Score: ${session.lastAssessmentScore || 'N/A'}/5
 
 Previous Interactions:
 - Tools Used This Concept: ${session.currentConceptTools.join(', ')}
@@ -40,8 +38,6 @@ Generate a prompt exercise that:
 1. Is directly relevant to "${session.currentConcept?.title}"
 2. Tests practical application in their role as ${$json.learnerProfile.role}
 3. Addresses any identified knowledge gaps
-4. Builds on their existing strengths
-5. Is appropriately challenging based on their assessment score
 
 Return JSON:
 {
@@ -53,9 +49,7 @@ Return JSON:
     "must_include": ["Key elements that must be in the prompt"],
     "should_consider": ["Important considerations"],
     "avoid": ["Common mistakes to avoid"]
-  },
-  "difficulty": "beginner|intermediate|advanced",
-  "targetedSkills": ["specific skills being tested"]
+  }
 }`
   }
 ];

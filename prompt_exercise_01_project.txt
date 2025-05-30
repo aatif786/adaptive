@@ -20,37 +20,32 @@ a structured prompt mastery loop with:
 
 ---------------------
 
-✅ Prompt Mastery Scenario: Plan the Launch of a New Internal Employee Portal
-🧠 Prompt Task (what the learner sees):
+✅ **Prompt Mastery Scenario: Plan the Launch of a New Internal Employee Portal**
 
-    You are leading the launch of a new internal employee portal for your 300-person company.
-    The portal will serve as a central hub for:
+### 🧠 Prompt Task:
 
-        HR policies
+You are leading the launch of a new internal employee portal for your 300-person company.  
+The portal will serve as a central hub for:
 
-        IT support links
-
-        Company announcements
-
-        Employee resource groups
+- HR policies  
+- IT support links  
+- Company announcements  
+- Employee resource groups  
 
 You have been asked to:
 
-    Prompt an AI assistant to generate a full 6-week project plan for launching this portal, including:
+Prompt an AI assistant to generate a full **6-week project plan** for launching this portal, including:
 
-        Tasks
+- Tasks  
+- Owners  
+- Milestones  
+- Risks  
 
-        Owners
+You will be working with a cross-functional team from **HR, IT, and Communications**.  
+You **cannot hire additional help**. The **deadline is fixed**, and executive stakeholders expect a **smooth, polished rollout**.
 
-        Milestones
+*You’ll create and refine your prompt until the output is something you’d confidently present to leadership.*
 
-        Risks
-
-You will be working with a cross-functional team from HR, IT, and Communications.
-You cannot hire additional help. The deadline is fixed, and executive stakeholders expect a smooth, polished rollout.
-
-    💡 Prompt the AI as if you're sending it to a professional project planner.
-    You’ll refine your prompt until the output is something you’d confidently present to leadership.
 
 ---------------------
 

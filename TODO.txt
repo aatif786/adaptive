@@ -50,3 +50,4 @@ SUPER LONG (not for prototype)
 6) LLM decision safety checks in case they make wrong decisions
 7) state machine manager, should manage all transitions, and should handle exception and state fallback
 8) we probably need some sort of locking to ensure that we don't corrupt the state machine
+9) when flow is updated and deployed, existing sessions should not be impacted

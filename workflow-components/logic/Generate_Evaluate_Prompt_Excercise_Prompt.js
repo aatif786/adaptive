@@ -72,8 +72,7 @@ return {
         task: session.pendingPromptEvaluation?.task || session.currentPromptExercise?.task || session.currentConcept?.promptTask,
         context: session.currentPromptExercise?.context,
         hints: session.currentPromptExercise?.hints || [],
-        conceptTitle: session.currentConcept?.title,
-        difficulty: session.currentPromptExercise?.difficulty || 'intermediate'
+        conceptTitle: session.currentConcept?.title
       },
       waitingForInput: false,
       inputType: 'evaluation',

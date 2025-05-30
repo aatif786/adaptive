@@ -68,32 +68,39 @@ function determineDefaultNextAction(session, action) {
     };
   }
   
-  // Step 2: After concept_card, do assessment
-  if (toolsUsed.includes('concept_card') && !toolsUsed.includes('assessment')) {
+  // Step 2: After concept_card, check if prompt exercise should come first
+  if (toolsUsed.includes('concept_card') && !toolsUsed.includes('prompt_exercise') && !toolsUsed.includes('assessment')) {
+    // If concept has prompt task, do it before assessment
+    if (session.currentConcept?.shouldGeneratePromptTask) {
+      return {
+        action: 'prompt_exercise',
+        reason: 'Prompt exercise comes after concept card',
+        isRequired: true,
+        canSkip: true // But only with explicit learner request
+      };
+    } else {
+      // No prompt task, go straight to assessment
+      return {
+        action: 'assessment',
+        reason: 'Assessment follows concept card (no prompt exercise for this concept)',
+        isRequired: true,
+        canSkip: true
+      };
+    }
+  }
+  
+  // Step 3: After prompt exercise, do assessment
+  if (toolsUsed.includes('prompt_exercise') && !toolsUsed.includes('assessment')) {
     return {
       action: 'assessment',
-      reason: 'Assessment follows concept card',
+      reason: 'Assessment follows prompt exercise',
       isRequired: true,
-      canSkip: true // But only with explicit learner request
+      canSkip: true
     };
   }
   
-  // Step 3: After assessment, decide based on score
+  // Step 4: After assessment, decide based on score
   if (toolsUsed.includes('assessment') && hasAssessmentScore) {
-    // Check if we should do prompt exercise
-    const shouldDoPromptExercise = 
-      assessmentScore >= 3 && 
-      session.currentConcept?.shouldHavePromptTask && 
-      !toolsUsed.includes('prompt_exercise');
-    
-    if (shouldDoPromptExercise) {
-      return {
-        action: 'prompt_exercise',
-        reason: `Good assessment score (${assessmentScore}/5) and prompt task available`,
-        isOptional: true // Adaptive orchestrator can override this
-      };
-    }
-    
     // Low score might need remediation, but let adaptive orchestrator decide
     if (assessmentScore < 3) {
       return {
@@ -110,13 +117,6 @@ function determineDefaultNextAction(session, action) {
     };
   }
   
-  // Step 4: After prompt exercise, complete the concept
-  if (toolsUsed.includes('prompt_exercise')) {
-    return {
-      action: 'concept_complete',
-      reason: 'Prompt exercise completed'
-    };
-  }
   
   // Fallback
   return {

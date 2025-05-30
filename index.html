@@ -614,7 +614,7 @@
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.23
+            v0.24
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -1095,7 +1095,7 @@
                         </div>
                     </div>
                 `;
-            } else if (currentState.waitingForInput) {
+            } else if (currentState.waitingForInput && !data.evaluationResult) {
                 html += `
                     <div class="input-area">
                         <label class="input-label">Your answer:</label>
@@ -1250,17 +1250,33 @@
                         </div>
                     `;
                 }
-                // If in refinement mode with unmet criteria, don't close the div yet - input will be added below
+                // If in refinement mode with unmet criteria, add the input directly here
                 else if (data.isRefining && !data.evaluationResult.criteriaMet && data.waitingForInput) {
-                    // Close the div here since we'll add input section separately
                     html += `
+                        <div class="input-area" style="margin-top: 20px;">
+                            <label class="input-label">Refine your prompt based on the feedback:</label>
+                            <textarea id="learnerPrompt" placeholder="Type your refined prompt here..." required>${data.previousPrompt || ''}</textarea>
+                            
+                            <label class="input-label" style="margin-top: 15px;">Add a note (optional):</label>
+                            <textarea id="learnerNote" placeholder="Any questions or thoughts?" style="min-height: 60px;"></textarea>
+                    `;
+                    
+                    if (data.smartReplies && data.smartReplies.length > 0) {
+                        html += renderSmartReplies(data.smartReplies, 'learnerNote');
+                    }
+                    
+                    html += `
+                            <div class="button-group">
+                                <button class="btn btn-primary" onclick="submitPrompt()">Submit Refined Prompt</button>
+                            </div>
                         </div>
+                    </div>
                     `;
                 }
             }
             
-            // Show input area if waiting for input OR if in refinement with unmet criteria
-            if (currentState.waitingForInput || (data.isRefining && data.evaluationResult && !data.evaluationResult.criteriaMet)) {
+            // Show input area if waiting for input (but not if we already showed it with evaluation results)
+            if (currentState.waitingForInput && !(data.evaluationResult && data.isRefining)) {
                 // Check if we're in refinement mode
                 if (data.isRefining && data.currentCriteria) {
                     // Refinement mode - show criteria progress and feedback

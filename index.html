@@ -614,7 +614,7 @@
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.21
+            v0.22
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -901,6 +901,9 @@
         function handleResponse(data) {
             currentState = { ...currentState, ...data };
             
+            // Update debug info with response data
+            updateDebug({ handleResponse: data });
+            
             // Update global state if provided
             if (data.globalState) {
                 currentState.globalState = data.globalState;
@@ -1118,6 +1121,10 @@
         }
 
         function renderPromptExercise(container, data) {
+            // Debug the prompt exercise data
+            console.log('renderPromptExercise called with data:', data);
+            updateDebug({ renderPromptExercise: data });
+            
             let html = `
                 <div class="tool-type">
                     <span class="tool-icon">💡</span>
@@ -1188,6 +1195,24 @@
                         <strong>Feedback:</strong> ${renderMarkdown(data.evaluationResult.feedback)}
                     </div>
                 `;
+                
+                // Add example if available (for refinement mode)
+                if (data.evaluationResult.example) {
+                    html += `
+                        <div class="feedback-box" style="background-color: #e3f2fd; border-color: #bbdefb; color: #0d47a1; margin-top: 15px;">
+                            <strong>💡 Example:</strong> ${renderMarkdown(data.evaluationResult.example)}
+                        </div>
+                    `;
+                }
+                
+                // Add encouragement if available (for refinement mode)
+                if (data.evaluationResult.encouragement) {
+                    html += `
+                        <div class="feedback-box" style="background-color: #f3e5f5; border-color: #ce93d8; color: #4a148c; margin-top: 15px;">
+                            <strong>🌟 Encouragement:</strong> ${renderMarkdown(data.evaluationResult.encouragement)}
+                        </div>
+                    `;
+                }
                 
                 // Add AI response in collapsible section (collapsed by default)
                 if (data.evaluationResult.simulatedAIResponse) {

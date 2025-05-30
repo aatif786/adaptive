@@ -99,14 +99,26 @@ function determineDefaultNextAction(session, action) {
     }
   }
   
-  // Step 3: After prompt exercise, do assessment
+  // Step 3: After prompt exercise, do assessment (unless still in refinement mode)
   if (toolsUsed.includes('prompt_exercise') && !toolsUsed.includes('assessment')) {
-    return {
-      action: 'assessment',
-      reason: 'Assessment follows prompt exercise',
-      isRequired: true,
-      canSkip: true
-    };
+    // Check if we're still in refinement mode
+    const isStillRefining = session.promptRefinementState?.isRefining;
+    
+    if (isStillRefining) {
+      return {
+        action: 'prompt_exercise',
+        reason: 'Still in criteria-based refinement mode',
+        isRequired: true,
+        inRefinementLoop: true
+      };
+    } else {
+      return {
+        action: 'assessment',
+        reason: 'Assessment follows prompt exercise (refinement complete)',
+        isRequired: true,
+        canSkip: true
+      };
+    }
   }
   
   // Step 4: After assessment, decide based on score
@@ -238,9 +250,15 @@ else if (action === 'submit_response' && lastToolUsed === 'prompt_exercise' && l
     evaluationCriteria: session.currentPromptExercise?.evaluationCriteria
   };
   
-  // Always go through adaptive orchestrator if there's a note
-  if (learnerInput?.note) {
-    // Get default action (which would be to evaluate)
+  // Check if we're in refinement mode
+  const isInRefinementLoop = session.promptRefinementState?.isRefining;
+  
+  if (isInRefinementLoop) {
+    // In refinement mode - always go directly to evaluation
+    routeTo = 'evaluate_prompt';
+    updateState = 'prompt_submitted';
+  } else if (learnerInput?.note) {
+    // Not in refinement and has note - go through adaptive orchestrator
     defaultNextAction = {
       action: 'evaluate_prompt',
       reason: 'Prompt exercise submitted, default is to evaluate',
@@ -259,6 +277,7 @@ else if (action === 'submit_response' && lastToolUsed === 'prompt_exercise' && l
 else {
   // Calculate the default next action based on current state
   defaultNextAction = determineDefaultNextAction(session, action);
+  
   
   // Special handling for specific actions
   if (action === 'submit_response') {
@@ -279,8 +298,10 @@ else {
     }
   }
   
-  // Always route through adaptive orchestrator for intelligent decisions
-  routeTo = 'adaptive_orchestrator';
+  // Always route through adaptive orchestrator for intelligent decisions (unless already routed)
+  if (!routeTo) {
+    routeTo = 'adaptive_orchestrator';
+  }
 }
 
 // Update state machine if needed

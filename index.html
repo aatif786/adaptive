@@ -614,7 +614,7 @@
     <div class="container">
         <div class="header">
             <h1>Adaptive Instructor - LinkedIn Learning</h1>
-            v0.22
+            v0.23
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -1149,6 +1149,7 @@
                 `;
             }
             
+            // Handle evaluation results with refinement mode
             if (data.evaluationResult) {
                 const scoreClass = data.evaluationResult.score >= 4 ? 'feedback-box' : 
                                  data.evaluationResult.score >= 2 ? 'feedback-box warning' : 
@@ -1240,13 +1241,26 @@
                     html += renderSmartReplies(data.smartReplies, 'learnerNote');
                 }
                 
-                html += `
-                        <div class="button-group">
-                            <button class="btn btn-primary" onclick="submitAfterEvaluation()">Continue</button>
+                // Only show continue button if NOT in refinement mode or criteria is met
+                if (!data.isRefining || data.evaluationResult.criteriaMet || !data.waitingForInput) {
+                    html += `
+                            <div class="button-group">
+                                <button class="btn btn-primary" onclick="submitAfterEvaluation()">Continue</button>
+                            </div>
                         </div>
-                    </div>
-                `;
-            } else if (currentState.waitingForInput) {
+                    `;
+                }
+                // If in refinement mode with unmet criteria, don't close the div yet - input will be added below
+                else if (data.isRefining && !data.evaluationResult.criteriaMet && data.waitingForInput) {
+                    // Close the div here since we'll add input section separately
+                    html += `
+                        </div>
+                    `;
+                }
+            }
+            
+            // Show input area if waiting for input OR if in refinement with unmet criteria
+            if (currentState.waitingForInput || (data.isRefining && data.evaluationResult && !data.evaluationResult.criteriaMet)) {
                 // Check if we're in refinement mode
                 if (data.isRefining && data.currentCriteria) {
                     // Refinement mode - show criteria progress and feedback

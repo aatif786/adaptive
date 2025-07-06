@@ -1,0 +1,114 @@
+# Module 1: The Context Advantage - Prompt Refinement Exercise
+
+## 1. Static Prompt Description (Markdown)
+
+You're Sarah Chen, Senior PM at TechCorp, and it's October 2nd - Day 2 of your annual planning sprint. Yesterday's leadership meeting was clear: "We need data-driven priorities for 2025, not opinions."
+
+Your company: TechCorp (B2B workflow automation platform)
+- 52,000 active users (72% SMB, 28% Enterprise)
+- $47M ARR, growing 32% YoY
+- NPS: 42 (down from 51 last year)
+- Monthly churn: 3.1% overall (2.2% Enterprise, 3.8% SMB)
+- Position: "The workflow platform that scales with you"
+
+The CFO just dropped a bombshell: "We can only fund 3 major initiatives next year. Choose wisely."
+
+Available data for analysis:
+- [Customer Feedback Export] - 3,000 entries from last 6 months (support tickets, NPS comments, sales calls)
+- [Feature Request Tracker] - 847 requests with vote counts and revenue attached
+- [Churn Analysis Report] - Exit interviews from 127 churned accounts with reasons
+- [Usage Analytics Dashboard] - Feature adoption rates by segment and cohort
+
+Your VP of Product needs your recommendation by end of day. She specifically wants to know which 3 initiatives will have the biggest impact on reducing churn and increasing enterprise expansion.
+
+Write a prompt that will analyze this data to identify the top 3 product priorities for 2025, with clear business justification for each.
+
+## 2. Evaluation Criteria
+
+### Criteria 1: Company Context Foundation
+- Includes TechCorp name and B2B workflow/automation industry
+- References at least 2 key metrics (ARR, users, churn, or NPS)
+- Mentions the 52K user base or $47M ARR specifically
+- Acknowledges the Enterprise vs SMB segment split
+
+### Criteria 2: Strategic Focus
+- Clearly states the goal of identifying top 3 priorities
+- Links priorities to business impact (churn reduction and/or enterprise expansion)
+- References the budget constraint (only 3 initiatives)
+- Shows understanding this is for 2025 annual planning
+
+### Criteria 3: Data Source Integration
+- References at least 3 of the 4 available data sources
+- Uses correct [placeholder] format for each data source
+- Shows understanding of what each dataset contains
+- Integrates data sources logically into the analysis request
+
+### Criteria 4: Analysis Framework
+- Requests specific analysis approach (ranking, scoring, grouping)
+- Asks for quantified impact (percentages, dollar amounts, user counts)
+- Includes both problems to solve AND opportunities to capture
+- Considers different customer segments in the analysis
+
+### Criteria 5: Executive Output Specification
+- Specifies output format suitable for VP/leadership
+- Requests business justification for each priority
+- Asks for specific metrics or evidence to support recommendations
+- Mentions timeline or effort considerations
+
+## 3. Exemplar Prompt
+
+I'm Sarah Chen, Senior PM at TechCorp, a B2B workflow automation platform with 52,000 users and $47M ARR. We're growing 32% YoY but facing challenges: our NPS dropped from 51 to 42, and monthly churn is 3.1% (worse in SMB at 3.8% vs Enterprise at 2.2%). 
+
+For 2025 annual planning, I need to identify our top 3 product priorities from hundreds of possibilities. We can only fund 3 major initiatives, and leadership wants maximum impact on reducing churn and driving enterprise expansion.
+
+Using [Customer Feedback Export] with 3,000 entries, [Feature Request Tracker] with 847 requests, [Churn Analysis Report] from 127 exits, and [Usage Analytics Dashboard], please analyze:
+
+1. Group and categorize all feedback to identify major themes
+2. Correlate feature gaps with churn reasons, especially for Enterprise segments
+3. Identify which missing features have the highest revenue impact based on churned ARR
+4. Find patterns between low feature adoption and customer dissatisfaction
+5. Rank all potential initiatives by projected impact on churn reduction and expansion revenue
+
+For the top 3 priorities, provide:
+- Clear initiative description and scope
+- Quantified business impact (% churn reduction, ARR expansion potential)
+- Evidence from multiple data sources (quotes, metrics, patterns)
+- Effort estimation (High/Medium/Low based on typical enterprise features)
+- Specific metrics to track success
+
+Format as executive summary with recommendation first, then supporting data. Focus on what will resonate with our CFO (ROI) and CPO (strategic differentiation).
+
+## 4. Dynamic Feedback Examples
+
+### If missing company context:
+"Your prompt is missing key context about TechCorp. Remember, AI doesn't know your company's specifics. Try adding details about your company size, ARR, and what type of product you offer. This context helps AI understand the scale and urgency of your analysis."
+
+### If missing data source references:
+"You have rich data available but aren't leveraging it! You have access to [Customer Feedback Export], [Feature Request Tracker], [Churn Analysis Report], and [Usage Analytics Dashboard]. Reference at least 3 of these to get comprehensive insights instead of guesses."
+
+### If too generic:
+"This prompt could be for any SaaS company! Make it specific to TechCorp's situation. What's unique about your 52K users? Why does the Enterprise vs SMB split matter? Why only 3 initiatives? The more specific your prompt, the more actionable your results."
+
+### If missing business impact focus:
+"Remember, your CFO said you can only fund 3 initiatives. Your prompt should explicitly ask for business impact - how will each priority reduce churn or drive expansion? Ask for quantified impact, not just a feature wish list."
+
+## 5. Success Message
+
+Excellent work! Your prompt demonstrates mastery of the Context Sandwich™ technique. You've:
+- Provided rich company context that grounds the analysis
+- Integrated multiple data sources strategically  
+- Focused on measurable business outcomes
+- Requested executive-ready output
+
+This prompt would generate insights that could genuinely shape TechCorp's 2025 strategy. Sarah would be proud! 
+
+Ready to see how this compounds into even more powerful techniques? Module 2 will show you how to chain prompts together for deeper analysis...
+
+## 6. Module Transition
+
+After successful completion, the system should store:
+- That the learner understands the Context Sandwich™ framework
+- Their ability to integrate multiple data sources
+- Their grasp of business-focused prompting
+
+This prepares them for Module 2, where they'll learn to break complex analyses into chained prompts for even deeper insights.

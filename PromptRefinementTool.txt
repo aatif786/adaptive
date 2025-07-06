@@ -1,0 +1,156 @@
+# Prompt Refinement Tool Requirements Template
+
+## Required Components for Each Module
+
+### 1. Static Prompt Description (Markdown)
+**Purpose:** Sets up the scenario and provides all context the learner needs
+
+**Must Include:**
+- **Scenario Setup:** The situation/story context (who they are, what's happening)
+- **The Task:** Clear description of what they're trying to accomplish
+- **Available Resources:** Any data, tools, or information they can reference
+  - For data: Use [Data Name] placeholders 
+  - Include brief description of what each dataset contains
+- **Company/Role Context:** Specific details they should use (metrics, size, industry, etc.)
+- **Constraints:** Any specific requirements (deadline, audience, format needs)
+
+**Format:** Written as an immersive scenario, not instructions
+
+---
+
+### 2. Evaluation Criteria
+**Purpose:** Defines what the Adaptive Instructor checks for in each prompt attempt
+
+**Structure:**
+```
+Criteria 1: [Title]
+- Spec 1: [Specific element to check]
+- Spec 2: [Specific element to check]
+- Spec 3: [Specific element to check]
+
+Criteria 2: [Title]
+- Spec 1: [Specific element to check]
+- Spec 2: [Specific element to check]
+```
+
+**Requirements:**
+- All criteria are REQUIRED (no optional/bonus)
+- Each criterion has 2-5 specific specs
+- Specs are checkable/observable elements
+- Written as "what to look for" not "what's missing"
+- Ordered by typical learning progression
+
+**Example Format:**
+```
+Criteria 1: Company Context
+- Includes company name and industry
+- States company size (users, revenue, or employees)
+- Mentions at least 2 specific metrics
+- Positions against competition
+
+Criteria 2: Data Integration
+- References at least 2 data sources using [placeholders]
+- Shows understanding of what each dataset contains
+- Integrates data naturally into the request
+```
+
+---
+
+### 3. Exemplar Prompt
+**Purpose:** Shows what success looks like when all criteria are met
+
+**Requirements:**
+- Meets every criterion and spec perfectly
+- Uses natural language (not robotic)
+- Demonstrates the technique being taught
+- Includes all [data placeholders] appropriately
+- Shows personality while maintaining professionalism
+- Should be ~150-300 words
+
+**Structure:**
+```
+[Context paragraph - who you are, your situation]
+
+[Data sources paragraph - what you're working with]
+
+[Specific analysis request - numbered or bulleted]
+
+[Output format specification]
+
+[Any additional constraints or focus areas]
+```
+
+---
+
+## Example Module 1 Following This Template
+
+### 1. Static Prompt Description
+```markdown
+You're Sarah Chen, Senior PM at TechCorp, on October 2nd. Your CEO just Slacked: 
+"Board wants competitive analysis vs Asana and Monday. Data-driven, no fluff, by EOD."
+
+Your company: TechCorp (B2B project management SaaS)
+- 50K users (70% SMB, 30% Enterprise)  
+- $2.8M MRR, NPS 52, 3.5% churn
+- Position: "Easy implementation, great support"
+
+Available data:
+- [Feature Comparison Matrix] - 150 features tracked
+- [Win/Loss Report] - Last 100 deals with reasons
+- [G2 Reviews] - All three products' reviews
+- [Churn Interviews] - 25 customers who switched
+
+Create a prompt for CEO-ready competitive insights.
+```
+
+### 2. Evaluation Criteria
+```
+Criteria 1: Company Context
+- Includes TechCorp name and B2B SaaS industry
+- States 50K users or $2.8M MRR
+- Mentions at least 2 metrics (NPS, churn, segments)
+- References competitive positioning
+
+Criteria 2: Data Source Integration  
+- References at least 2 of 4 data sources
+- Uses [placeholder] format correctly
+- Shows understanding of each dataset's purpose
+- Integrates naturally into analysis request
+
+Criteria 3: Specific Analysis Framework
+- Lists numbered or bulleted analysis points
+- Requests quantified insights (top 3, percentages)
+- Goes beyond "compare" to actionable findings
+- Addresses both wins and losses
+
+Criteria 4: Executive Output Format
+- Specifies format (summary, bullets, one-pager)
+- Requests data elements (percentages, quotes)
+- Appropriate for CEO/board audience
+- Mentions "actionable" or "recommendations"
+```
+
+### 3. Exemplar Prompt
+```
+We're TechCorp, a B2B project management SaaS with 50K users (70% SMB, 30% Enterprise), 
+competing with Asana (enterprise) and Monday (visual/SMB). Current: $2.8M MRR, NPS 52, 
+3.5% churn. We position as "easiest to implement with best support."
+
+Using [Feature Comparison Matrix], [Win/Loss Report], [G2 Reviews], and [Churn Interviews], 
+analyze our competitive position.
+
+Please identify:
+1. Top 3 competitive advantages with win-rate data from [Win/Loss Report]
+2. Top 3 feature gaps causing losses, quantified by impact
+3. Segment breakdown: Where we win/lose in SMB vs Enterprise
+4. Customer quotes from [Churn Interviews] explaining their switch
+5. Specific recommendations for Q4 roadmap priorities
+
+Format: One-page executive summary with bullet points, percentages, and customer 
+voice. Focus on actionable insights the board can use for strategic decisions.
+```
+
+---
+
+## Usage Note
+When creating a new module, fill in each section completely. The clearer and more specific these requirements, the better the Adaptive Instructor can guide learners to success through dynamic feedback based on what they're missing.

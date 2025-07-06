@@ -1,0 +1,286 @@
+# AI-Native PM Course: Optimized 10-Module Structure
+
+## Core Philosophy: Maximum Skills & Techniques in 100 Minutes
+
+### Top 5 Must-Have Skills (Non-Negotiable):
+1. **Context Setting** - Without this, everything else fails
+2. **Progressive Prompt Chaining** - How PMs actually think
+3. **Multi-Source Synthesis** - Reality of PM work
+4. **Output Validation** - Career protection
+5. **Strategic Narrative Building** - What gets PMs promoted
+
+### Top 10 Essential Techniques:
+1. The Context Sandwich
+2. Russian Doll Prompting
+3. The Triangle Method
+4. The Validation Loop
+5. The Pre-Mortem Prompt
+6. The Story Spine
+7. The Cascade Method
+8. The 10% Spot Check
+9. The Five Whys Chain
+10. The Second Brain System
+
+---
+
+## Module 1: The Context Advantage (12 min)
+
+**Sarah's Story:** October 1st. Sarah stares at her calendar - 6 weeks until planning presentation. Her peers will spend those weeks in analysis paralysis. She won't.
+
+**Core Skill:** Context Setting & Preparation
+
+**Anxiety → Confidence:** "AI gives generic outputs" → "My AI knows MY business"
+
+**Key Techniques:** 
+- The Context Sandwich (primary)
+- The Schema First Method (embedded)
+- Role Playing Prompt (quick demo)
+
+**Memorable Framework:** "Context Before Question"
+
+**Practice Output:** Sarah's company context document + first strategic analysis
+
+**Career Impact:** Your AI outputs immediately sound like they're from a senior PM
+
+**Hook to Next:** "But context alone isn't enough. Sarah needs to think in sequences..."
+
+---
+
+## Module 2: Chain Thinking Mastery (11 min)
+
+**Sarah's Story:** October 5th. Sarah realizes her planning needs 20 different analyses. Old way: 2 weeks. New way: 2 days.
+
+**Core Skill:** Progressive Prompt Chaining
+
+**Anxiety → Confidence:** "Complex analyses are overwhelming" → "I can break anything down"
+
+**Key Techniques:**
+- Russian Doll Prompting (primary)
+- The Five Whys Chain (embedded)
+- Zoom In/Zoom Out (demonstrated)
+
+**Memorable Framework:** "EXTRACT → ANALYZE → SYNTHESIZE → RECOMMEND"
+
+**Practice Output:** Complete customer segment analysis chain
+
+**Career Impact:** Think like a principal PM, deliver like one too
+
+**Hook to Next:** "Sarah's first chain revealed conflicting data. She needs the truth..."
+
+---
+
+## Module 3: Multi-Source Truth Finding (10 min)
+
+**Sarah's Story:** October 8th. Sales says one thing, support says another, data shows a third. Sarah needs the real story.
+
+**Core Skill:** Multi-Source Synthesis
+
+**Anxiety → Confidence:** "Data conflicts paralyze me" → "I can find truth in chaos"
+
+**Key Techniques:**
+- The Triangle Method (primary)
+- The Mosaic Technique (embedded)
+- Source Tagging System (quick tip)
+
+**Memorable Framework:** "Three Sources, One Truth"
+
+**Practice Output:** Unified insight from support tickets + usage data + sales calls
+
+**Career Impact:** Become the PM who always has the complete picture
+
+**Hook to Next:** "But wait - is Sarah's AI analysis actually correct?"
+
+---
+
+## Module 4: Trust & Validation Systems (8 min)
+
+**Sarah's Story:** October 12th. Sarah almost presented flawed data to her VP. She needs a safety net.
+
+**Core Skill:** Output Validation & Fact-Checking
+
+**Anxiety → Confidence:** "What if AI is wrong?" → "I have a verification system"
+
+**Key Techniques:**
+- The Validation Loop (primary)
+- The 10% Spot Check (embedded)
+- Red Flag Scanning (rapid tips)
+- The Sanity Check Prompt (bonus)
+
+**Memorable Framework:** "Trust but Verify"
+
+**Practice Output:** Validated competitive analysis with confidence scores
+
+**Career Impact:** Never be caught with bad data again
+
+**Hook to Next:** "Sarah's data is solid. Now she needs to make executives care..."
+
+---
+
+## Module 5: Strategic Story Architecture (10 min)
+
+**Sarah's Story:** October 15th. Sarah has insights. But her executive team needs a compelling narrative for budget approval.
+
+**Core Skill:** Strategic Narrative Building
+
+**Anxiety → Confidence:** "I have data but no story" → "I craft narratives that drive decisions"
+
+**Key Techniques:**
+- The Story Spine (primary)
+- The So What Test (embedded)
+- Before/After Snapshots (demonstrated)
+- The Pyramid Principle (quick mention)
+
+**Memorable Framework:** "Data → Insight → Story → Decision"
+
+**Practice Output:** Executive narrative with emotional hooks
+
+**Career Impact:** Present like a VP, get treated like one
+
+**Hook to Next:** "One story isn't enough. Sarah needs versions for everyone..."
+
+---
+
+## Module 6: The Multiplication Engine (9 min)
+
+**Sarah's Story:** October 20th. Sarah needs 15 different documents from her plan. Old way: 2 days. New way: 20 minutes.
+
+**Core Skill:** Document Multiplication
+
+**Anxiety → Confidence:** "I'm drowning in deliverables" → "One source, infinite outputs"
+
+**Key Techniques:**
+- The Cascade Method (primary)
+- Format Switching (embedded)
+- The RACI Generator (quick demo)
+- Audience-Aware Translation (woven in)
+
+**Memorable Framework:** "Write Once, Deploy Everywhere"
+
+**Practice Output:** PRD → Epics → Stories → FAQ → Sales enablement
+
+**Career Impact:** 10x productivity makes you indispensable
+
+**Hook to Next:** "Sarah's plan looks perfect. But what could go wrong?"
+
+---
+
+## Module 7: Risk Intelligence & Edge Cases (8 min)
+
+**Sarah's Story:** October 25th. Two weeks before presentation. Sarah needs to anticipate every executive objection.
+
+**Core Skill:** Risk & Edge Case Detection
+
+**Anxiety → Confidence:** "Blind spots kill careers" → "I see around corners"
+
+**Key Techniques:**
+- The Pre-Mortem Prompt (primary)
+- Edge Case Enumeration (embedded)
+- The Devil's Advocate (demonstrated)
+
+**Memorable Framework:** "Paranoid Optimism"
+
+**Practice Output:** Risk matrix with mitigation strategies
+
+**Career Impact:** Be the PM who's always prepared
+
+**Hook to Next:** "Sarah's almost ready. But she needs competitive intelligence..."
+
+---
+
+## Module 8: Intelligence Gathering Systems (9 min)
+
+**Sarah's Story:** October 30th. Board asks "What are competitors doing?" Sarah needs answers fast.
+
+**Core Skill:** Rapid Competitive Intelligence
+
+**Anxiety → Confidence:** "Competitor research takes forever" → "I have real-time intelligence"
+
+**Key Techniques:**
+- The Feature Matrix Method (primary)
+- Gap Analysis Prompting (embedded)
+- The Trend Spotter (demonstrated)
+- The Daily Digest (bonus technique)
+
+**Memorable Framework:** "Know More, Move Faster"
+
+**Practice Output:** Comprehensive competitive landscape analysis
+
+**Career Impact:** Become the strategic intelligence center
+
+**Hook to Next:** "Sarah has everything. Now she needs a system..."
+
+---
+
+## Module 9: Speed Techniques for Daily Excellence (8 min)
+
+**Sarah's Story:** November 5th. Sarah juggles planning prep with daily chaos. She needs efficiency hacks.
+
+**Core Skill:** Meeting & Communication Efficiency
+
+**Anxiety → Confidence:** "Meetings eat my life" → "I run meetings like a machine"
+
+**Key Techniques:**
+- The Pre-Read Generator (primary)
+- Action Item Extraction (embedded)
+- The Update Transformer (demonstrated)
+- Historical Analogy Method (for time estimates)
+
+**Memorable Framework:** "Prep in Minutes, Impress for Hours"
+
+**Practice Output:** Complete meeting cycle optimization
+
+**Career Impact:** Reputation as the most organized PM
+
+**Hook to Next:** "Individual techniques are powerful. But Sarah needs an operating system..."
+
+---
+
+## Module 10: Your AI-PM Operating System (15 min)
+
+**Sarah's Story:** November 15th. Presentation day. Sarah reflects on her transformation while her system runs automatically.
+
+**Core Skill:** AI Tool Selection & Integration
+
+**Anxiety → Confidence:** "Random AI use" → "Systematic competitive advantage"
+
+**Key Techniques:**
+- The Second Brain System (primary)
+- The Tool Matrix (embedded)
+- The Integration Stack (demonstrated)
+- Personal workflow builder (practice)
+- All previous techniques in concert
+
+**Memorable Framework:** "Your AI Advantage Flywheel"
+
+**Practice Output:** Personal AI-PM operating system
+
+**Career Impact:** Operate at principal PM level regardless of title
+
+**Story Conclusion:** Sarah's presentation is flawless. She gets the budget, the recognition, and three job offers.
+
+---
+
+## Technique Density Achievement
+
+**Total Techniques Taught:** 40+
+- 10 Primary techniques (deeply practiced)
+- 20 Embedded techniques (demonstrated in context)
+- 10+ Bonus techniques (rapid-fire tips)
+
+**Cramming Strategy:**
+1. **Primary Teaching (50%):** One technique deeply
+2. **Embedded Practice (30%):** Related techniques in examples
+3. **Rapid Tips (20%):** Power-user variations
+
+**The Journey Arc:**
+- Modules 1-3: Foundation (Confidence building)
+- Modules 4-6: Multiplication (Productivity explosion)
+- Modules 7-9: Mastery (Strategic thinking)
+- Module 10: Integration (Systematic advantage)
+
+**Key Success Metrics:**
+- New technique introduced every 2.5 minutes
+- Each module builds on previous learning
+- Story continuity maintains engagement
+- Immediate practical application in every module
+- Clear career advancement path demonstrated

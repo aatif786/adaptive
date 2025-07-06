@@ -1,0 +1,130 @@
+# Module 1: The Context Advantage - Assessment Questions
+
+## Assessment Overview
+**Purpose:** Verify understanding of the Context Sandwich™ framework and its application to AI-powered product management.
+**Format:** Mix of multiple choice and open-ended questions
+**Passing Criteria:** 4/5 correct answers
+
+---
+
+## Question 1: Framework Understanding (Multiple Choice)
+
+**What are the three layers of the Context Sandwich™ framework in the correct order?**
+
+A) Output Format → Company Context → Specific Ask
+B) Specific Ask → Company Context → Output Format  
+C) Company Context → Specific Ask → Output Format
+D) Company Context → Output Format → Specific Ask
+
+**Correct Answer:** C
+**Explanation:** The Context Sandwich™ builds from foundation (Company Context) to direction (Specific Ask) to structure (Output Format).
+
+---
+
+## Question 2: Context Components (Multiple Choice)
+
+**Which of the following should NOT be included in your Company Context layer?**
+
+A) Current ARR and growth rate
+B) Customer segment breakdown
+C) The specific analysis you want performed
+D) Team size and capabilities
+
+**Correct Answer:** C
+**Explanation:** The specific analysis belongs in Layer 2 (Specific Ask), not in the Company Context layer.
+
+---
+
+## Question 3: Practical Application (Open-Ended)
+
+**Sarah's colleague asks: "My AI keeps giving me generic advice about 'focusing on customer satisfaction' when I ask about our churn problem. What am I doing wrong?"**
+
+**Write a brief response explaining what's likely missing and how to fix it.**
+
+**Evaluation Criteria:**
+- Identifies lack of specific context as the issue
+- Mentions need for company metrics/data
+- Suggests using the Context Sandwich™ framework
+- Provides at least one specific example
+
+**Sample Strong Answer:**
+"You're getting generic responses because AI doesn't know anything specific about your company. Try adding context first: 'We're a B2B SaaS with 10K users, 4% monthly churn (industry average 2.5%), mainly losing customers after month 3...' Then ask specifically what you want: 'Analyze why customers churn at month 3 and suggest retention strategies.' Finally, specify the format: 'Provide 3 actionable recommendations with implementation steps.' This Context Sandwich approach transforms generic AI into your strategic advisor."
+
+---
+
+## Question 4: Advanced Technique (Multiple Choice)
+
+**When analyzing 3,000 pieces of customer feedback, what technique did Sarah use to make the task manageable?**
+
+A) She asked AI to summarize everything in one prompt
+B) She used the Chunking Strategy with 100-item batches
+C) She only analyzed the negative feedback
+D) She delegated it to her team
+
+**Correct Answer:** B
+**Explanation:** The Chunking Strategy breaks large datasets into manageable 100-item batches while maintaining consistent analysis schema.
+
+---
+
+## Question 5: Strategic Impact (Open-Ended)
+
+**Your VP sees your AI-powered analysis and says: "This is incredibly strategic. How did you do this so quickly?"**
+
+**Explain in 2-3 sentences how the Context Sandwich™ framework accelerated your analysis while improving quality.**
+
+**Evaluation Criteria:**
+- Mentions time savings from structured approach
+- Notes reusability of context
+- Highlights strategic depth from proper context
+- Shows understanding of transformation from tactical to strategic
+
+**Sample Strong Answer:**
+"The Context Sandwich™ framework let me transform weeks of analysis into hours by giving AI the full picture upfront—our metrics, challenges, and goals—so it could think strategically, not generically. Once I created my Context Master Document, I could reuse it for every analysis, making each subsequent prompt faster and more insightful. Instead of getting Wikipedia-style responses, I got boardroom-ready insights because the AI understood our specific situation and what leadership needed to see."
+
+---
+
+## Remediation Paths
+
+### If learner misses Question 1 or 2:
+- Review the three layers of the Context Sandwich™
+- Emphasize the importance of structure and order
+- Provide additional examples of each layer
+
+### If learner struggles with Question 3:
+- Revisit the "before and after" examples from the concept card
+- Practice identifying what's missing in generic prompts
+- Work through building context step-by-step
+
+### If learner misses Question 4:
+- Review the Chunking Strategy section
+- Explain why breaking down large tasks matters
+- Practice with a smaller dataset example
+
+### If learner struggles with Question 5:
+- Connect back to Sarah's transformation story
+- Emphasize ROI and career impact
+- Help them articulate value in business terms
+
+---
+
+## Success Transition
+
+**Upon passing (4/5 correct):**
+
+"Outstanding! You've mastered the Context Sandwich™ framework—the foundation of AI-powered product management. You understand how to transform generic AI into a strategic partner through structured context.
+
+But here's the thing: Sarah's about to discover that even perfect context isn't enough for complex analyses. Some problems are too big for a single prompt...
+
+Ready to learn how to chain prompts together for exponentially more powerful insights? Module 2 awaits!"
+
+---
+
+## Module Completion Data to Track
+
+- Understanding of Context Sandwich™ layers: [Pass/Fail]
+- Ability to identify missing context: [Pass/Fail]
+- Practical application skills: [Strong/Adequate/Needs Work]
+- Advanced technique comprehension: [Pass/Fail]
+- Strategic communication ability: [Strong/Adequate/Needs Work]
+
+This data helps the Adaptive Instructor personalize Module 2 based on the learner's strengths and gaps.

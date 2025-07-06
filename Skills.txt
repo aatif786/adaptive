@@ -1,0 +1,99 @@
+1. Data Preparation & Context Setting
+
+What it is: Teaching AI about YOUR specific situation before asking for help
+
+Why they need it: Generic prompts = generic (useless) outputs
+
+Example: Instead of "analyze customer feedback," providing company context, product details, customer segments, and success metrics first
+
+2. Progressive Prompt Chaining
+
+What it is: Breaking complex analyses into sequential steps
+
+Why they need it: AI can't do deep thinking in one shot
+
+Example: First prompt extracts data → Second finds patterns → Third identifies segments → Fourth recommends actions
+
+3. Multi-Source Synthesis
+
+What it is: Combining insights from different data types and sources
+
+Why they need it: PMs deal with messy, distributed information
+
+Example: Merging support tickets + sales calls + user analytics + competitor data into coherent insights
+
+4. Output Validation & Fact-Checking
+
+What it is: Knowing when AI is hallucinating or missing nuance
+
+Why they need it: Career-ending mistakes from trusting AI blindly
+
+Example: Spot-checking 10% of AI categorizations, verifying metrics against source data
+
+5. Audience-Aware Translation
+
+What it is: One insight → multiple stakeholder versions
+
+Why they need it: Different audiences need different framing
+
+Example: Technical findings → CEO summary, engineering details, sales talking points
+
+6. Strategic Narrative Building
+
+What it is: Turning data into compelling stories with AI
+
+Why they need it: Data doesn't convince people, stories do
+
+Example: Transform usage metrics into "here's why we're winning/losing" narrative
+
+7. Rapid Competitive Intelligence
+
+What it is: Using AI to monitor and analyze competitor moves
+
+Why they need it: Markets move fast, can't manually track everything
+
+Example: Weekly competitor feature analysis, pricing changes, positioning shifts
+
+8. Document Multiplication
+
+What it is: One source document → complete artifact suite
+
+Why they need it: PMs waste hours creating variations of same content
+
+Example: PRD → JIRA tickets, test cases, success metrics, FAQ, release notes
+
+9. Risk & Edge Case Detection
+
+What it is: Using AI to find what could go wrong
+
+Why they need it: PMs are accountable when features fail
+
+Example: "What could break this feature?" "What users would hate this?"
+
+10. Meeting & Communication Efficiency
+
+What it is: AI for prep, notes, follow-ups, and summaries
+
+Why they need it: Mid-level PMs are in meetings 50% of time
+
+Example: Pre-meeting briefs, real-time note structuring, action item extraction
+
+Skills You Listed That Are Actually Techniques:
+
+These are good but they're more like specific techniques within the skills above:
+
+11. Time Estimation & Capacity Planning with AI
+
+What it is: Using AI to predict effort and timelines
+
+Why they need it: Mid-level PMs own delivery commitments
+
+Example: "Based on these requirements, estimate story points and sprint allocation"
+
+12. AI Tool Selection & Integration
+
+What it is: Knowing which AI tool for which job
+
+Why they need it: Not everything needs ChatGPT
+
+Example: Claude for analysis, Perplexity for research, Notion AI for docs, etc.

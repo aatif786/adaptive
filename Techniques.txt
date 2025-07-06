@@ -1,0 +1,276 @@
+Complete Techniques Catalog for the Course
+Data Preparation & Context Setting Techniques
+
+"The Context Sandwich"
+
+Company context → specific ask → output format
+Example: "We're a B2B SaaS with 50K users... Analyze this data... Format as executive summary"
+
+
+"Chunking & Batching"
+
+Break large datasets into 50-100 item batches
+Maintain consistent schema across chunks
+
+
+"The Schema First Method"
+
+Define extraction structure before analysis
+Example: "Extract: issue_type, severity, customer_segment, requested_feature"
+
+
+"Role Playing Prompt"
+
+"Act as a senior data analyst at a SaaS company..."
+Gives AI professional context
+
+
+
+Progressive Prompt Chaining Techniques
+
+"Russian Doll Prompting"
+
+Start broad → narrow → specific → actionable
+Each prompt builds on previous output
+
+
+"The Five Whys Chain"
+
+Keep asking why to get to root causes
+Example: Low adoption → Why? → Poor onboarding → Why? → Complex setup
+
+
+"Zoom In/Zoom Out"
+
+Alternate between high-level and detailed views
+Prevents missing forest for trees
+
+
+"The Validation Loop"
+
+Analyze → Validate sample → Refine → Re-analyze
+Builds confidence in results
+
+
+
+Multi-Source Synthesis Techniques
+
+"The Triangle Method"
+
+Always combine 3 sources for any conclusion
+Example: Customer feedback + usage data + support tickets
+
+
+"Source Tagging System"
+
+[QUAL] for qualitative, [QUANT] for quantitative
+Helps AI weight evidence appropriately
+
+
+"The Mosaic Technique"
+
+Piece together partial information from multiple sources
+"What pattern emerges from these fragments?"
+
+
+
+Output Validation Techniques
+
+"The 10% Spot Check"
+
+Manually verify 10% of any AI categorization
+If >20% errors, refine and rerun
+
+
+"Red Flag Scanning"
+
+Look for: absolute statements, made-up metrics, timeline impossibilities
+Common AI hallucination patterns
+
+
+"Cross-Reference Verification"
+
+"Does this match our dashboard?"
+"Is this consistent with last quarter?"
+
+
+"The Sanity Check Prompt"
+
+"Review this analysis. What seems questionable or needs verification?"
+
+
+
+Audience-Aware Translation Techniques
+
+"The Persona Prompt"
+
+Include stakeholder details: "Jim cares about technical feasibility and hates surprises"
+AI adapts tone and content
+
+
+"The Pyramid Principle"
+
+Conclusion first → supporting points → details
+Perfect for executive communication
+
+
+"The SCQA Framework"
+
+Situation → Complication → Question → Answer
+Creates compelling narrative flow
+
+
+
+Strategic Narrative Building Techniques
+
+"The Story Spine"
+
+Once upon a time... Every day... Until one day... Because of that...
+Turns data into memorable stories
+
+
+"The So What Test"
+
+After each insight: "So what? Why should they care?"
+Ensures relevance
+
+
+"Before/After Snapshots"
+
+Paint vivid picture of current vs. future state
+Makes abstract concrete
+
+
+
+Competitive Intelligence Techniques
+
+"The Feature Matrix Method"
+
+Create structured comparison grids
+"Extract features from these competitor pages into a standardized table"
+
+
+"Gap Analysis Prompting"
+
+"What do they have that we don't?"
+"What do customers praise them for?"
+
+
+"The Trend Spotter"
+
+"Analyze these 5 competitors. What pattern are they all following?"
+
+
+
+Document Multiplication Techniques
+
+"The Cascade Method"
+
+PRD → Epics → Stories → Tasks
+Each level generated from the previous
+
+
+"The RACI Generator"
+
+From project plan → who's Responsible, Accountable, Consulted, Informed
+
+
+"Format Switching"
+
+"Convert this technical spec into: 1) FAQ 2) Training guide 3) Sales enablement"
+
+
+
+Risk & Edge Case Detection Techniques
+
+"The Pre-Mortem Prompt"
+
+"Assume this project failed spectacularly. What went wrong?"
+Surfaces hidden risks
+
+
+"Edge Case Enumeration"
+
+"List 20 ways users could misuse this feature"
+"What happens if [unexpected scenario]?"
+
+
+"The Devil's Advocate"
+
+"Argue against this approach. What are the strongest objections?"
+
+
+
+Meeting & Communication Efficiency Techniques
+
+"The Pre-Read Generator"
+
+"Create a 1-page brief covering context, decision needed, and options"
+
+
+"Action Item Extraction"
+
+"From these notes, extract WHO does WHAT by WHEN"
+
+
+"The Update Transformer"
+
+One update → Slack message, email, JIRA comment
+
+
+
+Time Estimation & Capacity Planning Techniques
+
+"Historical Analogy Method"
+
+"We built X in Y time. This is similar but with Z differences. Estimate effort."
+
+
+"Task Decomposition"
+
+Break down until each task is 1-2 days
+Sum up with buffer calculations
+
+
+"The Uncertainty Ladder"
+
+Rate each estimate: High/Medium/Low confidence
+Apply different buffers accordingly
+
+
+
+AI Tool Selection Techniques
+
+"The Tool Matrix"
+
+Task type × Tool strength = Best choice
+When to use Claude vs. GPT vs. Perplexity
+
+
+"The Integration Stack"
+
+Connect AI tools: Notion AI → Claude → Slack bot
+Automation possibilities
+
+
+
+Advanced Combination Techniques
+
+"The Second Brain System"
+
+Feed all decisions, docs, learnings to AI
+"What did we decide about X three months ago?"
+
+
+"The Daily Digest"
+
+Morning: "From yesterday's Slack, emails, and tickets, what needs my attention?"
+
+
+
+Each technique should include:
+
+Clear name (memorable)
+When to use it
+Example prompt/application
+Common mistakes to avoid

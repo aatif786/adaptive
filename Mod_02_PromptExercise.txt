@@ -1,0 +1,181 @@
+Module 2: Chain Thinking Mastery - Prompt Refinement Exercise
+1. Static Prompt Description (Markdown)
+
+You're Sarah Chen, and it's October 5th—Day 5 of annual planning. You've just been pulled into an emergency meeting with Marcus, your VP of Product.
+
+"We have a problem," Marcus says, closing his office door. "The board is questioning our Enterprise strategy. Revenue from Enterprise accounts has been flat for two quarters while competitors are growing 40% in that segment."
+
+Your company: TechCorp
+
+    Enterprise segment: 28% of users but 61% of revenue
+    Enterprise growth: Flat at $28.7M for 2 quarters
+    347 Enterprise accounts total
+    Win rate dropped from 32% to 19%
+
+Sarah immediately wrote her first prompt to understand the situation:
+
+Sarah's First Prompt: "I need to understand why TechCorp's Enterprise revenue has stalled at $28.7M for two quarters. We have 347 Enterprise accounts representing 61% of revenue. Our win rate dropped from 32% to 19%.
+
+Using [Enterprise Account Data] and [Sales Call Transcripts], please:
+
+    Categorize all Enterprise accounts by growth pattern (expanding, flat, contracting)
+    Identify the top differentiating characteristics between these groups
+    Surface any patterns in lost deals from the sales transcripts
+    Highlight any industry-specific trends"
+
+AI Response: "Analysis of 347 Enterprise accounts reveals three distinct growth patterns:
+
+EXPANDING ACCOUNTS (22% - 76 accounts)
+
+    Revenue: +$2.3M quarterly growth
+    Characteristics:
+        85% in Technology/SaaS sector
+        Average 250+ platform users per account
+        Adopted workflow automation within first 60 days
+        Health score: 8.5/10 average
+
+FLAT ACCOUNTS (51% - 177 accounts)
+
+    Revenue: Static at $14.6M
+    Characteristics:
+        73% in Financial Services sector
+        Average 50-100 platform users
+        Using only core task management features
+        Health score: 6.2/10 average
+
+CONTRACTING ACCOUNTS (27% - 94 accounts)
+
+    Revenue: -$1.1M quarterly decline
+    Characteristics:
+        Mixed industries (40% retail, 30% healthcare, 30% other)
+        Reduced seats by average 40%
+        Support tickets spike before contraction
+        Health score: 4.1/10 average
+
+Sales Transcript Patterns:
+
+    Financial Services losses: 67% cite 'security compliance concerns'
+    Technology sector losses: 45% mention 'lacks advanced API capabilities'
+    Common objection: 'Competitors offer [specific feature]' in 72% of lost deals
+    Successful deals emphasize ROI from automation (mentioned in 89% of wins)"
+
+Your Challenge:
+
+Based on these findings, write the NEXT prompt in Sarah's analysis chain. You need to dig deeper into ONE of these patterns to uncover root causes that will guide TechCorp's strategy.
+
+Remember the Russian Doll principle:
+
+    First prompt revealed WHAT is happening
+    Your prompt should uncover WHY it's happening
+    Focus on one key finding to investigate deeper
+    Build directly on the insights provided
+
+Available data sources:
+
+    [Enterprise Account Data] - Detailed metrics for all accounts
+    [Sales Call Transcripts] - 156 recent Enterprise sales conversations
+    [Product Usage Analytics] - Feature adoption and workflow data
+    [Competition Intelligence] - Competitor features and positioning
+
+Write your next prompt to open the next layer of insight.
+2. Evaluation Criteria
+Criteria 1: Building on Previous Findings
+
+    Directly references specific insights from Sarah's analysis
+    Selects one clear path to investigate (not multiple)
+    Doesn't repeat analysis already completed
+    Shows logical progression from "what" to "why"
+
+Criteria 2: Appropriate Focus Depth
+
+    Narrows investigation to specific segment or pattern
+    Asks targeted questions about root causes
+    Seeks to understand behavioral differences
+    Maintains clear investigative thread
+
+Criteria 3: Strategic Question Design
+
+    Focuses on high-impact findings (e.g., 73% Financial Services flat)
+    Questions lead toward actionable insights
+    Balances problem investigation with opportunity discovery
+    Considers both internal and external factors
+
+Criteria 4: Data Source Selection
+
+    Uses appropriate data sources for the deeper questions
+    May introduce new sources ([Product Usage] or [Competition Intelligence])
+    Shows understanding of which data answers which questions
+    Integrates multiple sources when relevant
+
+Criteria 5: Next-Layer Setup
+
+    Question structured to reveal underlying drivers
+    Seeks specific, not general insights
+    Compares contrasting behaviors or outcomes
+    Will clearly inform subsequent analysis or action
+
+3. Exemplar Prompt
+
+Based on the critical finding that 73% of flat accounts are in Financial Services citing security compliance concerns, I need to understand the specific barriers and opportunities.
+
+Using [Sales Call Transcripts] filtered for Financial Services accounts, [Competition Intelligence], and [Product Usage Analytics], analyze:
+
+    Specific Compliance Gaps:
+        What exact security/compliance features are Financial Services prospects requesting?
+        Which regulations (SOC2, ISO27001, FINRA) are mentioned most frequently?
+        How do requirements differ between expanding vs flat Financial Services accounts?
+    Competitive Positioning:
+        Which competitors are winning these Financial Services deals?
+        What security capabilities do they emphasize in their positioning?
+        Are they truly more compliant or just better at communicating it?
+    Internal Usage Patterns:
+        What differentiates the 27% of Financial Services accounts that ARE expanding?
+        Which security features have they adopted that flat accounts haven't?
+        Is there a correlation between specific feature adoption and growth?
+    Decision Timeline:
+        Are these compliance concerns new or long-standing?
+        What triggers the security evaluation (audit, incident, regulation change)?
+        How long is the typical evaluation cycle for these accounts?
+
+This analysis will reveal whether we face a true product gap, a go-to-market messaging problem, or a customer success enablement opportunity in our highest-revenue segment.
+4. Dynamic Feedback Examples
+If too broad/unfocused:
+
+"You're trying to investigate everything at once! Sarah's first prompt revealed several specific patterns. Pick ONE—like the 73% of flat accounts in Financial Services or the 40% seat reduction in contracting accounts—and dig deep into WHY that's happening. Think Russian doll: open one layer at a time."
+If not building on findings:
+
+"Your prompt starts fresh instead of building on what we learned. Reference the specific insights: Why are 73% of flat accounts in Financial Services? Why did Technology accounts expand while others didn't? Use the patterns discovered to guide your investigation deeper."
+If asking "what" instead of "why":
+
+"Sarah's prompt already revealed WHAT is happening—we know Financial Services accounts are flat and cite security concerns. Your prompt should uncover WHY. What specific security gaps? Which competitors satisfy these needs? Why do some Financial Services accounts still expand?"
+If missing comparison opportunity:
+
+"You're investigating the problem but missing the opportunity! Notice that 27% of Financial Services accounts ARE expanding despite the sector trend. Comparing these successful accounts to flat ones could reveal the key to unlocking growth. Always look for bright spots in the data."
+If single data source:
+
+"You're limiting yourself to one data source when the answer likely requires multiple perspectives. Sales transcripts tell you what customers say, but Product Usage Analytics shows what they actually do. Competition Intelligence reveals what alternatives they're considering. Combine sources for complete understanding."
+5. Success Message
+
+Excellent chain thinking! You've demonstrated mastery of the Russian Doll technique by:
+
+    Building progressively: Taking Sarah's "what" and diving into "why"
+    Strategic focus: Choosing the highest-impact pattern to investigate
+    Root cause orientation: Seeking specific drivers, not surface symptoms
+    Multi-source thinking: Combining data sources for complete picture
+
+Your prompt would reveal that Financial Services accounts need SOC2 Type 2 compliance (not just Type 1), and competitors are winning by offering automated compliance reporting. But you'd also discover that expanding Financial Services accounts use TechCorp's audit trail features—suggesting a customer education opportunity, not just a product gap.
+
+This is how chains create breakthroughs: each layer reveals not just problems, but hidden opportunities.
+
+Ready to see what happens when Sarah's 20 different analyses start contradicting each other? Module 3 will teach you to find truth when data sources conflict...
+6. Module Transition
+
+After successful completion, the system should track:
+
+    Ability to build on previous findings
+    Skill at narrowing focus appropriately
+    Understanding of why vs what questions
+    Recognition of comparison opportunities
+    Multi-source integration capability
+
+This prepares them for Module 3's challenge: reconciling conflicting insights from multiple analysis chains into coherent truth.

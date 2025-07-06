@@ -1,0 +1,140 @@
+# AI-Native PM Course Module Generation Prompt
+
+## Context & System Requirements
+
+You are creating modules for LinkedIn Learning's Adaptive Instructor Agent system. Each module MUST follow this exact structure:
+1. **Concept Card** (3-5 min): Story-driven teaching with emotional arc
+2. **Practice Tool** (3-4 min): Hands-on application using Prompt Refinement Tool
+3. **Assessment** (1-2 min): Questions that verify understanding
+4. **Smart Replies**: Pre-generated responses learners might need
+
+## The Mission
+
+Transform anxious mid-level PMs into AI-powered strategic leaders through Sarah's annual planning journey. Each module should feel like drinking from a firehose (in a good way) - learners should think "I can't believe how much I'm getting from this!"
+
+## Module Creation Instructions
+
+For Module [X], create the following components:
+
+### 1. CONCEPT CARD (Follow ConceptCardInstructions.txt exactly)
+
+**Story Requirements:**
+- Continue Sarah's journey from [previous module endpoint]
+- Show her facing a specific, relatable challenge
+- Include real dialogue with stakeholders
+- Feature an "aha moment" when she discovers the technique
+- Show immediate transformation/results
+- Include specific metrics/data (make it feel real)
+
+**Teaching Requirements:**
+- Introduce ONE primary technique with memorable name
+- Embed 2-3 related techniques naturally in examples
+- Include a clear framework (acronym or steps)
+- Show before/after contrast
+- Make the learner think "I NEED this for my job"
+
+**Emotional Arc:**
+- Start with specific anxiety/pain point
+- Build tension with failing approach
+- Create relief with new technique
+- End with confidence boost
+- Plant seeds of "what else is possible?"
+
+### 2. PROMPT REFINEMENT TOOL EXERCISE
+
+**Scenario Design (per PromptRefinementTool.txt):**
+- Place learner in Sarah's exact situation
+- Provide rich context and constraints
+- Include [Data] placeholders with descriptions
+- Make it immediately applicable to their real job
+
+**Progressive Difficulty:**
+- First attempt: Likely to make common mistakes
+- Second attempt: Apply feedback, see improvement
+- Third attempt: Achieve professional-level output
+
+**Evaluation Criteria:**
+- What expert PMs would check for
+- Common mistakes to catch
+- Signs of strategic thinking
+- Technique mastery indicators
+
+### 3. ASSESSMENT QUESTIONS
+
+Create 2-3 questions that:
+- Test conceptual understanding, not memorization
+- Reveal if they can apply the technique
+- Surface common misconceptions
+- Connect to real PM challenges
+
+### 4. SMART REPLIES
+
+Generate 3 contextual responses:
+- "I'm confused about [specific aspect]"
+- "How does this work with [related scenario]?"
+- "Can we practice this differently?"
+
+## Value Density Requirements
+
+Every module MUST:
+- **Teach 4+ techniques** (1 primary, 3+ embedded)
+- **Create 1 reusable artifact** (template, framework, checklist)
+- **Save 2+ hours** of work when applied
+- **Unlock 1 career advancement opportunity**
+- **Build on previous modules** (callbacks, combinations)
+
+## Sarah's Character Arc
+
+Module should advance Sarah from:
+- **Professional growth**: [Current skill] → [New capability]
+- **Emotional growth**: [Current fear] → [New confidence]  
+- **Career growth**: [Current perception] → [New recognition]
+- **Strategic growth**: [Tactical thinking] → [Strategic thinking]
+
+## Technique Integration Map
+
+Primary Technique: [Name from Techniques.txt]
+Embedded Techniques: [2-3 related ones that naturally fit]
+Callback Techniques: [Reference 1-2 from previous modules]
+Bonus Tips: [1-2 power-user variations]
+
+## Success Metrics for Your Output
+
+The module succeeds if a learner would:
+- Immediately want to try the technique at work
+- Feel they got 3x the value in half the time
+- See clear path to promotion/recognition
+- Tell colleagues "You HAVE to take this course"
+- Feel like they have superpowers
+
+## Output Format
+
+Please provide:
+1. Module Title & Learning Objectives
+2. Complete Concept Card (with all ConceptCardInstructions.txt elements)
+3. Prompt Refinement Tool Exercise (with all required components)
+4. 3 Assessment Questions with correct answers
+5. 3 Smart Reply options
+6. Transition hook to next module
+
+## Critical Reminders
+
+- **Density is King**: Pack in value without overwhelming
+- **Story is Queen**: Sarah's journey must feel real and urgent
+- **Practical > Theoretical**: Every minute must be applicable
+- **Career Impact**: Show how this changes their trajectory
+- **Technique Names**: Must be memorable and professional
+- **LinkedIn Appropriate**: Corporate-friendly, not startup-casual
+
+## Example Excellence Bar
+
+After reading your module, learners should think:
+- "This is exactly what I face at work"
+- "I can't believe I've been doing it the hard way"
+- "I could use this tomorrow in my planning meeting"
+- "My boss is going to be impressed"
+- "What else can I learn in the next module?"
+
+---
+
+Now, create Module [X]: [Module Title] that transforms Sarah from [current state] to [desired state] while teaching [primary technique] and embedding [related techniques].

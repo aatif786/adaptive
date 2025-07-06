@@ -1,0 +1,143 @@
+# Module 2: Chain Thinking Mastery - Assessment Questions
+
+## Assessment Overview
+**Purpose:** Verify understanding of Russian Doll Prompting™ and the ability to build progressive analysis chains.
+**Format:** Mix of multiple choice and open-ended questions
+**Passing Criteria:** 4/5 correct answers
+
+---
+
+## Question 1: Core Concept Understanding (Multiple Choice)
+
+**What is the fundamental principle behind Russian Doll Prompting™?**
+
+A) Using multiple AI tools simultaneously for the same analysis
+B) Breaking complex analysis into progressive layers, each building on the last
+C) Asking the same question multiple times until you get a good answer
+D) Creating backup prompts in case the first one fails
+
+**Correct Answer:** B
+**Explanation:** Russian Doll Prompting™ works like nested dolls—each prompt opens to reveal deeper insights, creating a chain of progressive discovery.
+
+---
+
+## Question 2: Chain Progression (Multiple Choice)
+
+**You've just received this AI response: "Analysis shows 68% of customer complaints focus on mobile app performance, specifically slow loading times during peak hours (9-10am and 2-3pm)." 
+
+What should your NEXT prompt investigate?**
+
+A) "What are all the other types of customer complaints?"
+B) "Why does the mobile app slow down during these specific peak hours?"
+C) "Analyze desktop app performance for comparison"
+D) "List all features customers want added to the mobile app"
+
+**Correct Answer:** B
+**Explanation:** Good chain thinking digs deeper into the specific pattern discovered (mobile slowness at peak times) to understand root causes, rather than broadening to new areas.
+
+---
+
+## Question 3: Practical Application (Open-Ended)
+
+**Your teammate shows you their analysis approach: "I asked AI to analyze our pricing strategy, competitive position, customer feedback, and market trends all in one prompt. The response was too generic to be useful."**
+
+**Explain how they should restructure this using Russian Doll Prompting™. Write what their first TWO prompts should be.**
+
+**Evaluation Criteria:**
+- Identifies the problem of trying to analyze everything at once
+- Shows clear progression from broad to specific
+- First prompt focuses on discovery/patterns
+- Second prompt digs deeper into one finding
+
+**Sample Strong Answer:**
+"You're trying to analyze four complex areas in one breath. Use Russian Doll Prompting™ instead:
+
+Prompt 1: 'Analyze [Customer Feedback] about our pricing. What are the top 3 patterns in how customers perceive our value versus cost? Group by customer segment.'
+
+Based on findings, Prompt 2 might be: 'Focus on Enterprise customers who say we're overpriced. What specific features do they compare to competitors? What's their actual usage versus what they pay for?'
+
+Each prompt builds on discoveries from the previous one, going deeper into specifics rather than trying to cover everything broadly."
+
+---
+
+## Question 4: Chain Thinking Techniques (Multiple Choice)
+
+**Sarah is 6 prompts deep into analyzing customer churn. She's discovered valuable details but feels she might be losing sight of the bigger picture. Which technique should she use?**
+
+A) Start over with a fresh Context Sandwich™
+B) Use the Zoom In/Zoom Out Method to regain perspective
+C) Switch to a different AI tool
+D) Combine all 6 prompts into one comprehensive prompt
+
+**Correct Answer:** B
+**Explanation:** The Zoom In/Zoom Out Method helps maintain perspective during deep analysis chains by alternating between detailed investigation and big-picture summaries.
+
+---
+
+## Question 5: Strategic Value (Open-Ended)
+
+**After using Russian Doll Prompting™ to analyze a product problem through 8 progressive prompts, you discover that what appeared to be a technical bug is actually a training issue. Your manager asks: "How did you find this when our engineers couldn't?"**
+
+**Explain in 2-3 sentences how chain thinking revealed insights that single analysis missed.**
+
+**Evaluation Criteria:**
+- Mentions how each layer revealed new information
+- Notes the progression from symptom to root cause
+- Highlights discovery-driven investigation
+- Shows understanding of depth advantage
+
+**Sample Strong Answer:**
+"Russian Doll Prompting™ let me follow the evidence wherever it led, with each prompt building on actual discoveries rather than my assumptions. While engineers looked directly for technical issues, my chain started with user behavior patterns, then dug into when errors occurred, then examined user characteristics—revealing that 87% of 'bugs' came from users who skipped onboarding. By letting each finding guide the next question, I uncovered the training gap that a direct technical investigation would never find."
+
+---
+
+## Remediation Paths
+
+### If learner misses Question 1:
+- Review the Russian Doll metaphor with visual examples
+- Emphasize "building on discoveries" vs parallel analysis
+- Practice identifying natural progression points
+
+### If learner misses Question 2:
+- Work through the logic of following findings
+- Practice distinguishing "deeper" from "different" questions
+- Use the "why behind the what" framework
+
+### If learner struggles with Question 3:
+- Practice breaking complex requests into steps
+- Emphasize starting broad for pattern recognition
+- Show examples of prompt chains that build naturally
+
+### If learner misses Question 4:
+- Review the Zoom In/Zoom Out technique in detail
+- Explain why perspective matters in deep analysis
+- Practice creating summary prompts
+
+### If learner struggles with Question 5:
+- Connect to career impact and strategic value
+- Help articulate discovery-driven vs hypothesis-driven analysis
+- Practice explaining technical concepts in business terms
+
+---
+
+## Success Transition
+
+**Upon passing (4/5 correct):**
+
+"Excellent work! You've mastered Chain Thinking—the ability to transform overwhelming complexity into progressive discoveries. You understand how each prompt can build on the last, revealing insights that others miss entirely.
+
+But Sarah's about to discover that even brilliant analysis chains can lead to confusion. She now has 20 deep analyses... and they're telling contradictory stories. The churn data says customers leave because of missing features. Sales transcripts blame pricing. Support tickets point to performance issues.
+
+When your data sources conflict, how do you find the truth? Module 3 reveals the answer..."
+
+---
+
+## Module Completion Data to Track
+
+- Understanding of progressive analysis: [Pass/Fail]
+- Ability to build on findings: [Pass/Fail]
+- Recognition of appropriate depth: [Strong/Adequate/Needs Work]
+- Zoom technique comprehension: [Pass/Fail]
+- Strategic value articulation: [Strong/Adequate/Needs Work]
+
+This data helps the Adaptive Instructor determine if the learner is ready for the complexity of synthesizing conflicting data sources in Module 3.

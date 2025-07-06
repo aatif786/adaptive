@@ -1,0 +1,628 @@
+# MVP Requirements: Become an AI Native Project Manager
+
+## General Requirements
+
+### Scope
+- AI teacher will teach learner a predefined objective for "Become an AI Native Project Manager"
+- Build priorities:
+  1. Launch and get validation ASAP
+  2. Enable ability to quickly scale to more objectives
+
+### Availability
+- Experience will be available to all Learners (Premium, Skills, Careers) in EN
+
+## Discovery & Entry Points
+
+### Primary Entry Points
+- Learning Coach (Unified AI)
+- LiL Homepage
+- Showcase pages
+- Role Guides
+- **[P1]** LiL Search
+- Flagship / CYMBII / etc as fast follow post MVP
+
+**OPEN QUESTION:** Do we want to consider entry points in LiL that point to a 'quick bite' of the experience rather than the full on module?
+
+## Personalization
+
+### Information to Fetch (Behind the Scenes)
+- Role
+- Company
+- Career Goal
+- Followed Skills
+- Existing Skills (profile)
+- Learning Engagement History (courses, assessments, role play output)
+
+**OPEN QUESTION:** Can we leverage Career Profile here eventually?
+
+**Out of Scope/P1:** Conversation history
+
+## Instructional Design
+
+### Human Curated Elements
+- Outcomes (you will be able to XYZ)
+- Skills
+- Tools
+- Existing Content
+- Existing Instructors/Experts
+- Net new content (documents) as needed to be ingested to lightyear
+
+### Human Curated (Open for Discussion)
+- Example of an ideal flow/sequencing of concepts and tools
+- Teaching style
+- Criteria for evaluating practice (role play, prompt challenge, free text response)
+
+### Model Decided/Created
+*May be informed by human curated examples*
+- Sequencing of content/concepts
+- Selection of practice modalities
+- Personalized examples
+- Fill in gaps in content as needed
+
+### Next Steps
+- Mohammed Ali/Pratheek Bhat draft an example template
+- Faith Brill kick off course/expert list for end next week
+
+## Content & Data
+
+The experience will be grounded in existing LiL Content and Derivative content, falling back to or blending in base model knowledge when necessary.
+
+### Priority Levels
+**[P0] Existing content:**
+- Short videos
+- Images
+- Text excerpts from transcripts
+
+**[P0] Derivative content from a single course:**
+- Tips, Fun Facts?
+- Role Play scenarios
+- Short answer questions
+- Prompt challenges
+- Others?
+
+**[P1?]** Multiple choice questions
+
+**OPEN:** Discuss derivatives with team, looking at Mohammed's examples
+
+**Out of scope/P1:** Blended derivatives (from multiple courses)
+
+## Teaching Style
+
+### Delivery Methods
+- AI teacher may teach using a combination of:
+  - Text (concepts, personalized examples)
+  - Voice
+  - Visuals (short video, static images)
+- Default to text, but learner may choose to swap to voice at anytime
+
+### Voice Features
+- Teacher speaking
+- Learner responding/interjecting with voice
+
+## Practice Modalities
+
+### Available for MVP
+
+#### 1. Role Play
+- Interactive scenario-based practice
+
+#### 2. Prompt Challenge
+- AI teacher provides a prompt scenario "write a prompt to xyz"
+- Learner writes a prompt in free text box (char limit?)
+- AI teacher processes prompt and displays:
+  - Actual prompt output
+  - What the prompt did well
+  - Suggestions to improve prompt
+- Learner may iterate by trying again/overwriting previous prompt
+
+#### 3. Short Answer Question
+- AI teacher asks a question (scenario-based or general)
+- Learner types response via free text
+- AI Teacher responds with assessment (Pass/Fail and suggestions to improve)
+
+#### 4. [P1] Multiple Choice Quiz
+- AI teacher constructs a quiz of 5 MC questions
+- Learner selects response and gets immediate confirmation
+- Learner receives score at the end
+
+**OPEN:** Discuss with team if Role Play team plans to support doc review?
+
+**P1:** Role play document review (Role Play team building in H1)
+
+## Learning Experience
+
+### Basic Flow
+1. Get started with 'welcome concept/screen' (curated step for all learners)
+2. Teaching personalized concepts
+3. Apply learning via appropriate practice modality and get feedback
+4. Check in/adapt
+5. Repeat
+
+### Always Available Features
+- **Skip** a section or module altogether
+- **Chat with AI Teacher** supporting:
+  - Contextual awareness (acknowledge learner's current position/work)
+  - Revise focus (focus on another task)
+  - Provide personalized examples
+  - Break down concepts differently
+  - Fetch supplemental materials by linking to other courses
+  - Direct learner to other resources in LiL
+  - Direct to other LiL features [unified coach]
+  - Provide 2-3 'smart reply' options
+
+**UI TBD!**
+
+## Progress & Completion
+
+### Completion Criteria
+- Course/Objective considered 'complete' when Learner has spent X minutes (dwell time)
+
+**OPEN:** For discussion
+
+**P1:** LLM will produce a summary of top Skills Learner has engaged with based on dwell time within particular modules
+
+### Session Management
+If Learner leaves mid-session, maintain state:
+- **P0:** Maintain sequencing of content/practice for resume capability
+- **P0:** Store in My Learning
+- **P1:** Maintain exercise history (if not implemented, must clearly warn about data loss)
+- **P2:** Maintain conversation history
+
+**OPEN:** For discussion
+
+## Content Creation Process
+
+### Gap Handling
+When unable to answer with existing content/derivative content:
+1. Log the question
+2. Content team accesses logs regularly
+3. Content team reaches out to 'on call experts'
+4. Experts provide content (written, spoken?) within SLA timeframe
+5. Content ingested into lightyear
+6. Derivative content generated regularly
+
+----------------------
+Primary Target: The Anxious Mid-Level PM
+Who they are:
+
+3-7 years experience
+At mid-size to large companies (not startups)
+Already successful but feeling left behind
+Seeing "AI" in every job posting
+Watching younger PMs use AI tools they don't understand
+
+Why LinkedIn Learning:
+
+They want credible, professional development
+Need something their manager will approve
+Want to learn without looking incompetent
+Trust LinkedIn's brand for career advancement
+
+The BEST Super Use Case for This Audience:
+"The Annual Planning Season"
+The Scenario: It's October. You need to present your 2025 product strategy and roadmap to leadership by November 15th. You have mountains of data but no time to analyze it all.
+Why This is PERFECT for LinkedIn Learning:
+
+Universal Corporate Experience - Every PM at established companies does this
+Immediate Application - They can literally use this next month
+Safe to Practice - Planning isn't as scary as fixing failures
+Shows Clear ROI - "I did planning in 2 weeks instead of 6"
+Career Advancing - Great planning docs get you promoted
+
+What Makes It LinkedIn-Appropriate:
+
+Professional, not startup-y - Appeals to corporate PMs
+Strategic, not just tactical - Shows thought leadership
+Collaborative - Involves stakeholders (very LinkedIn)
+Data-driven - Looks good on performance reviews
+Repeatable - They'll use this every year
+
+The promise: "Transform your most stressful quarter into your most strategic advantage using AI"
+
+------------------------------------------------------------------------
+AI Skills
+
+set 1:
+- Context Loading for AI
+- Chain Prompting for Complex Analysis
+- AI-Powered Stakeholder Management
+- The "Second Brain" System
+- Validation and BS Detection
+
+set 2:
+- Skill: Chunking data, creating schemas
+- Skill: Progressive prompting
+- Skill: Combining multiple data sources
+- Skill: Reframing without losing truth
+- Skill: AI-assisted financial modeling
+- Skill: Adversarial prompting
+- Skill: One source → many outputs
+- Skill: Narrative construction
+
+set 3:
+1. Data Preparation & Context Setting
+What it is: Teaching AI about YOUR specific situation before asking for help
+Why they need it: Generic prompts = generic (useless) outputs
+Example: Instead of "analyze customer feedback," providing company context, product details, customer segments, and success metrics first
+2. Progressive Prompt Chaining
+What it is: Breaking complex analyses into sequential steps
+Why they need it: AI can't do deep thinking in one shot
+Example: First prompt extracts data → Second finds patterns → Third identifies segments → Fourth recommends actions
+3. Multi-Source Synthesis
+What it is: Combining insights from different data types and sources
+Why they need it: PMs deal with messy, distributed information
+Example: Merging support tickets + sales calls + user analytics + competitor data into coherent insights
+4. Output Validation & Fact-Checking
+What it is: Knowing when AI is hallucinating or missing nuance
+Why they need it: Career-ending mistakes from trusting AI blindly
+Example: Spot-checking 10% of AI categorizations, verifying metrics against source data
+5. Audience-Aware Translation
+What it is: One insight → multiple stakeholder versions
+Why they need it: Different audiences need different framing
+Example: Technical findings → CEO summary, engineering details, sales talking points
+6. Strategic Narrative Building
+What it is: Turning data into compelling stories with AI
+Why they need it: Data doesn't convince people, stories do
+Example: Transform usage metrics into "here's why we're winning/losing" narrative
+7. Rapid Competitive Intelligence
+What it is: Using AI to monitor and analyze competitor moves
+Why they need it: Markets move fast, can't manually track everything
+Example: Weekly competitor feature analysis, pricing changes, positioning shifts
+8. Document Multiplication
+What it is: One source document → complete artifact suite
+Why they need it: PMs waste hours creating variations of same content
+Example: PRD → JIRA tickets, test cases, success metrics, FAQ, release notes
+9. Risk & Edge Case Detection
+What it is: Using AI to find what could go wrong
+Why they need it: PMs are accountable when features fail
+Example: "What could break this feature?" "What users would hate this?"
+10. Meeting & Communication Efficiency
+What it is: AI for prep, notes, follow-ups, and summaries
+Why they need it: Mid-level PMs are in meetings 50% of time
+Example: Pre-meeting briefs, real-time note structuring, action item extraction
+Skills You Listed That Are Actually Techniques:
+These are good but they're more like specific techniques within the skills above:
+11. Time Estimation & Capacity Planning with AI
+What it is: Using AI to predict effort and timelines
+Why they need it: Mid-level PMs own delivery commitments
+Example: "Based on these requirements, estimate story points and sprint allocation"
+12. AI Tool Selection & Integration
+What it is: Knowing which AI tool for which job
+Why they need it: Not everything needs ChatGPT
+Example: Claude for analysis, Perplexity for research, Notion AI for docs, etc.
+
+----------------------------
+
+Complete Techniques Catalog for the Course
+Data Preparation & Context Setting Techniques
+
+"The Context Sandwich"
+
+Company context → specific ask → output format
+Example: "We're a B2B SaaS with 50K users... Analyze this data... Format as executive summary"
+
+
+"Chunking & Batching"
+
+Break large datasets into 50-100 item batches
+Maintain consistent schema across chunks
+
+
+"The Schema First Method"
+
+Define extraction structure before analysis
+Example: "Extract: issue_type, severity, customer_segment, requested_feature"
+
+
+"Role Playing Prompt"
+
+"Act as a senior data analyst at a SaaS company..."
+Gives AI professional context
+
+
+
+Progressive Prompt Chaining Techniques
+
+"Russian Doll Prompting"
+
+Start broad → narrow → specific → actionable
+Each prompt builds on previous output
+
+
+"The Five Whys Chain"
+
+Keep asking why to get to root causes
+Example: Low adoption → Why? → Poor onboarding → Why? → Complex setup
+
+
+"Zoom In/Zoom Out"
+
+Alternate between high-level and detailed views
+Prevents missing forest for trees
+
+
+"The Validation Loop"
+
+Analyze → Validate sample → Refine → Re-analyze
+Builds confidence in results
+
+
+
+Multi-Source Synthesis Techniques
+
+"The Triangle Method"
+
+Always combine 3 sources for any conclusion
+Example: Customer feedback + usage data + support tickets
+
+
+"Source Tagging System"
+
+[QUAL] for qualitative, [QUANT] for quantitative
+Helps AI weight evidence appropriately
+
+
+"The Mosaic Technique"
+
+Piece together partial information from multiple sources
+"What pattern emerges from these fragments?"
+
+
+
+Output Validation Techniques
+
+"The 10% Spot Check"
+
+Manually verify 10% of any AI categorization
+If >20% errors, refine and rerun
+
+
+"Red Flag Scanning"
+
+Look for: absolute statements, made-up metrics, timeline impossibilities
+Common AI hallucination patterns
+
+
+"Cross-Reference Verification"
+
+"Does this match our dashboard?"
+"Is this consistent with last quarter?"
+
+
+"The Sanity Check Prompt"
+
+"Review this analysis. What seems questionable or needs verification?"
+
+
+
+Audience-Aware Translation Techniques
+
+"The Persona Prompt"
+
+Include stakeholder details: "Jim cares about technical feasibility and hates surprises"
+AI adapts tone and content
+
+
+"The Pyramid Principle"
+
+Conclusion first → supporting points → details
+Perfect for executive communication
+
+
+"The SCQA Framework"
+
+Situation → Complication → Question → Answer
+Creates compelling narrative flow
+
+
+
+Strategic Narrative Building Techniques
+
+"The Story Spine"
+
+Once upon a time... Every day... Until one day... Because of that...
+Turns data into memorable stories
+
+
+"The So What Test"
+
+After each insight: "So what? Why should they care?"
+Ensures relevance
+
+
+"Before/After Snapshots"
+
+Paint vivid picture of current vs. future state
+Makes abstract concrete
+
+
+
+Competitive Intelligence Techniques
+
+"The Feature Matrix Method"
+
+Create structured comparison grids
+"Extract features from these competitor pages into a standardized table"
+
+
+"Gap Analysis Prompting"
+
+"What do they have that we don't?"
+"What do customers praise them for?"
+
+
+"The Trend Spotter"
+
+"Analyze these 5 competitors. What pattern are they all following?"
+
+
+
+Document Multiplication Techniques
+
+"The Cascade Method"
+
+PRD → Epics → Stories → Tasks
+Each level generated from the previous
+
+
+"The RACI Generator"
+
+From project plan → who's Responsible, Accountable, Consulted, Informed
+
+
+"Format Switching"
+
+"Convert this technical spec into: 1) FAQ 2) Training guide 3) Sales enablement"
+
+
+
+Risk & Edge Case Detection Techniques
+
+"The Pre-Mortem Prompt"
+
+"Assume this project failed spectacularly. What went wrong?"
+Surfaces hidden risks
+
+
+"Edge Case Enumeration"
+
+"List 20 ways users could misuse this feature"
+"What happens if [unexpected scenario]?"
+
+
+"The Devil's Advocate"
+
+"Argue against this approach. What are the strongest objections?"
+
+
+
+Meeting & Communication Efficiency Techniques
+
+"The Pre-Read Generator"
+
+"Create a 1-page brief covering context, decision needed, and options"
+
+
+"Action Item Extraction"
+
+"From these notes, extract WHO does WHAT by WHEN"
+
+
+"The Update Transformer"
+
+One update → Slack message, email, JIRA comment
+
+
+
+Time Estimation & Capacity Planning Techniques
+
+"Historical Analogy Method"
+
+"We built X in Y time. This is similar but with Z differences. Estimate effort."
+
+
+"Task Decomposition"
+
+Break down until each task is 1-2 days
+Sum up with buffer calculations
+
+
+"The Uncertainty Ladder"
+
+Rate each estimate: High/Medium/Low confidence
+Apply different buffers accordingly
+
+
+
+AI Tool Selection Techniques
+
+"The Tool Matrix"
+
+Task type × Tool strength = Best choice
+When to use Claude vs. GPT vs. Perplexity
+
+
+"The Integration Stack"
+
+Connect AI tools: Notion AI → Claude → Slack bot
+Automation possibilities
+
+
+
+Advanced Combination Techniques
+
+"The Second Brain System"
+
+Feed all decisions, docs, learnings to AI
+"What did we decide about X three months ago?"
+
+
+"The Daily Digest"
+
+Morning: "From yesterday's Slack, emails, and tickets, what needs my attention?"
+
+
+
+Each technique should include:
+
+Clear name (memorable)
+When to use it
+Example prompt/application
+Common mistakes to avoid
+
+
+
+---------------------------------------
+I'm building a 100-minute LinkedIn Learning course: "Become an AI Native Product Manager"
+
+MVP REQUIREMENTS (not finalized):
+
+TARGET AUDIENCE:
+- Mid-level PMs (3-7 years experience) at mid-size/large companies
+- Successful but feeling left behind by AI
+- Seeing "AI" in job postings, watching younger PMs use AI tools
+
+COURSE PROMISE:
+Transform from AI-anxious to AI-powered PM in under 2 hours. Master the systematic approach that separates tomorrow's PM leaders from everyone else.
+
+SUPER USE CASE:
+"The Annual Planning Season" - It's October. Present your 2025 product strategy and roadmap to leadership by November 15th. You have mountains of data but no time to analyze it all. Follow Sarah at TechCorp through this journey.
+
+CORE SKILLS TO TEACH:
+[Paste your top 10-12 skills list]
+
+KEY TECHNIQUES AVAILABLE:
+[Paste your techniques list or top 20]
+
+COURSE STRUCTURE REQUIREMENTS:
+- 100 minutes total
+- 8-10 modules
+- Each module: Concept Card → Practice → Assessment
+- One coherent story throughout (Sarah's journey)
+- Immediate practical value
+- Clear "aha" moments
+
+DELIVERABLE NEEDED:
+Create detailed Module 1 including:
+1. Module title and learning objectives
+2. Concept Card content (3-5 min read)
+3. Practice exercise using [specific technique]
+4. Assessment questions
+5. Transition to Module 2
+
+Make this module incredibly compelling - it needs to hook them into completing the full course.
+
+
+----------------------------
+Module Traits Framework
+For each module, I'll provide:
+
+Module Title & Duration (8-12 minutes each)
+Sarah's Story Arc - Where she is in her planning journey
+Core Skill Taught - The one transformative capability
+Anxiety → Confidence Shift - What fear we're addressing
+Key Technique - The specific method they'll practice
+Memorable Framework - The mental model they'll remember
+Practice Output - What they'll actually create
+Career Impact - Why this matters for advancement
+Hook to Next - The cliffhanger that drives continuation

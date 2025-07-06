@@ -1,0 +1,118 @@
+# The Context Advantage (4 min read)
+
+Sarah Chen stared at her October calendar. Six weeks until annual planning presentations. Last year's analysis took two months. This year would be different.
+
+"Generic AI responses are killing me," her colleague James messaged. "I asked for customer priorities and got a Wikipedia article."
+
+Sarah understood. She'd made the same mistake until discovering a systematic approach that changed everything.
+
+## The Context Sandwich™ Framework
+
+The difference between generic and genius AI output comes down to one thing: context. But not just any context—structured context that transforms AI from an intern into a senior strategist.
+
+**Here's the framework:**
+
+### Layer 1: Company Context (The Foundation)
+- Business model and metrics
+- Customer segments with specifics
+- Current challenges and goals
+- Team constraints and resources
+
+### Layer 2: Specific Ask (The Direction)
+- Clear analysis objective
+- Success criteria defined
+- Constraints acknowledged
+- Desired insights specified
+
+### Layer 3: Output Format (The Structure)
+- Exact format needed
+- Level of detail required
+- How results will be used
+- Who will see this
+
+**Real Example:**
+When Sarah applied this to TechCorp's planning:
+
+*Before:* "Analyze customer feedback"
+*AI Response:* Generic best practices about listening to customers
+
+*After (with Context Sandwich):*
+- Layer 1: "TechCorp: B2B workflow platform, $47M ARR, 18% churn rate..."
+- Layer 2: "Identify top 3 features to reduce mid-market churn..."
+- Layer 3: "Executive-ready format with ROI projections..."
+
+*AI Response:* Specific analysis showing unified analytics would reduce churn by 6-8%, worth $2.8M ARR
+
+## The Power of Reusable Context
+
+Here's where most PMs waste time: rewriting context for every prompt. Sarah's breakthrough was creating a Context Master Document™:
+
+**Essential Components:**
+1. **Company Snapshot**: Size, stage, key metrics
+2. **Product Details**: Features, architecture, limitations
+3. **Customer Profiles**: Segments, behaviors, pain points
+4. **Business Context**: Goals, constraints, competition
+5. **Team Context**: Structure, capabilities, processes
+
+This becomes your AI's "onboarding document"—write once, use forever.
+
+## Advanced Technique: Schema First Method
+
+For structured data analysis, define your extraction schema upfront:
+
+```
+Extract using this schema:
+- Issue_Type: [Category]
+- Customer_Segment: [Type]
+- Revenue_Impact: [Dollar amount]
+- Priority_Score: [1-10]
+```
+
+This forces AI to think systematically, not randomly.
+
+## The Chunking Strategy
+
+Sarah's 3,000 feedback items seemed overwhelming until she discovered chunking:
+- Break into 100-item batches
+- Maintain consistent analysis schema
+- Aggregate results systematically
+
+"I analyzed 3,000 items in 30 minutes," Sarah told her VP, Marcus. "Here are our top three priorities with revenue impact."
+
+Marcus leaned forward. "This changes our entire planning process. Can you teach this to the team?"
+
+## Your Context Advantage Checklist
+
+Before any AI interaction:
+- ✓ Is my company context current?
+- ✓ Is my ask specific and measurable?
+- ✓ Have I defined the output format?
+- ✓ Am I using a consistent schema?
+- ✓ Could I reuse this context later?
+
+## The Transformation Impact
+
+Three weeks into October, Sarah's planning was 80% complete. Her peers were still in spreadsheets. The difference wasn't working harder—it was context that made AI work smarter.
+
+"Your analysis is incredibly strategic," the CPO noted in the leadership review. "It's like you have a senior analyst working with you."
+
+She did. It just happened to be AI with the right context.
+
+## Key Takeaway
+
+Context isn't just helpful—it's the difference between AI that wastes your time and AI that accelerates your career. Master the Context Sandwich™, build your Context Master Document, and watch generic outputs transform into strategic insights.
+
+## Time to Practice
+
+Now it's your turn. You're about to step into Sarah's shoes on October 1st, facing the same annual planning challenge. You'll have access to the same data she had—customer feedback, usage analytics, and churn analysis.
+
+Your challenge: Write a prompt using the Context Sandwich™ framework that will extract actionable insights from 3,000 pieces of customer feedback. 
+
+Remember:
+- Layer 1: Rich company context (not generic)
+- Layer 2: Specific, measurable ask
+- Layer 3: Executive-ready output format
+
+The AI will process your prompt and show you exactly what output you'd get. You'll see immediately whether you've mastered the Context Sandwich or if you're still getting generic responses.
+
+Ready to transform your AI from intern to senior strategist? Let's begin...

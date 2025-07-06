@@ -1,0 +1,152 @@
+# Adaptive Instructor Agent: System Overview for Module Design
+
+## Vision & Purpose
+The Adaptive Instructor Agent is LinkedIn's next-generation learning platform that transforms passive video courses into dynamic, personalized learning experiences. It activates LinkedIn's trusted course library through an AI system that adapts in real-time to learner needs, behaviors, and goals.
+
+## Core Architecture
+
+### Tool-Orchestrated Instruction
+The agent uses a modular toolset where each tool delivers focused instructional functions:
+
+**For the MVP, three primary tools:**
+
+1. **Concept Card Tool**
+   - Displays concept summaries and expert tips
+   - Should be 3-5 minutes of content
+   - Titles can be human-curated or dynamically generated
+   - Returns learner notes/questions/comments to the Adaptive Instructor
+
+2. **Assessment Tool**
+   - Presents questions after each concept card
+   - Can be Multiple Choice or Formative (open-ended)
+   - Assessments can be skipped by learners
+   - Sends answers back to Adaptive Instructor for evaluation
+
+3. **Prompt Refinement Tool** (Specialized for AI/Prompt courses)
+   - Learner writes a prompt based on scenario
+   - Tool generates/simulates AI response
+   - Shows what the prompt did well
+   - Provides specific improvement suggestions
+   - Allows iteration (learner can refine and try again)
+   - Sends prompt quality feedback to Adaptive Instructor
+
+### Common Tool Features
+- Each tool generates "smart replies" - suggested responses the learner might want to send to the instructor
+- All tools can receive typed notes/questions from learners
+- Every interaction is assessed by the Adaptive Instructor
+
+## Adaptive Instructor Capabilities
+
+### Assessment Functions
+- **Concept Card responses**: Evaluates questions or comments from learners
+- **Assessment answers**: Determines if answers are correct
+- **Prompt quality**: Analyzes the effectiveness of prompts in the Prompt Refinement Tool
+
+### Adaptive Flow
+1. **Normal Flow**: Learner progresses through human-curated sequence
+2. **Gap Detection**: If assessment reveals knowledge gap or learner asks for clarification
+3. **Dynamic Intervention**: Agent immediately generates and shows a dynamic concept card to address the gap
+4. **Gap Resolution**: Once gap is cleared through the dynamic content
+5. **Return to Sequence**: Learner returns to the human-curated module sequence
+
+## System Components
+
+### Orchestrator
+- Manages the client-agent interaction loop
+- For MVP: Executes the expert-predefined sequence of tools and content
+- Consults with Adaptive Instructor on any dynamic content needs
+
+### Agent State & Memory
+The agent maintains several layers of information:
+- **Learner Profile**: Current role, company, skills
+- **Progress Tracking**: Which concepts were presented, assessment results
+- **Outcome Tracking**: Whether learning outcomes have been met
+- **Session State**: Current position in the course, recent interactions
+
+### Course Container
+Contains the complete module definitions that are fed into the Adaptive Instructor:
+
+**Module Structure** (exact format TBD):
+- **Story Elements**: Narrative that connects modules together
+- **Learning Goals**: Specific objectives for each module
+- **Skills/Techniques**: What will be taught and practiced
+- **Content Specifications**: Concept card content, assessments, practice scenarios
+- **Sequencing Logic**: Order and dependencies between modules
+
+**Open Questions**:
+- Exact data format and schema for modules
+- Level of detail (high-level goals vs. detailed scripts)
+- Balance of AI-generated vs. human-authored instruction content
+- How prescriptive vs. flexible the module definitions should be
+
+## MVP Implementation Details
+
+### Content Structure
+- **Human-Curated Elements**:
+  - Learning outcomes
+  - Module sequence and tool selection
+  - Core concept content
+  - Assessment questions
+  - Example flows/sequencing
+  
+- **AI-Generated Elements**:
+  - Gap-filling concept cards when learners struggle
+  - Personalized examples
+  - Additional explanations
+  - Dynamic assessment questions for knowledge gaps
+
+### Sequencing for MVP
+- **LinkedIn Experts predefine**: Module order, tool selection per module, content flow
+- **Adaptive Instructor handles**: Detecting gaps, generating supplementary content, personalizing examples
+
+## Domain Scalability
+
+The platform is designed to scale across all learning domains:
+
+### For AI/Prompt Engineering Courses
+- Uses all three tools with heavy emphasis on Prompt Refinement Tool
+- Focuses on iterative practice and improvement
+
+### For Other Domains
+- Primarily uses Concept Card + Assessment tools
+- Prompt Refinement Tool replaced with domain-specific tools as needed
+- Same underlying architecture and adaptive capabilities
+
+## Module Design Requirements
+
+When creating modules, consider:
+
+1. **Concept Card Content**
+   - 3-5 minutes of focused teaching
+   - Clear learning objective
+   - Practical examples
+   - Sets up the practice exercise
+
+2. **Tool Selection & Sequencing**
+   - Which tool follows the concept card
+   - How tools build on each other
+   - Where learners might need alternate paths
+
+3. **Assessment Design**
+   - Questions that reveal true understanding vs memorization
+   - Identifies common misconceptions
+   - Provides useful signal to the Adaptive Instructor
+
+4. **Adaptive Scenarios**
+   - What gaps might emerge
+   - What additional content might be needed
+   - How to handle different skill levels
+
+5. **Smart Replies**
+   - Common questions learners might have
+   - Typical responses to continue learning
+   - Ways to ask for clarification
+
+## Module Pattern Template
+1. **Concept Card**: Introduce core concept
+2. **Practice Tool**: Apply the concept (varies by domain)
+3. **Assessment**: Check understanding
+4. **Adaptive Support**: Dynamic concept cards if gaps detected
+5. **Return to Flow**: Continue to next module
+
+The Adaptive Instructor Agent represents a fundamental shift from static courses to dynamic, personalized learning journeys that meet each learner exactly where they are and guide them to mastery.

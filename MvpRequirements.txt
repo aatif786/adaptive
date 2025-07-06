@@ -1,0 +1,182 @@
+# MVP Requirements: Become an AI Native Project Manager
+
+## General Requirements
+
+### Scope
+- AI teacher will teach learner a predefined objective for "Become an AI Native Project Manager"
+- Build priorities:
+  1. Launch and get validation ASAP
+  2. Enable ability to quickly scale to more objectives
+
+### Availability
+- Experience will be available to all Learners (Premium, Skills, Careers) in EN
+
+## Discovery & Entry Points
+
+### Primary Entry Points
+- Learning Coach (Unified AI)
+- LiL Homepage
+- Showcase pages
+- Role Guides
+- **[P1]** LiL Search
+- Flagship / CYMBII / etc as fast follow post MVP
+
+**OPEN QUESTION:** Do we want to consider entry points in LiL that point to a 'quick bite' of the experience rather than the full on module?
+
+## Personalization
+
+### Information to Fetch (Behind the Scenes)
+- Role
+- Company
+- Career Goal
+- Followed Skills
+- Existing Skills (profile)
+- Learning Engagement History (courses, assessments, role play output)
+
+**OPEN QUESTION:** Can we leverage Career Profile here eventually?
+
+**Out of Scope/P1:** Conversation history
+
+## Instructional Design
+
+### Human Curated Elements
+- Outcomes (you will be able to XYZ)
+- Skills
+- Tools
+- Existing Content
+- Existing Instructors/Experts
+- Net new content (documents) as needed to be ingested to lightyear
+
+### Human Curated (Open for Discussion)
+- Example of an ideal flow/sequencing of concepts and tools
+- Teaching style
+- Criteria for evaluating practice (role play, prompt challenge, free text response)
+
+### Model Decided/Created
+*May be informed by human curated examples*
+- Sequencing of content/concepts
+- Selection of practice modalities
+- Personalized examples
+- Fill in gaps in content as needed
+
+### Next Steps
+- Mohammed Ali/Pratheek Bhat draft an example template
+- Faith Brill kick off course/expert list for end next week
+
+## Content & Data
+
+The experience will be grounded in existing LiL Content and Derivative content, falling back to or blending in base model knowledge when necessary.
+
+### Priority Levels
+**[P0] Existing content:**
+- Short videos
+- Images
+- Text excerpts from transcripts
+
+**[P0] Derivative content from a single course:**
+- Tips, Fun Facts?
+- Role Play scenarios
+- Short answer questions
+- Prompt challenges
+- Others?
+
+**[P1?]** Multiple choice questions
+
+**OPEN:** Discuss derivatives with team, looking at Mohammed's examples
+
+**Out of scope/P1:** Blended derivatives (from multiple courses)
+
+## Teaching Style
+
+### Delivery Methods
+- AI teacher may teach using a combination of:
+  - Text (concepts, personalized examples)
+  - Voice
+  - Visuals (short video, static images)
+- Default to text, but learner may choose to swap to voice at anytime
+
+### Voice Features
+- Teacher speaking
+- Learner responding/interjecting with voice
+
+## Practice Modalities
+
+### Available for MVP
+
+#### 1. Role Play
+- Interactive scenario-based practice
+
+#### 2. Prompt Challenge
+- AI teacher provides a prompt scenario "write a prompt to xyz"
+- Learner writes a prompt in free text box (char limit?)
+- AI teacher processes prompt and displays:
+  - Actual prompt output
+  - What the prompt did well
+  - Suggestions to improve prompt
+- Learner may iterate by trying again/overwriting previous prompt
+
+#### 3. Short Answer Question
+- AI teacher asks a question (scenario-based or general)
+- Learner types response via free text
+- AI Teacher responds with assessment (Pass/Fail and suggestions to improve)
+
+#### 4. [P1] Multiple Choice Quiz
+- AI teacher constructs a quiz of 5 MC questions
+- Learner selects response and gets immediate confirmation
+- Learner receives score at the end
+
+**OPEN:** Discuss with team if Role Play team plans to support doc review?
+
+**P1:** Role play document review (Role Play team building in H1)
+
+## Learning Experience
+
+### Basic Flow
+1. Get started with 'welcome concept/screen' (curated step for all learners)
+2. Teaching personalized concepts
+3. Apply learning via appropriate practice modality and get feedback
+4. Check in/adapt
+5. Repeat
+
+### Always Available Features
+- **Skip** a section or module altogether
+- **Chat with AI Teacher** supporting:
+  - Contextual awareness (acknowledge learner's current position/work)
+  - Revise focus (focus on another task)
+  - Provide personalized examples
+  - Break down concepts differently
+  - Fetch supplemental materials by linking to other courses
+  - Direct learner to other resources in LiL
+  - Direct to other LiL features [unified coach]
+  - Provide 2-3 'smart reply' options
+
+**UI TBD!**
+
+## Progress & Completion
+
+### Completion Criteria
+- Course/Objective considered 'complete' when Learner has spent X minutes (dwell time)
+
+**OPEN:** For discussion
+
+**P1:** LLM will produce a summary of top Skills Learner has engaged with based on dwell time within particular modules
+
+### Session Management
+If Learner leaves mid-session, maintain state:
+- **P0:** Maintain sequencing of content/practice for resume capability
+- **P0:** Store in My Learning
+- **P1:** Maintain exercise history (if not implemented, must clearly warn about data loss)
+- **P2:** Maintain conversation history
+
+**OPEN:** For discussion
+
+## Content Creation Process
+
+### Gap Handling
+When unable to answer with existing content/derivative content:
+1. Log the question
+2. Content team accesses logs regularly
+3. Content team reaches out to 'on call experts'
+4. Experts provide content (written, spoken?) within SLA timeframe
+5. Content ingested into lightyear
+6. Derivative content generated regularly
